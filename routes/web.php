@@ -1,15 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-
-
-// Route::get('/', [HomeController::class, 'index'])->name('home');
+use App\Http\Controllers\Controller;
 
 Route::get('/', function () {
-return view('home');
-});
+    return view('home');
+})->name('home');
 
-Route::get('/login', function () {
-    return view('daftar');
-});
+Route::post('/contact/submit', [Controller::class, 'submit'])->name('contact.submit');

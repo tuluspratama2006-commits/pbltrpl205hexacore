@@ -2,30 +2,43 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PT. Berkah Alam Tabantang</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="font-sans antialiased">
+    <title>PT Berkah Alam Tabantang</title>
 
-    <nav class="bg-white shadow-md fixed w-full z-10 top-0">
-        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <div class="text-xl font-bold text-blue-700">PT. Berkah Alam Tabantang</div>
-            <div class="hidden md:flex space-x-6">
-                <a href="#home" class="hover:text-blue-600">Home</a>
-                <a href="#about" class="hover:text-blue-600">Tentang Kami</a>
-                <a href="#services" class="hover:text-blue-600">Layanan</a>
-                <a href="#portfolio" class="hover:text-blue-600">Portfolio</a>
-                <a href="#news" class="hover:text-blue-600">Berita</a>
-                <a href="#testimonials" class="hover:text-blue-600">Testimoni</a>
-                <a href="#contact" class="hover:text-blue-600">Kontak</a>
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+
+            <div class="logo">
+                <img src="{{ asset('images/logo_pt_bat.jpg') }}" alt="Logo">
             </div>
+
+            <ul class="menu">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Tentang Kami</a></li>
+                <li><a href="#">Layanan</a></li>
+                <li><a href="#">Portfolio</a></li>
+                <li><a href="#">Berita</a></li>
+                <li><a href="#">Testimoni</a></li>
+                <li><a href="#">Kontak</a></li>
+            </ul>
+
+            <div class="profile">
+                <img src="{{ asset('images/user.png') }}" alt="User">
+            </div>
+
         </div>
     </nav>
 
-    <main>
-        @yield('content')
-    </main>
+    <!-- CONTENT -->
+    @yield('content')
 
 </body>
 </html>
