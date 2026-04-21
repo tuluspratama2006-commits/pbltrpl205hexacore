@@ -20,7 +20,6 @@
             scroll-behavior: smooth;
         }
 
-        /* ================= NAVBAR ================= */
         .navbar {
             background: #c3d3e3;
             position: fixed;
@@ -92,7 +91,6 @@
             color: #E6B12E;
         }
 
-        /* ================= HERO SECTION ================= */
         .hero {
             position: relative;
             margin-top: 52px;
@@ -146,7 +144,6 @@
             line-height: 1.7;
         }
 
-        /* ================= TENTANG KAMI SECTION ================= */
         .about-section {
             padding: 80px 0;
             background: #ffffff;
@@ -306,7 +303,6 @@
             height: 250px;
         }
 
-        /* ================= LAYANAN SECTION ================= */
         .layanan-section {
             padding: 80px 0;
             background: #f5f7fa;
@@ -427,7 +423,6 @@
             gap: 8px;
         }
 
-        /* ================= PORTOFOLIO SECTION ================= */
         .portfolio-section {
             padding: 80px 0;
             background: #ffffff;
@@ -517,7 +512,6 @@
             color: white;
         }
 
-        /* ================= BERITA SECTION ================= */
         .berita-section {
             padding: 80px 0;
             background: #f5f7fa;
@@ -750,7 +744,6 @@
             margin-bottom: 15px;
         }
 
-        /* ================= TESTIMONI SECTION (CARD SAMPING/GRID) ================= */
         .testimoni-section {
             padding: 80px 0;
             background: #f5f7fa;
@@ -810,7 +803,6 @@
             color: #1a2a3a;
         }
 
-        /* ================= LOKASI SECTION DENGAN GAMBAR ================= */
         .lokasi-section {
             padding: 80px 0;
             background: #ffffff;
@@ -868,7 +860,6 @@
             line-height: 1.8;
         }
 
-        /* ================= FOOTER (DESAIN PERSIS SEPERTI GAMBAR) ================= */
         .footer {
             background: #1a2a3a;
             color: white;
@@ -983,7 +974,6 @@
             font-size: 14px;
         }
 
-        /* ================= LOGIN MODAL ================= */
         .login-modal {
             display: none;
             position: fixed;
@@ -1072,7 +1062,6 @@
             color: #E6B12E;
         }
 
-        /* ================= RESPONSIVE ================= */
         @media (max-width: 1024px) {
             .about-content {
                 flex-direction: column;
@@ -1148,7 +1137,6 @@
 </head>
 <body>
 
-    <!-- NAVBAR -->
     <nav class="navbar">
         <div class="container">
             <div class="nav-wrapper">
@@ -1175,7 +1163,6 @@
         </div>
     </nav>
 
-    <!-- HOME / HERO SECTION -->
     <section id="home" class="hero">
         <img src="{{ asset('images/Landing_page.jpg') }}" class="hero-img">
         <div class="overlay"></div>
@@ -1192,7 +1179,6 @@
         </div>
     </section>
 
-    <!-- TENTANG KAMI SECTION -->
     <section id="tentang-kami" class="about-section">
         <div class="about-container">
             <div class="about-header">
@@ -1237,7 +1223,6 @@
         </div>
     </section>
 
-    <!-- LAYANAN SECTION -->
     <section id="layanan" class="layanan-section">
         <div class="layanan-container">
             <div class="layanan-header">
@@ -1309,7 +1294,6 @@
         </div>
     </section>
 
-    <!-- PORTOFOLIO SECTION -->
     <section id="portofolio" class="portfolio-section">
         <div class="portfolio-container">
             <div class="portfolio-header">
@@ -1354,7 +1338,6 @@
         </div>
     </section>
 
-    <!-- BERITA SECTION -->
     <section id="berita" class="berita-section">
         <div class="berita-container">
             <div class="berita-header">
@@ -1414,7 +1397,6 @@
         </div>
     </section>
 
-    <!-- TESTIMONI SECTION (CARD SAMPING/GRID) -->
     <section id="testimoni" class="testimoni-section">
         <div class="testimoni-container">
             <div class="testimoni-header">
@@ -1445,7 +1427,6 @@
         </div>
     </section>
 
-    <!-- LOKASI SECTION DENGAN GAMBAR -->
     <section id="lokasi" class="lokasi-section">
         <div class="lokasi-container">
             <div class="lokasi-header">
@@ -1473,7 +1454,6 @@
         </div>
     </section>
 
-    <!-- FOOTER (DESAIN PERSIS SEPERTI GAMBAR) -->
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-top">
@@ -1522,7 +1502,6 @@
         </div>
     </footer>
 
-    <!-- MODAL POPUP -->
     <div id="newsModal" class="modal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeNewsModal()">&times;</span>
@@ -1533,7 +1512,6 @@
         </div>
     </div>
 
-    <!-- LOGIN MODAL -->
     <div id="loginModal" class="login-modal">
         <div class="login-modal-content">
             <span class="login-modal-close" onclick="closeLoginModal()">&times;</span>
@@ -1597,7 +1575,6 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Login Modal Functions
         function openLoginModal() {
             document.getElementById('loginModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
@@ -1624,7 +1601,6 @@
             }
         }
 
-        // Tutup modal jika klik di luar modal
         window.onclick = function(event) {
             const modal = document.getElementById('newsModal');
             const loginModal = document.getElementById('loginModal');
