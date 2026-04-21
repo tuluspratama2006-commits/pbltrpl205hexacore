@@ -21,13 +21,13 @@
             </div>
 
             <ul class="menu">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Tentang Kami</a></li>
-                <li><a href="#">Layanan</a></li>
-                <li><a href="#">Portfolio</a></li>
-                <li><a href="#">Berita</a></li>
-                <li><a href="#">Testimoni</a></li>
-                <li><a href="#">Kontak</a></li>
+                <li><a href="{{ route('home') }}">Home</a></li>
+                <li><a href="{{ route('tentang-kami') }}">Tentang Kami</a></li>
+                <li><a href="{{ route('layanan') }}">Layanan</a></li>
+                <li><a href="{{ route('portfolio') }}">Portfolio</a></li>
+                <li><a href="{{ route('berita') }}">Berita</a></li>
+                <li><a href="{{ route('testimoni') }}">Testimoni</a></li>
+                <li><a href="{{ route('kontak') }}">Kontak</a></li>
             </ul>
 
             <div class="profile">
