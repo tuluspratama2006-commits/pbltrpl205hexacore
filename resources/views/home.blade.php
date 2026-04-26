@@ -832,7 +832,7 @@
                         <div class="service-card-body">
                             <div class="service-title" style="margin-bottom:6px;">Konstruksi Gedung Lainnya</div>
                             <div class="service-code" style="margin-bottom:12px;">(BG009)</div>
-                            <div class="service-desc">Penyediaan jasa konstruksi untuk berbagai jenis gedung komersial maupun fasilitas publik lainnya.</div>
+                            <div class="service-desc">Penyediaan jasa konstruksi untuk berbagai jenis gedung komersial maupun fasilitas publik lainnya dengan mengutamakan fungsionalitas ruang dan kekuatan struktur bangunan.</div>
                             <ul class="service-features">
                                 <li><i class="fas fa-check-circle"></i> Gedung Komersial</li>
                                 <li><i class="fas fa-check-circle"></i> Fasilitas Publik</li>
@@ -849,7 +849,7 @@
                         <div class="service-card-body">
                             <div class="service-title" style="margin-bottom:6px;">Pekerjaan Bangunan Sipil – Sumber Daya Air</div>
                             <div class="service-code" style="margin-bottom:12px;">(SI001)</div>
-                            <div class="service-desc">Jasa pelaksana konstruksi jaringan saluran air, pelabuhan, dam, bendungan.</div>
+                            <div class="service-desc">Kami melayani jasa pelaksana untuk konstruksi jaringan saluran air, pelabuhan, dam, bendungan, serta prasarana sumber daya air lainnya. Fokus kami adalah efisiensi aliran dan ketahanan struktur jangka panjang.</div>
                             <ul class="service-features">
                                 <li><i class="fas fa-check-circle"></i> Jaringan Saluran Air</li>
                                 <li><i class="fas fa-check-circle"></i> Dam & Bendungan</li>
@@ -866,7 +866,7 @@
                         <div class="service-card-body">
                             <div class="service-title" style="margin-bottom:6px;">Pembangunan Infrastruktur Jalan Raya</div>
                             <div class="service-code" style="margin-bottom:12px;">(SI003)</div>
-                            <div class="service-desc">Konstruksi jalan raya, jalan lokal, rel kereta api, landas pacu bandara.</div>
+                            <div class="service-desc">Layanan khusus pelaksanaan konstruksi jalan raya (kecuali jalan layang), jalan lokal, rel kereta api, hingga landas pacu bandara. Kami memastikan kualitas pengaspalan dan fondasi yang mampu menahan beban kendaraan berat.</div>
                             <ul class="service-features">
                                 <li><i class="fas fa-check-circle"></i> Jalan Raya & Lokal</li>
                                 <li><i class="fas fa-check-circle"></i> Rel Kereta Api</li>
@@ -883,7 +883,7 @@
                         <div class="service-card-body">
                             <div class="service-title" style="margin-bottom:6px;">Konstruksi Jembatan & Jalan Layang</div>
                             <div class="service-code" style="margin-bottom:12px;">(SI004)</div>
-                            <div class="service-desc">Pengerjaan jembatan, jalan layang, terowongan, jalur bawah tanah.</div>
+                            <div class="service-desc">Spesialisasi kami mencakup pengerjaan jembatan, jalan layang, terowongan, hingga jalur bawah tanah (subway). Menggunakan perhitungan teknis yang presisi untuk menghubungkan konektivitas antar wilayah.</div>
                             <ul class="service-features">
                                 <li><i class="fas fa-check-circle"></i> Jembatan & Jalan Layang</li>
                                 <li><i class="fas fa-check-circle"></i> Terowongan</li>
