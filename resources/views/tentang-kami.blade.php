@@ -2,11 +2,9 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PT. Berkah Alam Tabantang</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>PT. Berkah Alam Tabantang - Konstruksi & Infrastruktur Batam</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
     <style>
         * {
             margin: 0;
@@ -14,56 +12,86 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
+        html {
             scroll-behavior: smooth;
         }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+        }
+
+        /* ============================================================
+           KUNCI KESERAGAMAN LEBAR:
+           Semua section menggunakan width: 100% tanpa pembatas kiri/kanan
+           pada background-nya. Hanya .inner-container yang dibatasi max-width.
+        ============================================================ */
+
+        /* Semua section: width penuh 100vw */
+        section {
+            width: 100%;
+        }
+
+        /* Container dalam semua section: sama rata */
+        .inner-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 40px;
+            width: 100%;
+        }
+
+        /* ========== NAVBAR ========== */
         .navbar {
-            background: #c3d3e3;
+            background: #ffffff;
             position: fixed;
             top: 0;
+            left: 0;
             width: 100%;
-            height: 52px;
+            height: 56px;
             display: flex;
             align-items: center;
             z-index: 1000;
-        }
-
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 20px;
-            width: 100%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
         .nav-wrapper {
             display: flex;
             align-items: center;
             width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 40px;
         }
 
-        .logo { flex: 1; }
-        .logo img { height: 34px; }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+        .logo img { height: 36px; }
 
         .nav-menu {
             flex: 2;
             display: flex;
             justify-content: center;
             list-style: none;
-            gap: 32px;
+            gap: 28px;
         }
 
         .nav-menu a {
             text-decoration: none;
-            color: #000;
-            font-size: 15px;
+            color: #1a2a3a;
+            font-size: 14px;
             font-weight: 500;
             transition: color 0.3s;
         }
 
-        .nav-menu a:hover { color: #E6B12E; }
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #162660;
+            font-weight: 700;
+        }
 
         .nav-right {
             flex: 1;
@@ -73,20 +101,18 @@
         }
 
         .login-icon {
-            font-size: 18px;
-            margin-right: 5px;
-            color: #000;
+            font-size: 20px;
+            color: #1a2a3a;
             cursor: pointer;
             transition: color 0.3s;
         }
+        .login-icon:hover { color: #162660; }
 
-        .login-icon:hover { color: #E6B12E; }
-
-        /* HERO */
-        .hero {
+        /* ========== HERO ========== */
+        #home {
             position: relative;
-            margin-top: 52px;
-            height: calc(100vh - 52px);
+            margin-top: 56px;
+            height: calc(100vh - 56px);
             overflow: hidden;
         }
 
@@ -94,346 +120,506 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
         }
 
         .overlay {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.55) 40%, rgba(0,0,0,0.2) 70%, rgba(0,0,0,0) 100%);
+            background: linear-gradient(
+                to right,
+                rgba(22,38,96,0.82) 0%,
+                rgba(22,38,96,0.60) 45%,
+                rgba(22,38,96,0.20) 75%,
+                rgba(22,38,96,0) 100%
+            );
         }
 
         .hero-content {
             position: absolute;
-            top: 52%; left: 80px;
+            top: 50%;
+            left: 72px;
             transform: translateY(-50%);
-            color: white;
-            max-width: 700px;
+            color: #fff;
+            max-width: 660px;
         }
 
-        .hero h1 { font-size: 48px; font-weight: 700; margin-bottom: 15px; }
-        .tagline { font-size: 20px; margin-bottom: 10px; }
-        .description { font-size: 17px; line-height: 1.7; }
+        .hero h1 { font-size: 42px; font-weight: 800; margin-bottom: 12px; line-height: 1.2; }
+        .tagline { font-size: 17px; margin-bottom: 10px; font-weight: 500; color: #D0E6FD; }
+        .description { font-size: 15px; line-height: 1.8; color: #c8d8ee; }
 
-        /* ABOUT */
-        .about-section {
-            padding: 80px 0;
-            background: #ffffff;
-            min-height: 100vh;
-        }
-
-        .about-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .about-header { text-align: center; margin-bottom: 50px; }
-
+        /* ========== SHARED ========== */
         .section-title {
-            font-size: 2.5rem;
-            color: #1a2a3a;
-            margin-bottom: 15px;
-            font-weight: 700;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #162660;
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
-
         .title-underline {
-            width: 80px; height: 4px;
-            background: #E6B12E;
+            width: 60px; height: 4px;
+            background: #162660;
             margin: 0 auto;
             border-radius: 2px;
         }
 
-        .about-content {
-            display: flex;
-            gap: 60px;
-            align-items: flex-start;
+        /* ========== TENTANG KAMI ========== */
+        #tentang-kami {
+            background: #ffffff;
+            padding: 80px 0;
+            min-height: 100vh;
+            display: block;
         }
+
+        .about-header { text-align: center; margin-bottom: 50px; }
+
+        .about-content { display: flex; gap: 60px; align-items: flex-start; }
 
         .about-left {
             flex: 1;
-            background-image: url('{{ asset('images/logo_pt_bat2.jpg') }}');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 60%;
-            background-color: #f0f4f8;
-            border-radius: 15px;
-            padding: 40px;
             position: relative;
-            min-height: 500px;
+            min-height: 460px;
         }
 
-        .about-left::before {
-            content: "";
+        .about-logo-bg {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(255,255,255,0.85);
-            border-radius: 15px;
-            z-index: 0;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 65%;
+            opacity: 0.12;
+            pointer-events: none;
+            user-select: none;
         }
 
-        .about-left h2,
-        .about-left p,
-        .about-left .certificate-text,
-        .about-left .btn-primary { position: relative; z-index: 1; }
+        .about-left-inner { position: relative; z-index: 1; }
 
-        .about-left h2 {
-            font-size: 1.8rem;
-            color: #1a2a3a;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
+        .about-left h2 { font-size: 1.6rem; color: #162660; margin-bottom: 18px; font-weight: 700; }
 
         .about-left p {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: #1a2a3a;
-            margin-bottom: 20px;
+            font-size: 0.95rem;
+            line-height: 1.85;
+            color: #2a3a4a;
+            margin-bottom: 18px;
             text-align: justify;
         }
 
-        .certificate-text { margin: 20px 0; }
+        .sbu-label { font-size: 1.1rem; font-weight: 700; color: #162660; margin-bottom: 4px; }
+        .sbu-number { font-size: 0.9rem; color: #555; margin-bottom: 28px; }
 
-        .certificate-text strong {
-            display: block;
-            color: #1a2a3a;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .certificate-text p {
-            margin-bottom: 0;
-            color: #2563eb;
-            font-weight: 500;
-        }
-
-        .btn-primary {
-            display: inline-block;
-            padding: 10px 25px;
-            background: #2563eb;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: 500;
-            font-size: 14px;
-            transition: all 0.3s;
+        .btn-unduh {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 22px;
+            background: #D0E6FD;
+            color: #162660;
             border: none;
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
         }
-
-        .btn-primary:hover { background: #1d4ed8; color: white; }
+        .btn-unduh:hover { background: #162660; color: #fff; }
 
         .about-right { flex: 1; }
 
         .photos-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            gap: 12px;
         }
 
         .photo-item {
             overflow: hidden;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             transition: transform 0.3s;
             cursor: pointer;
         }
-
         .photo-item:hover { transform: scale(1.03); }
+        .photo-item img { width: 100%; height: 180px; object-fit: cover; display: block; }
+        .photo-item:first-child { grid-column: span 2; }
+        .photo-item:first-child img { height: 240px; }
 
-        .photo-item img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
+        /* ========== LAYANAN ========== */
+        #layanan {
+            background: #ffffff;
+            padding: 0 0 80px 0;
+            min-height: 100vh;
             display: block;
         }
 
-        .photo-item:first-child { grid-column: span 2; }
-        .photo-item:first-child img { height: 250px; }
-
-        /* LAYANAN */
-        .layanan-section {
-            padding: 80px 0;
-            background: #f5f7fa;
-            min-height: 100vh;
+        /* Header banner: full 100% width — tidak pakai inner-container */
+        .layanan-header {
+            background: #162660;
+            border-radius: 0 0 40px 40px;
+            text-align: center;
+            padding: 28px 40px 26px;
+            margin-bottom: 52px;
+            width: 100%;
         }
 
-        .layanan-container {
+        .layanan-header .section-title {
+            color: #fff;
+            letter-spacing: 10px;
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        /* Scroll wrapper: tidak ada inner-container agar kartu bisa rata ke tepi */
+        .layanan-scroll-area {
             max-width: 1280px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 40px;
         }
 
-        .layanan-header { text-align: center; margin-bottom: 50px; }
+        .services-scroll-wrapper {
+            overflow-x: auto;
+            overflow-y: visible;
+            padding-bottom: 4px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .services-scroll-wrapper::-webkit-scrollbar { display: none; }
 
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
+        .services-track {
+            display: flex;
+            gap: 24px;
+            /* 3 kartu terlihat, ke-4 mengintip sedikit untuk tanda bisa digeser */
+            width: max-content;
+            padding: 4px 0 8px;
         }
 
+        /* Lebar kartu: 3 kartu pas dalam 1280px - 80px padding - 48px gap */
         .service-card {
-            position: relative;
-            border-radius: 15px;
+            /* (1280 - 80 - 48) / 3 = 384px */
+            width: 384px;
+            flex-shrink: 0;
+            border-radius: 22px;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
             cursor: pointer;
-            min-height: 280px;
-            background-size: cover;
-            background-position: center;
-            transition: transform 0.3s ease;
+            position: relative;
+            background: #c8ddf0;
+            box-shadow: 0 6px 20px rgba(22,38,96,0.14);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 36px rgba(22,38,96,0.22);
         }
 
-        .service-card:hover { transform: translateY(-5px); }
+        .service-card-img {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        .service-card:hover .service-card-img { transform: scale(1.04); }
 
-        .service-card:nth-child(1) { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('{{ asset('images/layanan_1.jpg') }}'); }
-        .service-card:nth-child(2) { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('{{ asset('images/layanan_2.jpg') }}'); }
-        .service-card:nth-child(3) { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('{{ asset('images/layanan_3.jpg') }}'); }
-        .service-card:nth-child(4) { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('{{ asset('images/layanan_4.jpeg') }}'); }
+        /* Judul selalu terlihat di atas */
+        .service-card-top {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            padding: 22px 18px 50px;
+            background: linear-gradient(
+                to bottom,
+                rgba(22,38,96,0.82) 0%,
+                rgba(22,38,96,0.48) 55%,
+                rgba(22,38,96,0) 100%
+            );
+        }
 
-        .service-overlay {
+        .service-title { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 4px; line-height: 1.35; }
+        .service-code { font-size: 0.82rem; color: #D0E6FD; font-weight: 600; }
+
+        /* Overlay muncul dari bawah saat hover */
+        .service-card-body {
             position: absolute;
             bottom: 0; left: 0; right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.5));
-            padding: 25px;
-            transition: all 0.4s ease;
+            padding: 22px 18px 26px;
+            background: linear-gradient(
+                to top,
+                rgba(22,38,96,0.97) 0%,
+                rgba(22,38,96,0.92) 55%,
+                rgba(22,38,96,0) 100%
+            );
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.4s ease;
         }
+        .service-card:hover .service-card-body { transform: translateY(0); opacity: 1; }
 
-        .service-card:hover .service-overlay {
-            background: rgba(230,177,46,0.95);
-            bottom: 0; top: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .service-title { font-size: 1.3rem; font-weight: 700; color: white; margin-bottom: 8px; }
-        .service-code { font-size: 0.85rem; color: #E6B12E; font-family: monospace; }
-        .service-card:hover .service-title,
-        .service-card:hover .service-code { color: #1a2a3a; }
-
-        .service-description { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; color: #1a2a3a; }
-        .service-card:hover .service-description { max-height: 200px; margin-top: 15px; }
-        .service-description p { font-size: 0.9rem; line-height: 1.6; margin-bottom: 10px; }
-
-        .service-features { list-style: none; margin-top: 10px; }
+        .service-desc { font-size: 0.84rem; color: #c8d8f0; line-height: 1.65; margin-bottom: 12px; }
+        .service-features { list-style: none; }
         .service-features li {
-            font-size: 0.85rem;
-            padding: 3px 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 0.82rem; color: #a8c4e4;
+            padding: 3px 0; display: flex; align-items: center; gap: 7px;
         }
+        .service-features li i { color: #8CC1E9; font-size: 0.75rem; }
 
-        /* ===================================================
-           PORTFOLIO SECTION — DESAIN BARU SESUAI REFERENSI
-        =================================================== */
-        .portfolio-section {
-            padding: 80px 0;
-            background: #dae8f5; /* biru muda */
+        /* ========== PORTFOLIO ========== */
+        #portofolio {
+            background: #D0E6FD;
+            padding: 70px 0 80px 0;
+            width: 100%;
             min-height: 100vh;
+            display: block;
         }
 
-        .portfolio-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        .portfolio-header { text-align: center; margin-bottom: 44px; }
+        .portfolio-header .section-title { font-size: 2rem; font-weight: 900; letter-spacing: 2px; }
 
-        .portfolio-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        /* Grid 3 kartu */
         .portfolio-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 28px;
+            gap: 22px;
         }
 
-        /* Kartu vertikal: foto penuh atas, judul & tombol bawah */
         .portfolio-card {
-            background: #ffffff;
+            background: #fff;
             border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+            box-shadow: 0 6px 20px rgba(22,38,96,0.12);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
             display: flex;
             flex-direction: column;
         }
-
         .portfolio-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 16px 36px rgba(0,0,0,0.16);
+            box-shadow: 0 16px 36px rgba(22,38,96,0.2);
         }
 
-        /* Foto atas — tinggi lebih besar agar dominan */
-        .portfolio-image {
-            width: 100%;
-            height: 260px;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-
+        .portfolio-image { width: 100%; position: relative; overflow: hidden; }
         .portfolio-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            width: 100%; height: 320px;
+            object-fit: cover; display: block;
             transition: transform 0.4s ease;
         }
+        .portfolio-card:hover .portfolio-image img { transform: scale(1.05); }
 
-        .portfolio-card:hover .portfolio-image img {
-            transform: scale(1.06);
+        .portfolio-img-overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 52px 16px 38px;
+            background: linear-gradient(
+                to top,
+                rgba(22,38,96,0.82) 0%,
+                rgba(22,38,96,0.35) 60%,
+                rgba(22,38,96,0) 100%
+            );
         }
+        .portfolio-title { font-size: 1rem; font-weight: 700; color: #fff; line-height: 1.4; margin: 0; }
 
-        /* Bagian bawah kartu: judul + tombol */
-        .portfolio-bottom {
-            padding: 18px 18px 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            flex: 1;
-        }
-
-        .portfolio-title {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: #1a2a3a;
-            line-height: 1.4;
-            margin: 0;
-        }
-
-        /* Baris paling bawah: tombol rata kanan */
-        .portfolio-footer-row {
-            display: flex;
-            justify-content: flex-end;
-        }
+        .portfolio-bottom { padding: 10px 14px 12px; display: flex; justify-content: flex-end; }
 
         .portfolio-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 7px 16px;
-            background: #dae8f5;
-            color: #1a6ec4;
-            border: none;
-            border-radius: 20px;
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 6px 16px; background: #D0E6FD; color: #162660;
+            border: none; border-radius: 20px; font-size: 12px; font-weight: 700;
+            cursor: pointer; transition: background 0.3s, color 0.3s;
+        }
+        .portfolio-btn:hover { background: #162660; color: #fff; }
+
+        /* ========== BERITA ========== */
+        #berita {
+            background: #ffffff;
+            padding: 70px 0 80px 0;
+            width: 100%;
+            min-height: 100vh;
+            display: block;
+        }
+
+        .berita-header { margin-bottom: 36px; }
+        .berita-header .section-title { font-size: 2rem; font-weight: 900; margin: 0; }
+
+        .berita-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 36px;
+            align-items: start;
+        }
+
+        .featured-card { background: transparent; }
+        .featured-img-wrap { position: relative; border-radius: 10px; overflow: hidden; }
+        .featured-img-wrap img { width: 100%; height: 300px; object-fit: cover; display: block; }
+        .featured-date-badge {
+            position: absolute; bottom: 12px; right: 12px;
+            background: #162660; color: #fff;
+            font-size: 12px; font-weight: 700; padding: 5px 12px; border-radius: 8px;
+        }
+        .featured-card-body { padding: 18px 0 0 0; }
+        .featured-title-link {
+            font-size: 1.05rem; font-weight: 800; color: #162660;
+            margin-bottom: 10px; text-decoration: underline; line-height: 1.4; display: block;
+        }
+        .featured-excerpt { font-size: 0.88rem; color: #444; line-height: 1.7; margin-bottom: 16px; text-align: justify; }
+        .btn-selengkapnya {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 7px 18px; background: #D0E6FD; color: #162660;
+            border: none; border-radius: 20px; font-size: 12px; font-weight: 700;
+            cursor: pointer; transition: background 0.3s, color 0.3s;
+        }
+        .btn-selengkapnya:hover { background: #162660; color: #fff; }
+
+        .news-list { display: flex; flex-direction: column; gap: 20px; }
+        .news-item {
+            display: grid; grid-template-columns: 120px 1fr;
+            border-radius: 12px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(22,38,96,0.07);
+            background: #f8fafc; transition: transform 0.3s; cursor: pointer;
+        }
+        .news-item:hover { transform: translateY(-3px); }
+        .news-item-img { position: relative; }
+        .news-item-img img { width: 120px; height: 100%; object-fit: cover; display: block; }
+        .news-item-date {
+            position: absolute; bottom: 6px; left: 5px;
+            background: #162660; color: #fff;
+            font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 5px;
+        }
+        .news-item-body { padding: 13px 14px; display: flex; flex-direction: column; justify-content: space-between; }
+        .news-item-title { font-size: 0.88rem; font-weight: 700; color: #162660; line-height: 1.4; margin-bottom: 6px; text-decoration: underline; }
+        .news-item-excerpt { font-size: 0.78rem; color: #555; line-height: 1.5; margin-bottom: 8px; }
+        .btn-baca {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 4px 13px; background: #D0E6FD; color: #162660;
+            border: none; border-radius: 16px; font-size: 11px; font-weight: 700;
+            cursor: pointer; align-self: flex-start; transition: background 0.3s, color 0.3s;
+        }
+        .btn-baca:hover { background: #162660; color: #fff; }
+
+        /* ========== TESTIMONI ========== */
+        #testimoni {
+            background: #ffffff;
+            padding: 0 0 80px 0;
+            width: 100%;
+            min-height: 100vh;
+            display: block;
+        }
+
+        /* Header banner full-width */
+        .testimoni-header {
+            background: #162660;
+            border-radius: 0 0 40px 40px;
+            text-align: center;
+            padding: 28px 40px 26px;
+            margin-bottom: 36px;
+            width: 100%;
+        }
+        .testimoni-header .section-title { color: #fff; letter-spacing: 10px; font-size: 2rem; margin: 0; }
+
+        .testimoni-subtitle-block { text-align: center; margin-bottom: 40px; }
+        .testimoni-subtitle-block .sub-bold { font-size: 1.1rem; font-weight: 800; color: #162660; margin-bottom: 8px; display: block; }
+        .testimoni-subtitle-block .sub-text { font-size: 0.92rem; color: #444; max-width: 560px; margin: 0 auto; line-height: 1.6; }
+
+        .testimoni-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+
+        .testimoni-card {
+            background: #D0E6FD;
+            border-radius: 18px;
+            padding: 26px 22px;
+            box-shadow: 0 4px 14px rgba(22,38,96,0.08);
+            transition: transform 0.3s;
+        }
+        .testimoni-card:hover { transform: translateY(-5px); }
+
+        .company-logo-circle {
+            width: 54px; height: 54px; border-radius: 50%;
+            background: #ffffff;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 8px rgba(22,38,96,0.12);
+        }
+        .company-logo-circle span { font-size: 13px; font-weight: 800; color: #162660; }
+
+        .testimoni-rating { color: #f5a623; font-size: 1.25rem; margin-bottom: 14px; letter-spacing: 2px; }
+        .testimoni-text { color: #2a3a4a; line-height: 1.7; margin-bottom: 12px; font-size: 0.88rem; text-align: justify; }
+        .testimoni-author { font-weight: 700; color: #162660; font-size: 0.88rem; }
+
+        /* ========== LOKASI ========== */
+        #lokasi {
+            background: #ffffff;
+            padding: 70px 0 60px;
+            width: 100%;
+            display: block;
+        }
+
+        .lokasi-header { text-align: center; margin-bottom: 46px; }
+        .lokasi-header .section-title { letter-spacing: 8px; }
+
+        .lokasi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
+
+        .lokasi-card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(22,38,96,0.10);
+        }
+        .lokasi-card img {
+            width: 100%; height: auto; max-height: 260px;
+            object-fit: contain; display: block; background: #f0f4f8;
+        }
+        .lokasi-card-content { padding: 18px 20px; }
+        .lokasi-card-content p { color: #1a2a3a; line-height: 1.7; font-size: 0.92rem; }
+        .lokasi-card-content strong { color: #162660; font-weight: 700; }
+
+        /* ========== FOOTER ========== */
+        footer {
+            background: #D0E6FD;
+            color: #162660;
+            padding: 48px 0 0;
+            border-top: 2px solid #8CC1E9;
+            width: 100%;
+        }
+
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .footer-top {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            padding-bottom: 28px;
+        }
+
+        .footer-brand { flex: 2; min-width: 260px; }
+        .footer-brand-row { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+        .footer-brand-row img { height: 60px; }
+        .footer-brand h3 { font-size: 1.3rem; font-weight: 800; color: #162660; }
+        .footer-brand p { color: #2a3a4a; font-size: 0.88rem; margin-bottom: 5px; }
+        .footer-brand a { color: #162660; text-decoration: none; font-size: 0.88rem; }
+        .footer-brand a:hover { text-decoration: underline; }
+
+        .footer-social { display: flex; gap: 18px; margin-top: 14px; }
+        .footer-social a { font-size: 22px; color: #162660; text-decoration: none; transition: color 0.3s, transform 0.3s; }
+        .footer-social a:hover { color: #4388C4; transform: translateY(-3px); }
+
+        .footer-links { display: flex; gap: 48px; flex-wrap: wrap; }
+        .footer-col h4 { font-size: 1rem; font-weight: 800; color: #162660; margin-bottom: 16px; }
+        .footer-col p { color: #2a3a4a; font-size: 0.86rem; margin-bottom: 7px; }
+        .footer-col a { color: #2a3a4a; text-decoration: none; display: block; margin-bottom: 6px; font-size: 0.86rem; transition: color 0.3s; }
+        .footer-col a:hover { color: #162660; font-weight: 600; }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 22px 0;
+            border-top: 1px solid #8CC1E9;
+            color: #162660;
             font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s, color 0.3s;
+            font-weight: 500;
         }
 
-        .portfolio-btn:hover {
-            background: #2563eb;
-            color: #ffffff;
-        }
-
-        /* ===================================================
-           MODAL PORTOFOLIO — LAYOUT 2 KOLOM (foto kiri, teks kanan)
-        =================================================== */
+        /* ========== MODAL ========== */
         .modal {
             display: none;
             position: fixed;
@@ -447,556 +633,233 @@
         }
 
         .portfolio-modal-content {
-            background: white;
-            max-width: 860px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            border-radius: 16px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
+            background: #fff; max-width: 860px; width: 100%;
+            max-height: 90vh; overflow-y: auto; border-radius: 18px;
+            position: relative; display: flex; flex-direction: column;
         }
 
         .modal-close {
-            position: absolute;
-            top: 14px; right: 18px;
-            font-size: 28px;
-            cursor: pointer;
-            color: #999;
-            transition: color 0.3s;
-            z-index: 10;
-            line-height: 1;
+            position: absolute; top: 14px; right: 18px;
+            font-size: 28px; cursor: pointer; color: #999;
+            transition: color 0.3s; z-index: 10; line-height: 1;
         }
+        .modal-close:hover { color: #162660; }
 
-        .modal-close:hover { color: #1a2a3a; }
-
-        .portfolio-modal-inner {
-            display: flex;
-            min-height: 420px;
-        }
+        .portfolio-modal-inner { display: flex; min-height: 420px; }
 
         .portfolio-modal-photos {
-            flex: 0 0 42%;
-            background: #eef2f7;
-            border-radius: 16px 0 0 0;
-            padding: 40px 20px 30px 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
+            flex: 0 0 42%; background: #eef4fb;
+            border-radius: 18px 0 0 0; padding: 40px 20px 30px 30px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
 
         .photo-main {
-            width: 88%;
-            aspect-ratio: 4/3;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-            z-index: 2;
-            margin-bottom: -22px;
-            align-self: flex-start;
-            margin-left: 5px;
+            width: 88%; aspect-ratio: 4/3; border-radius: 10px; overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2); z-index: 2;
+            margin-bottom: -22px; align-self: flex-start; margin-left: 5px;
         }
-
         .photo-main img { width: 100%; height: 100%; object-fit: cover; }
 
         .photo-secondary {
-            width: 80%;
-            aspect-ratio: 4/3;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-            z-index: 1;
-            align-self: flex-end;
-            margin-right: 5px;
+            width: 80%; aspect-ratio: 4/3; border-radius: 10px; overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2); z-index: 1;
+            align-self: flex-end; margin-right: 5px;
         }
-
         .photo-secondary img { width: 100%; height: 100%; object-fit: cover; }
 
-        .photo-single {
-            width: 90%;
-            aspect-ratio: 4/3;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-        }
-
-        .photo-single img { width: 100%; height: 100%; object-fit: cover; }
-
-        .portfolio-modal-text {
-            flex: 1;
-            padding: 35px 35px 20px 28px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .portfolio-modal-title {
-            font-size: 1.45rem;
-            font-weight: 700;
-            color: #1a2a3a;
-            margin-bottom: 18px;
-            line-height: 1.35;
-        }
-
-        .portfolio-modal-body {
-            font-size: 0.91rem;
-            color: #333;
-            line-height: 1.75;
-            flex: 1;
-        }
-
+        .portfolio-modal-text { flex: 1; padding: 35px 35px 20px 28px; display: flex; flex-direction: column; }
+        .portfolio-modal-title { font-size: 1.35rem; font-weight: 800; color: #162660; margin-bottom: 18px; line-height: 1.35; }
+        .portfolio-modal-body { font-size: 0.9rem; color: #333; line-height: 1.75; flex: 1; }
         .portfolio-modal-body p { margin-bottom: 10px; }
-        .portfolio-modal-body strong { color: #1a2a3a; }
+        .portfolio-modal-body strong { color: #162660; }
 
-        .spec-title {
-            font-weight: 700;
-            color: #1a2a3a;
-            display: block;
-            margin-bottom: 4px;
-        }
+        .spec-title { font-weight: 700; color: #162660; display: block; margin-bottom: 4px; }
+        .spec-list { list-style: none; padding-left: 0; margin-bottom: 10px; }
+        .spec-list li { padding-left: 16px; position: relative; margin-bottom: 3px; font-size: 0.88rem; color: #444; }
+        .spec-list li::before { content: "•"; position: absolute; left: 0; color: #162660; font-weight: bold; }
 
-        .spec-list {
-            list-style: none;
-            padding-left: 0;
-            margin-bottom: 10px;
-        }
-
-        .spec-list li {
-            padding-left: 16px;
-            position: relative;
-            margin-bottom: 3px;
-            font-size: 0.9rem;
-            color: #444;
-        }
-
-        .spec-list li::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: #1a2a3a;
-            font-weight: bold;
-        }
-
-        .quote-text { font-style: italic; color: #333; }
-        .quote-text strong { font-style: normal; }
-
-        .portfolio-modal-footer {
-            padding: 16px 35px 24px 28px;
-            border-top: 1px solid #f0f0f0;
-        }
+        .portfolio-modal-footer { padding: 16px 35px 24px 28px; border-top: 1px solid #f0f0f0; }
 
         .btn-unduh-pdf {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 9px 20px;
-            background: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background 0.3s;
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 9px 22px; background: #162660; color: #fff;
+            border: none; border-radius: 24px; font-size: 13px; font-weight: 700;
+            cursor: pointer; text-decoration: none; transition: background 0.3s;
         }
+        .btn-unduh-pdf:hover { background: #4388C4; }
 
-        .btn-unduh-pdf:hover { background: #1d4ed8; color: white; }
-
-        /* MODAL BERITA */
         .news-modal-content {
-            background: white;
-            max-width: 800px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            border-radius: 20px;
-            padding: 30px;
-            position: relative;
+            background: #fff; max-width: 820px; width: 92%;
+            max-height: 88vh; overflow-y: auto; border-radius: 18px;
+            overflow: hidden; position: relative;
         }
 
-        .modal-date { color: #2563eb; font-size: 14px; margin-bottom: 10px; }
-        .modal-title { font-size: 1.8rem; font-weight: 700; color: #1a2a3a; margin-bottom: 20px; }
-        .modal-image { width: 100%; border-radius: 15px; margin-bottom: 20px; }
-        .modal-image img { width: 100%; border-radius: 15px; }
-        .modal-body { color: #444; line-height: 1.8; }
-        .modal-body p { margin-bottom: 15px; }
-
-        /* BERITA */
-        .berita-section {
-            padding: 80px 0;
-            background: #f5f7fa;
-            min-height: 100vh;
+        .news-modal-hero { position: relative; height: 280px; }
+        .news-modal-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .news-modal-hero-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top, rgba(22,38,96,0.92), transparent);
+            padding: 28px 32px 24px;
         }
-
-        .berita-container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
-        .berita-header { text-align: center; margin-bottom: 50px; }
-
-        .featured-news {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin-bottom: 50px;
-            display: flex;
-            flex-wrap: wrap;
+        .news-modal-hero-overlay h2 {
+            font-size: 1.55rem; font-weight: 800; color: #fff;
+            line-height: 1.3; margin-bottom: 6px; text-decoration: underline;
         }
-
-        .featured-image { flex: 1; min-width: 300px; }
-        .featured-image img { width: 100%; height: 100%; object-fit: cover; }
-
-        .featured-content { flex: 1; padding: 40px; }
-        .featured-date { color: #2563eb; font-size: 14px; font-weight: 500; margin-bottom: 10px; }
-        .featured-title { font-size: 1.8rem; font-weight: 700; color: #1a2a3a; margin-bottom: 15px; }
-        .featured-excerpt { color: #666; line-height: 1.7; margin-bottom: 20px; }
-
-        .read-more {
-            display: inline-block;
-            padding: 10px 25px;
-            background: #2563eb;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: 500;
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
+        .news-modal-date {
+            display: inline-block; background: #162660; color: #fff;
+            font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 6px;
         }
+        .news-modal-body { padding: 28px 32px 32px; background: #f2f7fc; }
+        .news-modal-body p { font-size: 0.95rem; color: #2a3a4a; line-height: 1.8; margin-bottom: 14px; text-align: justify; }
 
-        .read-more:hover { background: #1d4ed8; }
-
-        .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-
-        .news-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: transform 0.3s;
-        }
-
-        .news-card:hover { transform: translateY(-5px); }
-        .news-image { width: 100%; height: 200px; overflow: hidden; }
-        .news-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
-        .news-card:hover .news-image img { transform: scale(1.05); }
-
-        .news-content { padding: 20px; }
-        .news-date { color: #2563eb; font-size: 12px; font-weight: 500; margin-bottom: 8px; }
-        .news-title { font-size: 1.1rem; font-weight: 700; color: #1a2a3a; margin-bottom: 10px; line-height: 1.4; }
-        .news-excerpt { color: #666; font-size: 14px; line-height: 1.6; margin-bottom: 15px; }
-
-        .news-btn {
-            display: inline-block;
-            padding: 6px 15px;
-            background: transparent;
-            color: #2563eb;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: 500;
-            font-size: 13px;
-            transition: all 0.3s;
-            border: 1px solid #2563eb;
-            cursor: pointer;
-        }
-
-        .news-btn:hover { background: #2563eb; color: white; }
-
-        /* TESTIMONI */
-        .testimoni-section { padding: 80px 0; background: #f5f7fa; }
-        .testimoni-container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
-        .testimoni-header { text-align: center; margin-bottom: 20px; }
-        .testimoni-subtitle { text-align: center; color: #666; margin-bottom: 50px; font-size: 1.1rem; }
-        .testimoni-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-
-        .testimoni-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: transform 0.3s;
-        }
-
-        .testimoni-card:hover { transform: translateY(-5px); }
-        .testimoni-rating { color: #fbbf24; font-size: 1.2rem; margin-bottom: 15px; }
-        .testimoni-text { color: #444; line-height: 1.7; margin-bottom: 15px; font-style: italic; }
-        .testimoni-author { font-weight: 600; color: #1a2a3a; }
-
-        /* LOKASI */
-        .lokasi-section { padding: 80px 0; background: #ffffff; }
-        .lokasi-container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
-        .lokasi-header { text-align: center; margin-bottom: 50px; }
-        .lokasi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
-
-        .lokasi-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        }
-
-        .lokasi-card img { width: 100%; height: 250px; object-fit: cover; }
-
-        .lokasi-card-content { padding: 25px; }
-        .lokasi-card-content h3 { font-size: 1.3rem; color: #1a2a3a; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
-        .lokasi-card-content h3 i { color: #E6B12E; }
-        .lokasi-card-content p { color: #555; line-height: 1.8; }
-
-        /* FOOTER */
-        .footer { background: #1a2a3a; color: white; padding: 50px 0 30px; }
-        .footer-container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
-
-        .footer-top {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-brand { flex: 1; min-width: 250px; }
-        .footer-brand h3 { font-size: 1.5rem; margin-bottom: 15px; }
-        .footer-brand p { color: #ccc; line-height: 1.6; margin-bottom: 20px; }
-
-        .footer-social { display: flex; gap: 15px; }
-
-        .footer-social a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px; height: 40px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .footer-social a:hover { background: #E6B12E; transform: translateY(-3px); }
-
-        .footer-links { flex: 2; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 40px; }
-
-        .footer-col h4 {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .footer-col h4::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 40px; height: 2px;
-            background: #E6B12E;
-        }
-
-        .footer-col p { color: #ccc; margin-bottom: 10px; }
-        .footer-col a { color: #ccc; text-decoration: none; display: block; margin-bottom: 8px; transition: color 0.3s; }
-        .footer-col a:hover { color: #E6B12E; }
-        .footer-col i { width: 25px; color: #E6B12E; }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: #888;
-            font-size: 14px;
-        }
-
-        /* LOGIN MODAL */
         .login-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 2001;
-            justify-content: center;
-            align-items: center;
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.72);
+            z-index: 2001; justify-content: center; align-items: center;
         }
 
         .login-modal-content {
-            background: white;
-            width: 100%;
-            max-width: 400px;
-            border-radius: 10px;
-            padding: 30px;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background: #D0E6FD; width: 100%; max-width: 420px;
+            border-radius: 14px; padding: 36px 32px 32px; position: relative;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.3); border: 2px solid #8CC1E9;
         }
-
-        .login-modal-close {
-            position: absolute;
-            top: 15px; right: 20px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #999;
-            transition: color 0.3s;
-        }
-
-        .login-modal-close:hover { color: #1a2a3a; }
-        .login-modal h2 { text-align: center; margin-bottom: 30px; color: #1a2a3a; font-weight: 600; }
+        .login-modal-close { position: absolute; top: 14px; right: 18px; font-size: 24px; cursor: pointer; color: #666; transition: color 0.3s; }
+        .login-modal-close:hover { color: #162660; }
+        .login-modal h2 { text-align: center; margin-bottom: 32px; color: #162660; font-weight: 800; font-size: 1.6rem; letter-spacing: 4px; }
         .login-input-group { margin-bottom: 20px; }
-        .login-input-group label { display: block; margin-bottom: 8px; color: #333; font-weight: 500; }
+        .login-input-group label { display: block; margin-bottom: 8px; color: #162660; font-weight: 600; font-size: 15px; }
+        .login-input-group input { width: 100%; padding: 13px 18px; border: none; border-radius: 30px; font-size: 14px; background: #fff; outline: none; color: #162660; }
+        .login-btn { width: 100%; padding: 13px; background: #162660; color: #fff; border: none; border-radius: 30px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.3s; margin-top: 10px; letter-spacing: 2px; }
+        .login-btn:hover { background: #4388C4; }
 
-        .login-input-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-        }
-
-        .login-input-group input:focus { outline: none; border-color: #E6B12E; }
-
-        .login-btn {
-            width: 100%;
-            padding: 12px;
-            background: #E6B12E;
-            color: #1a2a3a;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
-        }
-
-        .login-btn:hover { background: #1a2a3a; color: #E6B12E; }
-
-        /* RESPONSIVE */
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 1024px) {
             .about-content { flex-direction: column; }
-            .services-grid { grid-template-columns: 1fr; }
             .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
-            .news-grid { grid-template-columns: repeat(2, 1fr); }
+            .berita-layout { grid-template-columns: 1fr; }
             .testimoni-grid { grid-template-columns: repeat(2, 1fr); }
             .lokasi-grid { grid-template-columns: 1fr; }
-            .footer-top { flex-direction: column; }
         }
 
         @media (max-width: 768px) {
-            .nav-wrapper { flex-direction: column; gap: 10px; padding: 10px 0; }
-            .nav-menu { flex-wrap: wrap; gap: 15px; }
-            .navbar { height: auto; padding: 10px 0; }
+            .nav-menu { gap: 14px; }
             .hero-content { left: 20px; right: 20px; }
-            .hero h1 { font-size: 28px; }
-            .section-title { font-size: 2rem; }
-            .photos-grid { grid-template-columns: 1fr; }
-            .photo-item:first-child { grid-column: span 1; }
+            .hero h1 { font-size: 26px; }
+            .service-card { width: 270px; }
             .portfolio-grid { grid-template-columns: 1fr; }
             .portfolio-modal-inner { flex-direction: column; }
-            .portfolio-modal-photos { border-radius: 16px 16px 0 0; flex: 0 0 auto; padding: 25px 20px 15px; min-height: 260px; }
+            .portfolio-modal-photos { border-radius: 18px 18px 0 0; flex: 0 0 auto; padding: 25px 20px 15px; }
             .portfolio-modal-text { padding: 20px; }
-            .news-grid { grid-template-columns: 1fr; }
-            .featured-content { padding: 25px; }
-            .featured-title { font-size: 1.4rem; }
             .testimoni-grid { grid-template-columns: 1fr; }
-            .footer-links { flex-direction: column; }
+            .footer-top { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
+    <!-- NAVBAR -->
     <nav class="navbar">
-        <div class="container">
-            <div class="nav-wrapper">
-                <div class="logo">
-                    <img src="{{ asset('images/logo_pt_bat2.jpg') }}" alt="Logo">
-                </div>
-                <ul class="nav-menu">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#tentang-kami">Tentang Kami</a></li>
-                    <li><a href="#layanan">Layanan</a></li>
-                    <li><a href="#portofolio">Portofolio</a></li>
-                    <li><a href="#berita">Berita</a></li>
-                    <li><a href="#testimoni">Testimoni</a></li>
-                    <li><a href="#lokasi">Lokasi</a></li>
-                </ul>
-                <div class="nav-right">
-                    <a href="javascript:void(0)" onclick="openLoginModal()">
-                        <i class="fa-solid fa-user login-icon"></i>
-                    </a>
-                </div>
+        <div class="nav-wrapper">
+            <div class="logo">
+                <img src="images/logo_pt_bat2.jpg" alt="Logo BAT">
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#tentang-kami">Tentang Kami</a></li>
+                <li><a href="#layanan">Layanan</a></li>
+                <li><a href="#portofolio">Portfolio</a></li>
+                <li><a href="#berita">Berita</a></li>
+                <li><a href="#testimoni">Testimoni</a></li>
+                <li><a href="#lokasi">Kontak</a></li>
+            </ul>
+            <div class="nav-right">
+                <a href="javascript:void(0)" onclick="openLoginModal()">
+                    <i class="fa-solid fa-user login-icon"></i>
+                </a>
             </div>
         </div>
     </nav>
 
-    <section id="home" class="hero">
-        <img src="{{ asset('images/Landing_page.jpg') }}" class="hero-img">
+    <!-- HERO -->
+    <section id="home">
+        <img src="images/aspal.jpg" class="hero-img" alt="Hero BAT">
         <div class="overlay"></div>
         <div class="hero-content">
             <h1>PT. Berkah Alam Tabantang</h1>
             <div class="tagline">Solusi Terpercaya untuk Konstruksi & Infrastruktur di Batam</div>
-            <div class="description">
-                Kami melayani pembangunan gedung, jalan raya, jembatan, hingga prasarana sumber daya air
-                dengan mengutamakan integritas dan kepuasan pelanggan. Membangun dengan kualitas,
-                beroperasi dengan keamanan.
-            </div>
+            <div class="description">Kami melayani pembangunan gedung, jalan raya, jembatan, hingga prasarana sumber daya air dengan mengutamakan integritas dan kepuasan pelanggan. Membangun dengan kualitas, beroperasi dengan keamanan.</div>
         </div>
     </section>
 
-    <section id="tentang-kami" class="about-section">
-        <div class="about-container">
+    <!-- TENTANG KAMI -->
+    <section id="tentang-kami">
+        <div class="inner-container">
             <div class="about-header">
                 <h1 class="section-title">Tentang Kami</h1>
                 <div class="title-underline"></div>
             </div>
             <div class="about-content">
                 <div class="about-left">
-                    <h2>PT Berkah Alam Tabantang</h2>
-                    <p>adalah perusahaan konstruksi terkemuka yang berbasis di Kota Batam. Dengan spesialisasi pada pembangunan infrastruktur dan proyek komersial skala besar, kami berkomitmen memberikan solusi konstruksi yang inovatif dan kolaboratif.</p>
-                    <p>Didukung oleh tim profesional berpengalaman dan teknologi terkini, kami memastikan setiap proyek berjalan dengan standar kualitas, keamanan, dan keberlanjutan lingkungan yang tertinggi.</p>
-                    <div class="certificate-text">
-                        <strong>Sertifikat Badan Usaha (SBU) Konstruksi</strong>
-                        <p>PB-UMKU : 022100092289300040001</p>
+                    <img class="about-logo-bg" src="images/logo_pt_bat2.jpg" alt="watermark">
+                    <div class="about-left-inner">
+                        <h2>PT Berkah Alam Tabantang</h2>
+                        <p>adalah perusahaan konstruksi terkemuka yang berbasis di Kota Batam. Dengan spesialisasi pada pembangunan infrastruktur dan proyek komersial skala besar, kami berkomitmen memberikan solusi konstruksi yang inovatif dan kolaboratif.</p>
+                        <p>Didukung oleh tim profesional berpengalaman dan teknologi terkini, kami memastikan setiap proyek berjalan dengan standar kualitas, keamanan, dan keberlanjutan lingkungan yang tertinggi.</p>
+                        <div class="sbu-label">Sertifikat Badan Usaha (SBU) Konstruksi</div>
+                        <div class="sbu-number">PB-UMKU : 022100092289300040001</div>
+                        <a href="#" class="btn-unduh"><i class="fas fa-chevron-right"></i> Unduh PDF</a>
                     </div>
-                    <a href="#" class="btn-primary">Unduh PDF</a>
                 </div>
                 <div class="about-right">
                     <div class="photos-grid">
-                        <div class="photo-item"><img src="{{ asset('images/tentang_kami_1.jpg') }}" alt="Proyek 1"></div>
-                        <div class="photo-item"><img src="{{ asset('images/tentang_kami_2.jpg') }}" alt="Proyek 2"></div>
-                        <div class="photo-item"><img src="{{ asset('images/tentang_kami_3.jpg') }}" alt="Proyek 3"></div>
-                        <div class="photo-item"><img src="{{ asset('images/tentang_kami_4.jpg') }}" alt="Proyek 4"></div>
-                        <div class="photo-item"><img src="{{ asset('images/tentang_kami_5.jpg') }}" alt="Proyek 5"></div>
+                        <div class="photo-item"><img src="images/tentang_kami_1.jpg" alt="Proyek 1"></div>
+                        <div class="photo-item"><img src="images/tentang_kami_2.jpg" alt="Proyek 2"></div>
+                        <div class="photo-item"><img src="images/tentang_kami_3.jpg" alt="Proyek 3"></div>
+                        <div class="photo-item"><img src="images/tentang_kami_4.jpg" alt="Proyek 4"></div>
+                        <div class="photo-item"><img src="images/tentang_kami_5.jpg" alt="Proyek 5"></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="layanan" class="layanan-section">
-        <div class="layanan-container">
-            <div class="layanan-header">
-                <h1 class="section-title">LAYANAN</h1>
-                <div class="title-underline"></div>
-            </div>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-overlay">
-                        <div class="service-title">Konstruksi Gedung Lainnya</div>
-                        <div class="service-code">(BG009)</div>
-                        <div class="service-description">
-                            <p>Penyediaan jasa konstruksi untuk berbagai jenis gedung komersial maupun fasilitas publik lainnya dengan mengutamakan fungsionalitas ruang dan kekuatan struktur bangunan.</p>
+    <!-- LAYANAN -->
+    <section id="layanan">
+        <!-- Header: FULL WIDTH, tidak pakai inner-container -->
+        <div class="layanan-header">
+            <h1 class="section-title">L A Y A N A N</h1>
+        </div>
+        <!-- Konten kartu: pakai area terbatas -->
+        <div class="layanan-scroll-area">
+            <div class="services-scroll-wrapper">
+                <div class="services-track">
+                    <div class="service-card">
+                        <img src="images/layanan_1.jpg" class="service-card-img" alt="BG009">
+                        <div class="service-card-top">
+                            <div class="service-title">Konstruksi Gedung Lainnya</div>
+                            <div class="service-code">(BG009)</div>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-title" style="margin-bottom:6px;">Konstruksi Gedung Lainnya</div>
+                            <div class="service-code" style="margin-bottom:12px;">(BG009)</div>
+                            <div class="service-desc">Penyediaan jasa konstruksi untuk berbagai jenis gedung komersial maupun fasilitas publik lainnya.</div>
                             <ul class="service-features">
                                 <li><i class="fas fa-check-circle"></i> Gedung Komersial</li>
                                 <li><i class="fas fa-check-circle"></i> Fasilitas Publik</li>
-                                <li><i class="fas fa-check-circle"></i> Struktur Bangunan Berkualitas</li>
+                                <li><i class="fas fa-check-circle"></i> Struktur Berkualitas</li>
                             </ul>
                         </div>
                     </div>
-                </div>
-                <div class="service-card">
-                    <div class="service-overlay">
-                        <div class="service-title">Pekerjaan Bangunan Sipil – Sumber Daya Air</div>
-                        <div class="service-code">(SI001)</div>
-                        <div class="service-description">
-                            <p>Kami melayani jasa pelaksana untuk konstruksi jaringan saluran air, pelabuhan, dam, bendungan, serta prasarana sumber daya air lainnya.</p>
+                    <div class="service-card">
+                        <img src="images/layanan_2.jpg" class="service-card-img" alt="SI001">
+                        <div class="service-card-top">
+                            <div class="service-title">Pekerjaan Bangunan Sipil – Sumber Daya Air</div>
+                            <div class="service-code">(SI001)</div>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-title" style="margin-bottom:6px;">Pekerjaan Bangunan Sipil – Sumber Daya Air</div>
+                            <div class="service-code" style="margin-bottom:12px;">(SI001)</div>
+                            <div class="service-desc">Jasa pelaksana konstruksi jaringan saluran air, pelabuhan, dam, bendungan.</div>
                             <ul class="service-features">
                                 <li><i class="fas fa-check-circle"></i> Jaringan Saluran Air</li>
                                 <li><i class="fas fa-check-circle"></i> Dam & Bendungan</li>
@@ -1004,27 +867,33 @@
                             </ul>
                         </div>
                     </div>
-                </div>
-                <div class="service-card">
-                    <div class="service-overlay">
-                        <div class="service-title">Pembangunan Infrastruktur Jalan Raya</div>
-                        <div class="service-code">(SI003)</div>
-                        <div class="service-description">
-                            <p>Layanan khusus pelaksanaan konstruksi jalan raya, jalan lokal, rel kereta api, hingga landas pacu bandara.</p>
+                    <div class="service-card">
+                        <img src="images/layanan_3.jpg" class="service-card-img" alt="SI003">
+                        <div class="service-card-top">
+                            <div class="service-title">Pembangunan Infrastruktur Jalan Raya</div>
+                            <div class="service-code">(SI003)</div>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-title" style="margin-bottom:6px;">Pembangunan Infrastruktur Jalan Raya</div>
+                            <div class="service-code" style="margin-bottom:12px;">(SI003)</div>
+                            <div class="service-desc">Konstruksi jalan raya, jalan lokal, rel kereta api, landas pacu bandara.</div>
                             <ul class="service-features">
-                                <li><i class="fas fa-check-circle"></i> Jalan Raya & Jalan Lokal</li>
+                                <li><i class="fas fa-check-circle"></i> Jalan Raya & Lokal</li>
                                 <li><i class="fas fa-check-circle"></i> Rel Kereta Api</li>
                                 <li><i class="fas fa-check-circle"></i> Landas Pacu Bandara</li>
                             </ul>
                         </div>
                     </div>
-                </div>
-                <div class="service-card">
-                    <div class="service-overlay">
-                        <div class="service-title">Konstruksi Jembatan & Jalan Layang</div>
-                        <div class="service-code">(SI004)</div>
-                        <div class="service-description">
-                            <p>Spesialisasi kami mencakup pengerjaan jembatan, jalan layang, terowongan, hingga jalur bawah tanah (subway).</p>
+                    <div class="service-card">
+                        <img src="images/layanan_4.jpeg" class="service-card-img" alt="SI004">
+                        <div class="service-card-top">
+                            <div class="service-title">Konstruksi Jembatan & Jalan Layang</div>
+                            <div class="service-code">(SI004)</div>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-title" style="margin-bottom:6px;">Konstruksi Jembatan & Jalan Layang</div>
+                            <div class="service-code" style="margin-bottom:12px;">(SI004)</div>
+                            <div class="service-desc">Pengerjaan jembatan, jalan layang, terowongan, jalur bawah tanah.</div>
                             <ul class="service-features">
                                 <li><i class="fas fa-check-circle"></i> Jembatan & Jalan Layang</li>
                                 <li><i class="fas fa-check-circle"></i> Terowongan</li>
@@ -1037,125 +906,133 @@
         </div>
     </section>
 
-    <!-- ========== SECTION PORTOFOLIO — DESAIN BARU ========== -->
-    <section id="portofolio" class="portfolio-section">
-        <div class="portfolio-container">
+    <!-- PORTOFOLIO -->
+    <section id="portofolio">
+        <div class="inner-container">
             <div class="portfolio-header">
                 <h1 class="section-title">PORTOFOLIO</h1>
-                <div class="title-underline"></div>
             </div>
-
             <div class="portfolio-grid">
-                <!-- Kartu 1 -->
                 <div class="portfolio-card">
                     <div class="portfolio-image">
-                        <img src="{{ asset('images/portofolio_1.jpg') }}" alt="Konstruksi Area Komersial">
+                        <img src="images/portofolio_1.jpg" alt="Portofolio 1">
+                        <div class="portfolio-img-overlay">
+                            <h3 class="portfolio-title">Konstruksi Area Komersial & Fasilitas Publik – Opus Bay Project</h3>
+                        </div>
                     </div>
                     <div class="portfolio-bottom">
-                        <h3 class="portfolio-title">Konstruksi Area Komersial & Fasilitas Publik – Opus Bay Project</h3>
-                        <div class="portfolio-footer-row">
-                            <button class="portfolio-btn" onclick="openPortfolioModal(1)">Selengkapnya &rsaquo;</button>
-                        </div>
+                        <button class="portfolio-btn" onclick="openPortfolioModal(1)">Selengkapnya &rsaquo;</button>
                     </div>
                 </div>
-
-                <!-- Kartu 2 -->
                 <div class="portfolio-card">
                     <div class="portfolio-image">
-                        <img src="{{ asset('images/portofolio_2.jpg') }}" alt="Pengembangan Infrastruktur Terpadu">
+                        <img src="images/portofolio_2.jpg" alt="Portofolio 2">
+                        <div class="portfolio-img-overlay">
+                            <h3 class="portfolio-title">Pengembangan Infrastruktur Terpadu – Opus Bay Waterfront</h3>
+                        </div>
                     </div>
                     <div class="portfolio-bottom">
-                        <h3 class="portfolio-title">Pengembangan Infrastruktur Terpadu – Opus Bay Waterfront</h3>
-                        <div class="portfolio-footer-row">
-                            <button class="portfolio-btn" onclick="openPortfolioModal(2)">Selengkapnya &rsaquo;</button>
-                        </div>
+                        <button class="portfolio-btn" onclick="openPortfolioModal(2)">Selengkapnya &rsaquo;</button>
                     </div>
                 </div>
-
-                <!-- Kartu 3 -->
                 <div class="portfolio-card">
                     <div class="portfolio-image">
-                        <img src="{{ asset('images/portofolio_3.jpg') }}" alt="Pembangunan Akses Jalan Utama">
+                        <img src="images/portofolio_3.jpg" alt="Portofolio 3">
+                        <div class="portfolio-img-overlay">
+                            <h3 class="portfolio-title">Pembangunan Akses Jalan Utama & Konektivitas – Opus Bay Project</h3>
+                        </div>
                     </div>
                     <div class="portfolio-bottom">
-                        <h3 class="portfolio-title">Pembangunan Akses Jalan Utama & Konektivitas – Opus Bay Project</h3>
-                        <div class="portfolio-footer-row">
-                            <button class="portfolio-btn" onclick="openPortfolioModal(3)">Selengkapnya &rsaquo;</button>
-                        </div>
+                        <button class="portfolio-btn" onclick="openPortfolioModal(3)">Selengkapnya &rsaquo;</button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="berita" class="berita-section">
-        <div class="berita-container">
+    <!-- BERITA -->
+    <section id="berita">
+        <div class="inner-container">
             <div class="berita-header">
                 <h1 class="section-title">BERITA</h1>
-                <div class="title-underline"></div>
             </div>
-            <div class="featured-news">
-                <div class="featured-image">
-                    <img src="{{ asset('images/berita_1(opus by).jpg') }}" alt="Berita Utama">
-                </div>
-                <div class="featured-content">
-                    <div class="featured-date">20 Februari 2026</div>
-                    <h2 class="featured-title">Peran PT BAT dalam Mendukung Mega Proyek Opus Bay Batam</h2>
-                    <p class="featured-excerpt">PT Berkah Alam Tabantang bangga dipercaya berkontribusi dalam pembangunan infrastruktur Opus Bay, kawasan township mewah di Batam. Dengan tim profesional dan standar pengerjaan tinggi, kami memastikan kualitas terbaik di lapangan.</p>
-                    <button class="read-more" onclick="openNewsModal(1)">Selengkapnya →</button>
-                </div>
-            </div>
-            <div class="news-grid">
-                <div class="news-card">
-                    <div class="news-image"><img src="{{ asset('images/berita_2.jpg') }}" alt="Berita 2"></div>
-                    <div class="news-content">
-                        <div class="news-date">3 Desember 2025</div>
-                        <h3 class="news-title">Mengapa Infrastruktur Jalan yang Baik Sangat Penting bagi Hunian Mewah?</h3>
-                        <p class="news-excerpt">Jalan yang mulus di kawasan elit bukan sekadar estetika, tapi aset investasi...</p>
-                        <button class="news-btn" onclick="openNewsModal(2)">Baca →</button>
+            <div class="berita-layout">
+                <div class="featured-card">
+                    <div class="featured-img-wrap">
+                        <img src="images/berita_1(opus by).jpg" alt="Berita Utama">
+                        <div class="featured-date-badge">20 Feb 26</div>
+                    </div>
+                    <div class="featured-card-body">
+                        <span class="featured-title-link">Peran PT BAT dalam Mendukung Mega Proyek Opus Bay Batam</span>
+                        <p class="featured-excerpt">PT Berkah Alam Tabantang bangga dipercaya berkontribusi dalam pembangunan infrastruktur Opus Bay, kawasan township mewah di Batam. Dengan tim profesional dan standar pengerjaan tinggi, kami memastikan kualitas terbaik di lapangan.</p>
+                        <button class="btn-selengkapnya" onclick="openNewsModal(1)">Selengkapnya &rsaquo;</button>
                     </div>
                 </div>
-                <div class="news-card">
-                    <div class="news-image"><img src="{{ asset('images/berita_3.jpg') }}" alt="Berita 3"></div>
-                    <div class="news-content">
-                        <div class="news-date">24 Juni 2025</div>
-                        <h3 class="news-title">Kontribusi Infrastruktur Terhadap Pertumbuhan Ekonomi di Kota Batam</h3>
-                        <p class="news-excerpt">Batam sedang bertransformasi menjadi Kota Mandiri. PT BAT siap bersaing secara global...</p>
-                        <button class="news-btn" onclick="openNewsModal(3)">Baca →</button>
+                <div class="news-list">
+                    <div class="news-item" onclick="openNewsModal(2)">
+                        <div class="news-item-img">
+                            <img src="images/berita_2.jpg" alt="Berita 2">
+                            <div class="news-item-date">3 Des 25</div>
+                        </div>
+                        <div class="news-item-body">
+                            <div class="news-item-title">Mengapa Infrastruktur Jalan yang Baik Sangat Penting bagi Hunian Mewah?</div>
+                            <div class="news-item-excerpt">Jalan yang mulus di kawasan elit bukan sekadar estetika, tapi aset investasi. Simak bagaimana standar teknis SI003 kami meningkatkan nilai properti hunian mewah.</div>
+                            <button class="btn-baca">Baca &rsaquo;</button>
+                        </div>
                     </div>
-                </div>
-                <div class="news-card">
-                    <div class="news-image"><img src="{{ asset('images/berita_4.jpg') }}" alt="Berita 4"></div>
-                    <div class="news-content">
-                        <div class="news-date">14 Mei 2025</div>
-                        <h3 class="news-title">Mengapa Keamanan Adalah Prioritas Utama dalam Setiap Proyek Kami?</h3>
-                        <p class="news-excerpt">Keamanan adalah prioritas utama kami. Intip bagaimana protokol "Safety First" PT BAT...</p>
-                        <button class="news-btn" onclick="openNewsModal(4)">Baca →</button>
+                    <div class="news-item" onclick="openNewsModal(3)">
+                        <div class="news-item-img">
+                            <img src="images/berita_3.jpg" alt="Berita 3">
+                            <div class="news-item-date">24 Jun 25</div>
+                        </div>
+                        <div class="news-item-body">
+                            <div class="news-item-title">Kontribusi Infrastruktur Terhadap Pertumbuhan Ekonomi di Kota Batam</div>
+                            <div class="news-item-excerpt">Batam sedang bertransformasi menjadi Kota Mandiri. PT BAT siap bersaing secara global untuk memajukan wajah infrastruktur kota tercinta.</div>
+                            <button class="btn-baca">Baca &rsaquo;</button>
+                        </div>
+                    </div>
+                    <div class="news-item" onclick="openNewsModal(4)">
+                        <div class="news-item-img">
+                            <img src="images/berita_4.jpg" alt="Berita 4">
+                            <div class="news-item-date">14 Mei 25</div>
+                        </div>
+                        <div class="news-item-body">
+                            <div class="news-item-title">Mengapa Keamanan Adalah Prioritas Utama dalam Setiap Proyek Kami?</div>
+                            <div class="news-item-excerpt">Keamanan adalah prioritas utama kami. Intip bagaimana protokol "Safety First" PT BAT diterapkan secara ketat di setiap area proyek komersial.</div>
+                            <button class="btn-baca">Baca &rsaquo;</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="testimoni" class="testimoni-section">
-        <div class="testimoni-container">
-            <div class="testimoni-header">
-                <h1 class="section-title">TESTIMONI</h1>
-                <div class="title-underline"></div>
+    <!-- TESTIMONI -->
+    <section id="testimoni">
+        <!-- Header full-width -->
+        <div class="testimoni-header">
+            <h1 class="section-title">T E S T I M O N I</h1>
+        </div>
+        <div class="inner-container">
+            <div class="testimoni-subtitle-block">
+                <span class="sub-bold">Bukti Nyata Kualitas Konstruksi Kami</span>
+                <p class="sub-text">Kolaborasi yang solid melahirkan infrastruktur yang kokoh. Inilah testimoni dari mereka yang telah bermitra dengan PT BAT.</p>
             </div>
-            <p class="testimoni-subtitle">Bukti Nyata Kualitas Konstruksi Kami - Kolaborasi yang solid melahirkan infrastruktur yang kokoh. Inilah testimoni dari mereka yang telah bermitra dengan PT BAT.</p>
             <div class="testimoni-grid">
                 <div class="testimoni-card">
+                    <div class="company-logo-circle"><span>STP</span></div>
                     <div class="testimoni-rating">★★★★★</div>
                     <p class="testimoni-text">"Profesional dan tepat waktu. Koordinasi tim di lapangan sangat solid, sehingga proyek selesai sesuai jadwal tanpa mengurangi detail kualitas teknis."</p>
                     <p class="testimoni-author">— Site Supervisor</p>
                 </div>
                 <div class="testimoni-card">
+                    <div class="company-logo-circle"><span>GP</span></div>
                     <div class="testimoni-rating">★★★★★</div>
                     <p class="testimoni-text">"Hasil pengerjaan infrastrukturnya sangat rapi dan kokoh. PT BAT benar-benar menjaga standar kualitas sesuai spesifikasi yang diminta. Sangat puas!"</p>
                     <p class="testimoni-author">— Project Manager, Kawasan Residensial</p>
                 </div>
                 <div class="testimoni-card">
+                    <div class="company-logo-circle"><span>P</span></div>
                     <div class="testimoni-rating">★★★★★</div>
                     <p class="testimoni-text">"Sangat disiplin dalam prosedur keselamatan kerja (K3). PT BAT membuktikan bahwa proyek skala besar bisa berjalan aman, bersih, dan tetap efisien."</p>
                     <p class="testimoni-author">— Konsultan Konstruksi</p>
@@ -1164,76 +1041,75 @@
         </div>
     </section>
 
-    <section id="lokasi" class="lokasi-section">
-        <div class="lokasi-container">
+    <!-- LOKASI -->
+    <section id="lokasi">
+        <div class="inner-container">
             <div class="lokasi-header">
-                <h1 class="section-title">LOKASI</h1>
-                <div class="title-underline"></div>
+                <h1 class="section-title">L O K A S I</h1>
             </div>
             <div class="lokasi-grid">
                 <div class="lokasi-card">
-                    <img src="{{ asset('images/lokasi_1.jpg') }}" alt="Alamat Kantor">
+                    <img src="images/lokasi_1.jpg" alt="Alamat Kantor">
                     <div class="lokasi-card-content">
-                        <h3><i class="fas fa-map-marker-alt"></i> Alamat Kantor</h3>
-                        <p>Perum Griya Batu Aji Asri THP. 6 Blok V2 No.6<br>Kel. Sei Langkai, Kec. Sagulung, Batam</p>
+                        <p><strong>Alamat :</strong> Perum Griya Batu Aji Asri THP. 6 Blok V2 No.6<br>Kel. Sei Langkai, Kec.Sagulung, Batam</p>
                     </div>
                 </div>
                 <div class="lokasi-card">
-                    <img src="{{ asset('images/lokasi_2.jpg') }}" alt="Kantor Operasional">
+                    <img src="images/lokasi_2.jpg" alt="Kantor Operasional">
                     <div class="lokasi-card-content">
-                        <h3><i class="fas fa-building"></i> Kantor Operasional</h3>
-                        <p>Ruko Marbella 2 Blok D6 No.7<br>Batam Center - Batam</p>
+                        <p><strong>Kantor Operasional :</strong> Ruko Marbella 2 Blok D6 No.7<br>Batam Center – Batam</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="footer">
-        <div class="footer-container">
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-inner">
             <div class="footer-top">
                 <div class="footer-brand">
-                    <h3>PT. Berkah Alam Tabantang</h3>
+                    <div class="footer-brand-row">
+                        <img src="images/logo_pt_bat2.jpg" alt="Logo">
+                        <h3>PT. Berkah Alam Tabantang</h3>
+                    </div>
                     <p>Solusi Terpercaya untuk Konstruksi & Infrastruktur di Batam</p>
+                    <p>Email : <a href="mailto:berkahat@yahoo.com">berkahat@yahoo.com</a></p>
+                    <p>Telp : 0813-6332-7109 / 0822-6877-7317</p>
                     <div class="footer-social">
                         <a href="https://wa.me/6281363327109" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                        <a href="https://instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
                         <a href="mailto:berkahat@yahoo.com"><i class="fas fa-envelope"></i></a>
-                        <a href="https://facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://linkedin.com/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
                 <div class="footer-links">
-                    <div class="footer-col">
-                        <h4>Kontak Kami</h4>
-                        <p><i class="fas fa-envelope"></i> berkahat@yahoo.com</p>
-                        <p><i class="fas fa-phone"></i> 0813-6332-7109</p>
-                        <p><i class="fas fa-phone"></i> 0822-6877-7317</p>
-                    </div>
                     <div class="footer-col">
                         <h4>Menu Cepat</h4>
                         <a href="#home">Home</a>
                         <a href="#tentang-kami">Tentang Kami</a>
                         <a href="#layanan">Layanan</a>
-                        <a href="#portofolio">Portofolio</a>
+                        <a href="#portofolio">Portfolio</a>
                         <a href="#berita">Berita</a>
                         <a href="#testimoni">Testimoni</a>
+                        <a href="#lokasi">Kontak</a>
                     </div>
                     <div class="footer-col">
                         <h4>Jam Operasional</h4>
-                        <p>Senin - Jumat: 08:00 - 17:00</p>
-                        <p>Sabtu: 08:00 - 14:00</p>
+                        <p>Senin – Jumat: 08:00 – 17:00</p>
+                        <p>Sabtu: 08:00 – 14:00</p>
                         <p>Minggu: Tutup</p>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>Copyright © PT Berkah Alam Tabantang (BAT). All Rights Reserved.</p>
+                <p>Copyright © PT Berkah Alam Tabantang (BAT).  All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- ========== MODAL PORTOFOLIO ========== -->
+    <!-- MODAL PORTOFOLIO -->
     <div id="portfolioModal" class="modal">
         <div class="portfolio-modal-content">
             <span class="modal-close" onclick="closePortfolioModal()">&times;</span>
@@ -1254,10 +1130,14 @@
     <div id="newsModal" class="modal">
         <div class="news-modal-content">
             <span class="modal-close" onclick="closeNewsModal()">&times;</span>
-            <div class="modal-date" id="modalDate"></div>
-            <h2 class="modal-title" id="modalTitle"></h2>
-            <div class="modal-image" id="modalImage"></div>
-            <div class="modal-body" id="modalBody"></div>
+            <div class="news-modal-hero">
+                <img id="newsModalImg" src="" alt="">
+                <div class="news-modal-hero-overlay">
+                    <h2 id="newsModalTitle"></h2>
+                    <span class="news-modal-date" id="newsModalDate"></span>
+                </div>
+            </div>
+            <div class="news-modal-body" id="newsModalBody"></div>
         </div>
     </div>
 
@@ -1266,67 +1146,123 @@
         <div class="login-modal-content">
             <span class="login-modal-close" onclick="closeLoginModal()">&times;</span>
             <h2>LOGIN</h2>
-            <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="login-input-group">
-                    <label>Username</label>
-                    <input type="text" id="username" placeholder="Masukkan username" required>
-                </div>
-                <div class="login-input-group">
-                    <label>Password</label>
-                    <input type="password" id="password" placeholder="Masukkan password" required>
-                </div>
-                <button type="submit" class="login-btn">LOGIN</button>
-            </form>
+            <div class="login-input-group">
+                <label>Username</label>
+                <input type="text" id="username" placeholder="Masukkan username">
+            </div>
+            <div class="login-input-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Masukkan password">
+            </div>
+            <button class="login-btn" onclick="handleLogin()">LOGIN</button>
         </div>
     </div>
 
     <script>
-        // ===== DATA PORTOFOLIO =====
+        /* =============================================
+           NAVBAR SCROLL SPY
+           Setiap link di navbar akan highlight sesuai
+           section yang sedang terlihat di viewport.
+           Klik navbar => smooth scroll ke section tsb,
+           tidak berpindah halaman.
+        ============================================= */
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
+
+        function updateActiveNav() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                if (sectionTop <= 80) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Smooth scroll saat klik navbar — tidak reload halaman
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    // Khusus #lokasi (Kontak): scroll ke paling bawah
+                    // agar section lokasi + footer tampil penuh sekaligus
+                    if (targetId === 'lokasi') {
+                        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                    } else {
+                        const offsetTop = targetSection.getBoundingClientRect().top + window.scrollY - 56;
+                        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        window.addEventListener('scroll', updateActiveNav);
+        updateActiveNav();
+
+        // Footer links juga perlu smooth scroll
+        document.querySelectorAll('.footer-col a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    if (targetId === 'lokasi') {
+                        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                    } else {
+                        const offsetTop = targetSection.getBoundingClientRect().top + window.scrollY - 56;
+                        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        /* =============================================
+           PORTFOLIO DATA
+        ============================================= */
         const portfolioData = {
             1: {
                 title: "Konstruksi Area Komersial & Fasilitas Publik – Opus Bay Project",
-                photos: ["{{ asset('images/portofolio_1.jpg') }}", "{{ asset('images/portofolio_1.jpg') }}"],
-                body: `
-                    <p><strong>Ringkasan Proyek:</strong> Pelaksanaan konstruksi bangunan gedung fungsional yang menjadi fasilitas pendukung bagi penghuni dan pengunjung kawasan.</p>
-                    <p><span class="spec-title">Spesifikasi Teknis (BG009):</span></p>
-                    <ul class="spec-list">
-                        <li>Pengerjaan struktur beton bertulang.</li>
-                        <li>Instalasi mekanikal, elektrikal, dan plumbing (MEP) standar gedung komersial.</li>
-                        <li>Finishing eksterior yang sesuai dengan desain arsitektur modern Opus Bay.</li>
-                    </ul>
-                    <p class="quote-text"><strong>Detail Kualitas:</strong> "Setiap tahap pengecoran dan pemasangan struktur diawasi ketat untuk memastikan presisi tinggi sesuai dengan gambar kerja dari pengembang internasional."</p>
-                    <p><strong>Hasil Akhir:</strong> Fasilitas gedung yang kokoh secara struktur dan estetis secara visual, siap mendukung gaya hidup modern di Batam.</p>
-                `
+                photos: ["images/portofolio_1.jpg", "images/portofolio_1.jpg"],
+                body: `<p><strong>Ringkasan Proyek:</strong> Pelaksanaan konstruksi bangunan gedung fungsional yang menjadi fasilitas pendukung bagi penghuni dan pengunjung kawasan.</p>
+                <p><span class="spec-title">Spesifikasi Teknis (BG009):</span></p>
+                <ul class="spec-list">
+                    <li>Pengerjaan struktur beton bertulang.</li>
+                    <li>Instalasi mekanikal, elektrikal, dan plumbing (MEP) standar gedung komersial.</li>
+                    <li>Finishing eksterior yang sesuai dengan desain arsitektur modern Opus Bay.</li>
+                </ul>
+                <p><strong>Hasil Akhir:</strong> Fasilitas gedung yang kokoh secara struktur dan estetis secara visual, siap mendukung gaya hidup modern di Batam.</p>`
             },
             2: {
                 title: "Pengembangan Infrastruktur Terpadu – Opus Bay Waterfront",
-                photos: ["{{ asset('images/portofolio_2.jpg') }}", "{{ asset('images/portofolio_2.jpg') }}"],
-                body: `
-                    <p><strong>Ringkasan Proyek:</strong> Pembangunan sistem drainase makro dan mikro untuk memastikan kawasan bebas genangan, mengingat lokasinya yang berada di area pesisir (Waterfront).</p>
-                    <p><span class="spec-title">Spesifikasi Teknis (SI001):</span></p>
-                    <ul class="spec-list">
-                        <li>Pemasangan saluran U-Ditch beton pracetak skala besar.</li>
-                        <li>Pembangunan kolam retensi air hujan.</li>
-                        <li>Sistem pembuangan akhir ke arah laut dengan katup penahan pasang surut.</li>
-                    </ul>
-                    <p class="quote-text"><strong>Tantangan & Solusi:</strong> "Menghadapi kondisi tanah pesisir yang lunak, tim PT BAT menerapkan teknik perkuatan fondasi saluran untuk mencegah pergeseran struktur dalam jangka panjang."</p>
-                    <p><strong>Hasil Akhir:</strong> Sistem drainase berfungsi optimal bahkan saat curah hujan tinggi, menjaga kenyamanan calon penghuni Opus Bay.</p>
-                `
+                photos: ["images/portofolio_2.jpg", "images/portofolio_2.jpg"],
+                body: `<p><strong>Ringkasan Proyek:</strong> Pembangunan sistem drainase makro dan mikro untuk memastikan kawasan bebas genangan, mengingat lokasinya yang berada di area pesisir (Waterfront).</p>
+                <p><span class="spec-title">Spesifikasi Teknis (SI001):</span></p>
+                <ul class="spec-list">
+                    <li>Pemasangan saluran U-Ditch beton pracetak skala besar.</li>
+                    <li>Pembangunan kolam retensi air hujan.</li>
+                    <li>Sistem pembuangan akhir ke arah laut dengan katup penahan pasang surut.</li>
+                </ul>
+                <p><strong>Hasil Akhir:</strong> Sistem drainase berfungsi optimal bahkan saat curah hujan tinggi, menjaga kenyamanan calon penghuni Opus Bay.</p>`
             },
             3: {
                 title: "Pembangunan Akses Jalan Utama & Konektivitas – Opus Bay Project",
-                photos: ["{{ asset('images/portofolio_3.jpg') }}", "{{ asset('images/portofolio_3.jpg') }}"],
-                body: `
-                    <p><strong>Ringkasan Proyek:</strong> Konstruksi jaringan jalan utama yang menghubungkan area residensial Opus Bay dengan akses publik dan terminal feri internasional.</p>
-                    <p><span class="spec-title">Spesifikasi Teknis (SI003):</span></p>
-                    <ul class="spec-list">
-                        <li>Pemasangan saluran U-Ditch beton pracetak skala besar.</li>
-                        <li>Pengaspalan Hotmix dengan standar ketahanan beban tinggi.</li>
-                        <li>Pemasangan trotoar pedestarian dan marka jalan reflektif.</li>
-                    </ul>
-                    <p class="quote-text"><strong>Keunggulan Pengerjaan:</strong> "Mengutamakan kerataan permukaan aspal demi kenyamanan berkendara serta daya tahan aspal terhadap cuaca tropis Batam yang ekstrem."</p>
-                    <p><strong>Hasil Akhir:</strong> Aksesibilitas kawasan yang rapi, aman, dan meningkatkan nilai estetika lingkungan hunian mewah.</p>
-                `
+                photos: ["images/portofolio_3.jpg", "images/portofolio_3.jpg"],
+                body: `<p><strong>Ringkasan Proyek:</strong> Konstruksi jaringan jalan utama yang menghubungkan area residensial Opus Bay dengan akses publik dan terminal feri internasional.</p>
+                <p><span class="spec-title">Spesifikasi Teknis (SI003):</span></p>
+                <ul class="spec-list">
+                    <li>Pemasangan saluran U-Ditch beton pracetak skala besar.</li>
+                    <li>Pengaspalan Hotmix dengan standar ketahanan beban tinggi.</li>
+                    <li>Pemasangan trotoar pedestarian dan marka jalan reflektif.</li>
+                </ul>
+                <p><strong>Hasil Akhir:</strong> Aksesibilitas kawasan yang rapi, aman, dan meningkatkan nilai estetika lingkungan hunian mewah.</p>`
             }
         };
 
@@ -1335,60 +1271,58 @@
             if (!data) return;
             document.getElementById('portfolioModalTitle').innerHTML = data.title;
             document.getElementById('portfolioModalBody').innerHTML = data.body;
-            const photosContainer = document.getElementById('portfolioModalPhotos');
-            photosContainer.innerHTML = `
+            document.getElementById('portfolioModalPhotos').innerHTML = `
                 <div class="photo-main"><img src="${data.photos[0]}" alt="Foto 1"></div>
                 <div class="photo-secondary"><img src="${data.photos[1]}" alt="Foto 2"></div>
             `;
             document.getElementById('portfolioModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
-
         function closePortfolioModal() {
             document.getElementById('portfolioModal').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
 
-        // ===== DATA BERITA =====
+        /* =============================================
+           NEWS DATA
+        ============================================= */
         const newsData = {
             1: {
                 date: "20 Februari 2026",
                 title: "Peran PT BAT dalam Mendukung Mega Proyek Opus Bay Batam",
-                image: "{{ asset('images/berita_1(opus by).jpg') }}",
+                image: "images/berita_1(opus by).jpg",
                 content: "<p>Menjadi bagian dari proyek sebesar Opus Bay adalah bukti nyata kepercayaan industri terhadap PT Berkah Alam Tabantang. Dalam proyek ini, tim kami fokus pada pengembangan infrastruktur dasar yang presisi.</p><p>Melalui pendekatan kolaboratif, PT BAT memastikan setiap tahapan konstruksi, mulai dari pemantangan lahan hingga infrastruktur pendukung, dikerjakan sesuai spesifikasi dan deadline yang ketat demi mendukung kemajuan properti di Batam.</p>"
             },
             2: {
                 date: "3 Desember 2025",
                 title: "Mengapa Infrastruktur Jalan yang Baik Sangat Penting bagi Hunian Mewah?",
-                image: "{{ asset('images/berita_2.jpg') }}",
+                image: "images/berita_2.jpg",
                 content: "<p>Dalam pembangunan hunian mewah, akses jalan adalah impresi pertama bagi penghuni. PT BAT menerapkan teknik pengaspalan dan fondasi jalan yang mampu menahan beban berat tanpa mengabaikan kerapian visual.</p><p>Jalan yang dibangun dengan drainase yang tepat dan material berkualitas tinggi tidak hanya bertahan lama, tetapi juga secara signifikan meningkatkan nilai jual investasi properti tersebut.</p>"
             },
             3: {
                 date: "24 Juni 2025",
                 title: "Kontribusi Infrastruktur Terhadap Pertumbuhan Ekonomi di Kota Batam",
-                image: "{{ asset('images/berita_3.jpg') }}",
+                image: "images/berita_3.jpg",
                 content: "<p>Transformasi Batam menuju Kota Mandiri membuka peluang besar bagi industri konstruksi lokal. PT Berkah Alam Tabantang tidak hanya ingin menjadi penonton, tetapi penggerak perubahan.</p><p>Kami terus berinvestasi pada teknologi konstruksi terbaru untuk menyemai standar global. Dengan komitmen pada kualitas, PT BAT siap bermitra dalam pembangunan investasi strategis.</p>"
             },
             4: {
                 date: "14 Mei 2025",
                 title: "Mengapa Keamanan Adalah Prioritas Utama dalam Setiap Proyek Kami?",
-                image: "{{ asset('images/berita_4.jpg') }}",
+                image: "images/berita_4.jpg",
                 content: "<p>Bagi PT Berkah Alam Tabantang, keselamatan kerja bukan sekadar aturan, melainkan budaya. Kami menerapkan protokol APD lengkap, safety briefing harian, dan pengawasan ketat oleh ahli K3 di lapangan.</p><p>Kami percaya bahwa lingkungan kerja yang aman akan melahirkan produktivitas maksimal dan hasil bangunan yang berkualitas.</p>"
             }
         };
 
         function openNewsModal(id) {
             const news = newsData[id];
-            if (news) {
-                document.getElementById('modalDate').innerHTML = news.date;
-                document.getElementById('modalTitle').innerHTML = news.title;
-                document.getElementById('modalImage').innerHTML = '<img src="' + news.image + '" alt="' + news.title + '">';
-                document.getElementById('modalBody').innerHTML = news.content;
-                document.getElementById('newsModal').style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-            }
+            if (!news) return;
+            document.getElementById('newsModalImg').src = news.image;
+            document.getElementById('newsModalTitle').innerHTML = news.title;
+            document.getElementById('newsModalDate').innerHTML = news.date;
+            document.getElementById('newsModalBody').innerHTML = news.content;
+            document.getElementById('newsModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
         }
-
         function closeNewsModal() {
             document.getElementById('newsModal').style.display = 'none';
             document.body.style.overflow = 'auto';
@@ -1398,14 +1332,12 @@
             document.getElementById('loginModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
-
         function closeLoginModal() {
             document.getElementById('loginModal').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
 
-        function handleLogin(event) {
-            event.preventDefault();
+        function handleLogin() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             if (username === 'admin' && password === 'admin123') {
@@ -1422,6 +1354,5 @@
             if (event.target == document.getElementById('loginModal')) closeLoginModal();
         }
     </script>
-
 </body>
 </html>
