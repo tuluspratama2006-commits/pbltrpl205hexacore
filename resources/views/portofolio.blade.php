@@ -21,18 +21,10 @@
             background: #ffffff;
         }
 
-        /* ============================================================
-           KUNCI KESERAGAMAN LEBAR:
-           Semua section menggunakan width: 100% tanpa pembatas kiri/kanan
-           pada background-nya. Hanya .inner-container yang dibatasi max-width.
-        ============================================================ */
-
-        /* Semua section: width penuh 100vw */
         section {
             width: 100%;
         }
 
-        /* Container dalam semua section: sama rata */
         .inner-container {
             max-width: 1280px;
             margin: 0 auto;
@@ -42,7 +34,7 @@
 
         /* ========== NAVBAR ========== */
         .navbar {
-            background: #ffffff;
+            background: #D0E6FD;
             position: fixed;
             top: 0;
             left: 0;
@@ -108,7 +100,7 @@
         }
         .login-icon:hover { color: #162660; }
 
-        /* ========== HERO ========== */
+        /* ========== HERO DENGAN OVERLAY HITAM ========== */
         #home {
             position: relative;
             margin-top: 56px;
@@ -125,14 +117,16 @@
 
         .overlay {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: linear-gradient(
                 to right,
-                rgba(22,38,96,0.82) 0%,
-                rgba(22,38,96,0.60) 45%,
-                rgba(22,38,96,0.20) 75%,
-                rgba(22,38,96,0) 100%
+                rgba(0,0,0,0.75) 0%,
+                rgba(0,0,0,0.5) 45%,
+                rgba(0,0,0,0.25) 75%,
+                rgba(0,0,0,0) 100%
             );
         }
 
@@ -143,11 +137,13 @@
             transform: translateY(-50%);
             color: #fff;
             max-width: 660px;
+            z-index: 2;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
         .hero h1 { font-size: 42px; font-weight: 800; margin-bottom: 12px; line-height: 1.2; }
         .tagline { font-size: 17px; margin-bottom: 10px; font-weight: 500; color: #D0E6FD; }
-        .description { font-size: 15px; line-height: 1.8; color: #c8d8ee; }
+        .description { font-size: 15px; line-height: 1.8; color: #f0f0f0; }
 
         /* ========== SHARED ========== */
         .section-title {
@@ -253,7 +249,6 @@
             display: block;
         }
 
-        /* Header banner: full 100% width — tidak pakai inner-container */
         .layanan-header {
             background: #162660;
             border-radius: 0 0 40px 40px;
@@ -270,7 +265,6 @@
             margin: 0;
         }
 
-        /* Scroll wrapper: tidak ada inner-container agar kartu bisa rata ke tepi */
         .layanan-scroll-area {
             max-width: 1280px;
             margin: 0 auto;
@@ -290,14 +284,11 @@
         .services-track {
             display: flex;
             gap: 24px;
-            /* 3 kartu terlihat, ke-4 mengintip sedikit untuk tanda bisa digeser */
             width: max-content;
             padding: 4px 0 8px;
         }
 
-        /* Lebar kartu: 3 kartu pas dalam 1280px - 80px padding - 48px gap */
         .service-card {
-            /* (1280 - 80 - 48) / 3 = 384px */
             width: 384px;
             flex-shrink: 0;
             border-radius: 22px;
@@ -322,7 +313,6 @@
         }
         .service-card:hover .service-card-img { transform: scale(1.04); }
 
-        /* Judul selalu terlihat di atas */
         .service-card-top {
             position: absolute;
             top: 0; left: 0; right: 0;
@@ -338,7 +328,6 @@
         .service-title { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 4px; line-height: 1.35; }
         .service-code { font-size: 0.82rem; color: #D0E6FD; font-weight: 600; }
 
-        /* Overlay muncul dari bawah saat hover */
         .service-card-body {
             position: absolute;
             bottom: 0; left: 0; right: 0;
@@ -363,7 +352,7 @@
         }
         .service-features li i { color: #8CC1E9; font-size: 0.75rem; }
 
-        /* ========== PORTFOLIO ========== */
+        /* ========== PORTOFOLIO ========== */
         #portofolio {
             background: #D0E6FD;
             padding: 70px 0 80px 0;
@@ -503,7 +492,6 @@
             display: block;
         }
 
-        /* Header banner full-width */
         .testimoni-header {
             background: #162660;
             border-radius: 0 0 40px 40px;
@@ -582,6 +570,7 @@
             max-width: 1280px;
             margin: 0 auto;
             padding: 0 40px;
+            width: 100%;
         }
 
         .footer-top {
@@ -610,11 +599,14 @@
         .footer-col a { color: #2a3a4a; text-decoration: none; display: block; margin-bottom: 6px; font-size: 0.86rem; transition: color 0.3s; }
         .footer-col a:hover { color: #162660; font-weight: 600; }
 
-        .footer-bottom {
+        /* COPYRIGHT FULL WIDTH */
+        .footer-bottom-full {
+            width: 100%;
+            background-color: #162660;
+            color: #ffffff;
             text-align: center;
             padding: 22px 0;
-            border-top: 1px solid #8CC1E9;
-            color: #162660;
+            margin-top: 28px;
             font-size: 13px;
             font-weight: 500;
         }
@@ -825,11 +817,9 @@
 
     <!-- LAYANAN -->
     <section id="layanan">
-        <!-- Header: FULL WIDTH, tidak pakai inner-container -->
         <div class="layanan-header">
             <h1 class="section-title">L A Y A N A N</h1>
         </div>
-        <!-- Konten kartu: pakai area terbatas -->
         <div class="layanan-scroll-area">
             <div class="services-scroll-wrapper">
                 <div class="services-track">
@@ -1009,7 +999,6 @@
 
     <!-- TESTIMONI -->
     <section id="testimoni">
-        <!-- Header full-width -->
         <div class="testimoni-header">
             <h1 class="section-title">T E S T I M O N I</h1>
         </div>
@@ -1078,34 +1067,40 @@
                     <p>Telp : 0813-6332-7109 / 0822-6877-7317</p>
                     <div class="footer-social">
                         <a href="https://wa.me/6281363327109" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
                         <a href="mailto:berkahat@yahoo.com"><i class="fas fa-envelope"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://linkedin.com/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
                 <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Kontak Kami</h4>
+                        <p><i class="fas fa-envelope"></i> berkahat@yahoo.com</p>
+                        <p><i class="fas fa-phone"></i> 0813-6332-7109</p>
+                        <p><i class="fas fa-phone"></i> 0822-6877-7317</p>
+                    </div>
                     <div class="footer-col">
                         <h4>Menu Cepat</h4>
                         <a href="#home">Home</a>
                         <a href="#tentang-kami">Tentang Kami</a>
                         <a href="#layanan">Layanan</a>
-                        <a href="#portofolio">Portfolio</a>
+                        <a href="#portofolio">Portofolio</a>
                         <a href="#berita">Berita</a>
                         <a href="#testimoni">Testimoni</a>
-                        <a href="#lokasi">Kontak</a>
                     </div>
                     <div class="footer-col">
                         <h4>Jam Operasional</h4>
-                        <p>Senin – Jumat: 08:00 – 17:00</p>
-                        <p>Sabtu: 08:00 – 14:00</p>
+                        <p>Senin - Jumat: 08:00 - 17:00</p>
+                        <p>Sabtu: 08:00 - 14:00</p>
                         <p>Minggu: Tutup</p>
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>Copyright © PT Berkah Alam Tabantang (BAT).  All Rights Reserved.</p>
-            </div>
+        </div>
+        <!-- COPYRIGHT FULL WIDTH DI LUAR CONTAINER -->
+        <div class="footer-bottom-full">
+            <p>Copyright © PT Berkah Alam Tabantang (BAT). All Rights Reserved.</p>
         </div>
     </footer>
 
@@ -1159,13 +1154,6 @@
     </div>
 
     <script>
-        /* =============================================
-           NAVBAR SCROLL SPY
-           Setiap link di navbar akan highlight sesuai
-           section yang sedang terlihat di viewport.
-           Klik navbar => smooth scroll ke section tsb,
-           tidak berpindah halaman.
-        ============================================= */
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
 
@@ -1185,15 +1173,12 @@
             });
         }
 
-        // Smooth scroll saat klik navbar — tidak reload halaman
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const targetId = this.getAttribute('href').substring(1);
                 const targetSection = document.getElementById(targetId);
                 if (targetSection) {
-                    // Khusus #lokasi (Kontak): scroll ke paling bawah
-                    // agar section lokasi + footer tampil penuh sekaligus
                     if (targetId === 'lokasi') {
                         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
                     } else {
@@ -1207,7 +1192,6 @@
         window.addEventListener('scroll', updateActiveNav);
         updateActiveNav();
 
-        // Footer links juga perlu smooth scroll
         document.querySelectorAll('.footer-col a[href^="#"]').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1224,45 +1208,26 @@
             });
         });
 
-        /* =============================================
-           PORTFOLIO DATA
-        ============================================= */
         const portfolioData = {
             1: {
                 title: "Konstruksi Area Komersial & Fasilitas Publik – Opus Bay Project",
                 photos: ["images/portofolio_1.jpg", "images/portofolio_1.jpg"],
                 body: `<p><strong>Ringkasan Proyek:</strong> Pelaksanaan konstruksi bangunan gedung fungsional yang menjadi fasilitas pendukung bagi penghuni dan pengunjung kawasan.</p>
                 <p><span class="spec-title">Spesifikasi Teknis (BG009):</span></p>
-                <ul class="spec-list">
-                    <li>Pengerjaan struktur beton bertulang.</li>
-                    <li>Instalasi mekanikal, elektrikal, dan plumbing (MEP) standar gedung komersial.</li>
-                    <li>Finishing eksterior yang sesuai dengan desain arsitektur modern Opus Bay.</li>
-                </ul>
-                <p><strong>Hasil Akhir:</strong> Fasilitas gedung yang kokoh secara struktur dan estetis secara visual, siap mendukung gaya hidup modern di Batam.</p>`
+                <ul class="spec-list"><li>Pengerjaan struktur beton bertulang.</li><li>Instalasi mekanikal, elektrikal, dan plumbing (MEP) standar gedung komersial.</li><li>Finishing eksterior yang sesuai dengan desain arsitektur modern Opus Bay.</li></ul>
+                <p><strong>Hasil Akhir:</strong> Fasilitas gedung yang kokoh secara struktur dan estetis secara visual.</p>`
             },
             2: {
                 title: "Pengembangan Infrastruktur Terpadu – Opus Bay Waterfront",
                 photos: ["images/portofolio_2.jpg", "images/portofolio_2.jpg"],
-                body: `<p><strong>Ringkasan Proyek:</strong> Pembangunan sistem drainase makro dan mikro untuk memastikan kawasan bebas genangan, mengingat lokasinya yang berada di area pesisir (Waterfront).</p>
-                <p><span class="spec-title">Spesifikasi Teknis (SI001):</span></p>
-                <ul class="spec-list">
-                    <li>Pemasangan saluran U-Ditch beton pracetak skala besar.</li>
-                    <li>Pembangunan kolam retensi air hujan.</li>
-                    <li>Sistem pembuangan akhir ke arah laut dengan katup penahan pasang surut.</li>
-                </ul>
-                <p><strong>Hasil Akhir:</strong> Sistem drainase berfungsi optimal bahkan saat curah hujan tinggi, menjaga kenyamanan calon penghuni Opus Bay.</p>`
+                body: `<p><strong>Ringkasan Proyek:</strong> Pembangunan sistem drainase makro dan mikro untuk memastikan kawasan bebas genangan.</p>
+                <ul class="spec-list"><li>Pemasangan saluran U-Ditch beton pracetak.</li><li>Pembangunan kolam retensi air hujan.</li><li>Sistem pembuangan akhir ke arah laut dengan katup penahan pasang surut.</li></ul>`
             },
             3: {
                 title: "Pembangunan Akses Jalan Utama & Konektivitas – Opus Bay Project",
                 photos: ["images/portofolio_3.jpg", "images/portofolio_3.jpg"],
-                body: `<p><strong>Ringkasan Proyek:</strong> Konstruksi jaringan jalan utama yang menghubungkan area residensial Opus Bay dengan akses publik dan terminal feri internasional.</p>
-                <p><span class="spec-title">Spesifikasi Teknis (SI003):</span></p>
-                <ul class="spec-list">
-                    <li>Pemasangan saluran U-Ditch beton pracetak skala besar.</li>
-                    <li>Pengaspalan Hotmix dengan standar ketahanan beban tinggi.</li>
-                    <li>Pemasangan trotoar pedestarian dan marka jalan reflektif.</li>
-                </ul>
-                <p><strong>Hasil Akhir:</strong> Aksesibilitas kawasan yang rapi, aman, dan meningkatkan nilai estetika lingkungan hunian mewah.</p>`
+                body: `<p><strong>Ringkasan Proyek:</strong> Konstruksi jaringan jalan utama yang menghubungkan area residensial Opus Bay dengan akses publik.</p>
+                <ul class="spec-list"><li>Pengaspalan Hotmix standar ketahanan tinggi.</li><li>Pemasangan trotoar pedestarian dan marka jalan reflektif.</li><li>Sistem drainase tepi jalan yang terintegrasi.</li></ul>`
             }
         };
 
@@ -1283,36 +1248,12 @@
             document.body.style.overflow = 'auto';
         }
 
-        /* =============================================
-           NEWS DATA
-        ============================================= */
         const newsData = {
-            1: {
-                date: "20 Februari 2026",
-                title: "Peran PT BAT dalam Mendukung Mega Proyek Opus Bay Batam",
-                image: "images/berita_1(opus by).jpg",
-                content: "<p>Menjadi bagian dari proyek sebesar Opus Bay adalah bukti nyata kepercayaan industri terhadap PT Berkah Alam Tabantang. Dalam proyek ini, tim kami fokus pada pengembangan infrastruktur dasar yang presisi.</p><p>Melalui pendekatan kolaboratif, PT BAT memastikan setiap tahapan konstruksi, mulai dari pemantangan lahan hingga infrastruktur pendukung, dikerjakan sesuai spesifikasi dan deadline yang ketat demi mendukung kemajuan properti di Batam.</p>"
-            },
-            2: {
-                date: "3 Desember 2025",
-                title: "Mengapa Infrastruktur Jalan yang Baik Sangat Penting bagi Hunian Mewah?",
-                image: "images/berita_2.jpg",
-                content: "<p>Dalam pembangunan hunian mewah, akses jalan adalah impresi pertama bagi penghuni. PT BAT menerapkan teknik pengaspalan dan fondasi jalan yang mampu menahan beban berat tanpa mengabaikan kerapian visual.</p><p>Jalan yang dibangun dengan drainase yang tepat dan material berkualitas tinggi tidak hanya bertahan lama, tetapi juga secara signifikan meningkatkan nilai jual investasi properti tersebut.</p>"
-            },
-            3: {
-                date: "24 Juni 2025",
-                title: "Kontribusi Infrastruktur Terhadap Pertumbuhan Ekonomi di Kota Batam",
-                image: "images/berita_3.jpg",
-                content: "<p>Transformasi Batam menuju Kota Mandiri membuka peluang besar bagi industri konstruksi lokal. PT Berkah Alam Tabantang tidak hanya ingin menjadi penonton, tetapi penggerak perubahan.</p><p>Kami terus berinvestasi pada teknologi konstruksi terbaru untuk menyemai standar global. Dengan komitmen pada kualitas, PT BAT siap bermitra dalam pembangunan investasi strategis.</p>"
-            },
-            4: {
-                date: "14 Mei 2025",
-                title: "Mengapa Keamanan Adalah Prioritas Utama dalam Setiap Proyek Kami?",
-                image: "images/berita_4.jpg",
-                content: "<p>Bagi PT Berkah Alam Tabantang, keselamatan kerja bukan sekadar aturan, melainkan budaya. Kami menerapkan protokol APD lengkap, safety briefing harian, dan pengawasan ketat oleh ahli K3 di lapangan.</p><p>Kami percaya bahwa lingkungan kerja yang aman akan melahirkan produktivitas maksimal dan hasil bangunan yang berkualitas.</p>"
-            }
+            1: { date: "20 Februari 2026", title: "Peran PT BAT dalam Mendukung Mega Proyek Opus Bay Batam", image: "images/berita_1(opus by).jpg", content: "<p>Menjadi bagian dari proyek sebesar Opus Bay adalah bukti nyata kepercayaan industri terhadap PT Berkah Alam Tabantang. Dalam proyek ini, tim kami fokus pada pengembangan infrastruktur dasar yang presisi. Kami memahami bahwa proyek skala internasional membutuhkan koordinasi tim yang solid dan ketepatan teknis. Melalui pendekatan kolaboratif, PT BAT memastikan setiap tahapan konstruksi, mulai dari pematangan lahan hingga infrastruktur pendukung, dikerjakan sesuai spesifikasi dan deadline yang ketat demi mendukung kemajuan properti di Batam.</p>" },
+            2: { date: "3 Desember 2025", title: "Mengapa Infrastruktur Jalan yang Baik Sangat Penting bagi Hunian Mewah?", image: "images/berita_2.jpg", content: "<p>Dalam pembangunan hunian mewah, akses jalan adalah impresi pertama bagi penghuni. Mengacu pada standar SNI 003, PT BAT menerapkan teknik pengaspalan dan fondasi jalan yang mampu menahan beban berat tanpa mengabaikan kerapian visual. Jalan yang dibangun dengan drainase yang tepat dan material berkualitas tinggi tidak hanya bertahan lama, tetapi juga secara signifikan meningkatkan nilai jual investasi properti tersebut. Kami memastikan bahwa setiap jengkal aspal yang kami hampar memberikan kenyamanan berkendara dan kemewahan yang nyata bagi penghuni.</p>" },
+            3: { date: "24 Juni 2025", title: "Kontribusi Infrastruktur Terhadap Pertumbuhan Ekonomi di Kota Batam", image: "images/berita_3.jpg", content: "<p>Transformasi Batam menuju Kota Mandiri membuka peluang besar bagi industri konstruksi lokal. Sebagai perusahaan yang berbasis di Batam, PT Berkah Alam Tabantang tidak hanya ingin menjadi penonton, tetapi penggerak perubahan. Kami terus berinvestasi pada teknologi konstruksi terbaru untuk menyamai standar global. Dengan pemahaman mendalam tentang lanskap kota dan komitmen pada kualitas, PT BAT siap bermitra dalam pembangunan investasi strategis, membuktikan bahwa perusahaan lokal Batam mampu memberikan hasil kelas dunia.</p>" },
+            4: { date: "14 Mei 2025", title: "Mengapa Keamanan Adalah Prioritas Utama dalam Setiap Proyek Kami?", image: "images/berita_4.jpg", content: "<p>Bagi PT Berkah Alam Tabantang, keselamatan kerja bukan sekadar aturan, melainkan budaya. Di proyek skala besar, risiko kecelakaan kerja selalu ada, itulah sebabnya kami menerapkan protokol APD lengkap, safety briefing harian, dan pengawasan ketat oleh ahli K3 di lapangan. Kami percaya bahwa lingkungan kerja yang aman akan melahirkan produktivitas maksimal dan hasil bangunan yang berkualitas. Integritas kami dipertahankan dalam setiap prosedur keamanan yang kami jalankan demi melindungi aset paling berharga perusahaan: tenaga kerja kami.</p>" }
         };
-
         function openNewsModal(id) {
             const news = newsData[id];
             if (!news) return;
@@ -1328,24 +1269,13 @@
             document.body.style.overflow = 'auto';
         }
 
-        function openLoginModal() {
-            document.getElementById('loginModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-        function closeLoginModal() {
-            document.getElementById('loginModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
+        function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+        function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
         function handleLogin() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            if (username === 'admin' && password === 'admin123') {
-                alert('Login berhasil! Selamat datang di halaman admin.');
-                closeLoginModal();
-            } else {
-                alert('Username atau password salah!');
-            }
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            if (user === 'admin' && pass === 'admin123') { alert('Login berhasil!'); closeLoginModal(); }
+            else alert('Username atau password salah!');
         }
 
         window.onclick = function(event) {
