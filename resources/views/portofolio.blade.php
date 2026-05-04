@@ -13,7 +13,7 @@
         }
 
         html {
-            scroll-behavior: smooth;
+            scroll-behavior: auto; /* DIUBAH: dari smooth ke auto agar JS scroll lebih akurat */
         }
 
         body {
@@ -23,6 +23,7 @@
 
         section {
             width: 100%;
+            scroll-margin-top: 56px;
         }
 
         .inner-container {
@@ -100,7 +101,7 @@
         }
         .login-icon:hover { color: #162660; }
 
-        /* ========== HERO DENGAN OVERLAY HITAM ========== */
+        /* ========== HERO ========== */
         #home {
             position: relative;
             margin-top: 56px;
@@ -164,7 +165,7 @@
         /* ========== TENTANG KAMI ========== */
         #tentang-kami {
             background: #ffffff;
-            padding: 80px 0;
+            padding: 30px 0 80px 0;
             min-height: 100vh;
             display: block;
         }
@@ -276,10 +277,11 @@
             overflow-y: visible;
             padding-bottom: 4px;
             -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
+            scrollbar-width: thin;
         }
-        .services-scroll-wrapper::-webkit-scrollbar { display: none; }
+        .services-scroll-wrapper::-webkit-scrollbar { height: 6px; }
+        .services-scroll-wrapper::-webkit-scrollbar-track { background: #e0e0e0; border-radius: 10px; }
+        .services-scroll-wrapper::-webkit-scrollbar-thumb { background: #162660; border-radius: 10px; }
 
         .services-track {
             display: flex;
@@ -306,10 +308,10 @@
 
         .service-card-img {
             width: 100%;
-            height: 380px;
+            height: 500px;
             object-fit: cover;
             display: block;
-            transition: transform 0.5s ease;
+            transition: transform 0.8s ease;
         }
         .service-card:hover .service-card-img { transform: scale(1.04); }
 
@@ -355,7 +357,7 @@
         /* ========== PORTOFOLIO ========== */
         #portofolio {
             background: #D0E6FD;
-            padding: 70px 0 80px 0;
+            padding: 30px 0 80px 0;
             width: 100%;
             min-height: 100vh;
             display: block;
@@ -387,7 +389,7 @@
 
         .portfolio-image { width: 100%; position: relative; overflow: hidden; }
         .portfolio-image img {
-            width: 100%; height: 320px;
+            width: 100%; height: 450px;
             object-fit: cover; display: block;
             transition: transform 0.4s ease;
         }
@@ -404,7 +406,7 @@
                 rgba(22,38,96,0) 100%
             );
         }
-        .portfolio-title { font-size: 1rem; font-weight: 700; color: #fff; line-height: 1.4; margin: 0; }
+        .portfolio-title { font-size: 1rem; font-weight: 700; color: #fff; line-height: 2.4; margin: 0; }
 
         .portfolio-bottom { padding: 10px 14px 12px; display: flex; justify-content: flex-end; }
 
@@ -419,7 +421,7 @@
         /* ========== BERITA ========== */
         #berita {
             background: #ffffff;
-            padding: 70px 0 80px 0;
+            padding: 30px 0 80px 0;
             width: 100%;
             min-height: 100vh;
             display: block;
@@ -483,29 +485,26 @@
         }
         .btn-baca:hover { background: #162660; color: #fff; }
 
-        /* ========== TESTIMONI ========== */
         #testimoni {
             background: #ffffff;
             padding: 0 0 80px 0;
             width: 100%;
             min-height: 100vh;
             display: block;
+            scroll-margin-top: 0;
         }
-
         .testimoni-header {
             background: #162660;
             border-radius: 0 0 40px 40px;
             text-align: center;
             padding: 28px 40px 26px;
-            margin-bottom: 36px;
+            margin-bottom: 52px;
             width: 100%;
         }
-        .testimoni-header .section-title { color: #fff; letter-spacing: 10px; font-size: 2rem; margin: 0; }
-
+        .testimoni-header .section-title { color: #fff; letter-spacing: 15px; font-size: 2rem; margin: 0; }
         .testimoni-subtitle-block { text-align: center; margin-bottom: 40px; }
         .testimoni-subtitle-block .sub-bold { font-size: 1.1rem; font-weight: 800; color: #162660; margin-bottom: 8px; display: block; }
         .testimoni-subtitle-block .sub-text { font-size: 0.92rem; color: #444; max-width: 560px; margin: 0 auto; line-height: 1.6; }
-
         .testimoni-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
 
         .testimoni-card {
@@ -516,7 +515,6 @@
             transition: transform 0.3s;
         }
         .testimoni-card:hover { transform: translateY(-5px); }
-
         .company-logo-circle {
             width: 54px; height: 54px; border-radius: 50%;
             background: #ffffff;
@@ -525,7 +523,6 @@
             box-shadow: 0 2px 8px rgba(22,38,96,0.12);
         }
         .company-logo-circle span { font-size: 13px; font-weight: 800; color: #162660; }
-
         .testimoni-rating { color: #f5a623; font-size: 1.25rem; margin-bottom: 14px; letter-spacing: 2px; }
         .testimoni-text { color: #2a3a4a; line-height: 1.7; margin-bottom: 12px; font-size: 0.88rem; text-align: justify; }
         .testimoni-author { font-weight: 700; color: #162660; font-size: 0.88rem; }
@@ -533,7 +530,7 @@
         /* ========== LOKASI ========== */
         #lokasi {
             background: #ffffff;
-            padding: 70px 0 60px;
+            padding: 30px 0 60px;
             width: 100%;
             display: block;
         }
@@ -599,7 +596,6 @@
         .footer-col a { color: #2a3a4a; text-decoration: none; display: block; margin-bottom: 6px; font-size: 0.86rem; transition: color 0.3s; }
         .footer-col a:hover { color: #162660; font-weight: 600; }
 
-        /* COPYRIGHT FULL WIDTH */
         .footer-bottom-full {
             width: 100%;
             background-color: #162660;
@@ -1098,7 +1094,6 @@
                 </div>
             </div>
         </div>
-        <!-- COPYRIGHT FULL WIDTH DI LUAR CONTAINER -->
         <div class="footer-bottom-full">
             <p>Copyright © PT Berkah Alam Tabantang (BAT). All Rights Reserved.</p>
         </div>
@@ -1154,14 +1149,51 @@
     </div>
 
     <script>
-        const sections = document.querySelectorAll('section[id]');
+        const NAVBAR_HEIGHT = 56;
+
+        // =============================================
+        // FUNGSI SCROLL UTAMA — diperbaiki
+        // Semua section menggunakan getBoundingClientRect
+        // agar offset navbar 56px selalu akurat,
+        // termasuk #portofolio, #berita, dan #lokasi
+        // =============================================
+        function scrollToSection(targetId) {
+            const target = document.getElementById(targetId);
+            if (!target) return;
+            // scroll-margin-top: 56px di CSS sudah handle offset navbar secara otomatis
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Pasang event listener ke semua link navbar
         const navLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                scrollToSection(targetId);
+            });
+        });
+
+        // Pasang juga ke link di footer
+        document.querySelectorAll('.footer-col a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                scrollToSection(targetId);
+            });
+        });
+
+        // =============================================
+        // ACTIVE NAV — highlight menu sesuai posisi scroll
+        // =============================================
+        const sections = document.querySelectorAll('section[id]');
 
         function updateActiveNav() {
             let current = '';
             sections.forEach(section => {
                 const sectionTop = section.getBoundingClientRect().top;
-                if (sectionTop <= 80) {
+                // Section dianggap aktif jika sudah melewati navbar + sedikit buffer
+                if (sectionTop <= NAVBAR_HEIGHT + 10) {
                     current = section.getAttribute('id');
                 }
             });
@@ -1173,41 +1205,12 @@
             });
         }
 
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                const targetSection = document.getElementById(targetId);
-                if (targetSection) {
-                    if (targetId === 'lokasi') {
-                        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-                    } else {
-                        const offsetTop = targetSection.getBoundingClientRect().top + window.scrollY - 56;
-                        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-                    }
-                }
-            });
-        });
-
         window.addEventListener('scroll', updateActiveNav);
         updateActiveNav();
 
-        document.querySelectorAll('.footer-col a[href^="#"]').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                const targetSection = document.getElementById(targetId);
-                if (targetSection) {
-                    if (targetId === 'lokasi') {
-                        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-                    } else {
-                        const offsetTop = targetSection.getBoundingClientRect().top + window.scrollY - 56;
-                        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-                    }
-                }
-            });
-        });
-
+        // =============================================
+        // PORTFOLIO MODAL
+        // =============================================
         const portfolioData = {
             1: {
                 title: "Konstruksi Area Komersial & Fasilitas Publik – Opus Bay Project",
@@ -1248,12 +1251,16 @@
             document.body.style.overflow = 'auto';
         }
 
+        // =============================================
+        // BERITA MODAL
+        // =============================================
         const newsData = {
             1: { date: "20 Februari 2026", title: "Peran PT BAT dalam Mendukung Mega Proyek Opus Bay Batam", image: "images/berita_1(opus by).jpg", content: "<p>Menjadi bagian dari proyek sebesar Opus Bay adalah bukti nyata kepercayaan industri terhadap PT Berkah Alam Tabantang. Dalam proyek ini, tim kami fokus pada pengembangan infrastruktur dasar yang presisi. Kami memahami bahwa proyek skala internasional membutuhkan koordinasi tim yang solid dan ketepatan teknis. Melalui pendekatan kolaboratif, PT BAT memastikan setiap tahapan konstruksi, mulai dari pematangan lahan hingga infrastruktur pendukung, dikerjakan sesuai spesifikasi dan deadline yang ketat demi mendukung kemajuan properti di Batam.</p>" },
             2: { date: "3 Desember 2025", title: "Mengapa Infrastruktur Jalan yang Baik Sangat Penting bagi Hunian Mewah?", image: "images/berita_2.jpg", content: "<p>Dalam pembangunan hunian mewah, akses jalan adalah impresi pertama bagi penghuni. Mengacu pada standar SNI 003, PT BAT menerapkan teknik pengaspalan dan fondasi jalan yang mampu menahan beban berat tanpa mengabaikan kerapian visual. Jalan yang dibangun dengan drainase yang tepat dan material berkualitas tinggi tidak hanya bertahan lama, tetapi juga secara signifikan meningkatkan nilai jual investasi properti tersebut. Kami memastikan bahwa setiap jengkal aspal yang kami hampar memberikan kenyamanan berkendara dan kemewahan yang nyata bagi penghuni.</p>" },
             3: { date: "24 Juni 2025", title: "Kontribusi Infrastruktur Terhadap Pertumbuhan Ekonomi di Kota Batam", image: "images/berita_3.jpg", content: "<p>Transformasi Batam menuju Kota Mandiri membuka peluang besar bagi industri konstruksi lokal. Sebagai perusahaan yang berbasis di Batam, PT Berkah Alam Tabantang tidak hanya ingin menjadi penonton, tetapi penggerak perubahan. Kami terus berinvestasi pada teknologi konstruksi terbaru untuk menyamai standar global. Dengan pemahaman mendalam tentang lanskap kota dan komitmen pada kualitas, PT BAT siap bermitra dalam pembangunan investasi strategis, membuktikan bahwa perusahaan lokal Batam mampu memberikan hasil kelas dunia.</p>" },
             4: { date: "14 Mei 2025", title: "Mengapa Keamanan Adalah Prioritas Utama dalam Setiap Proyek Kami?", image: "images/berita_4.jpg", content: "<p>Bagi PT Berkah Alam Tabantang, keselamatan kerja bukan sekadar aturan, melainkan budaya. Di proyek skala besar, risiko kecelakaan kerja selalu ada, itulah sebabnya kami menerapkan protokol APD lengkap, safety briefing harian, dan pengawasan ketat oleh ahli K3 di lapangan. Kami percaya bahwa lingkungan kerja yang aman akan melahirkan produktivitas maksimal dan hasil bangunan yang berkualitas. Integritas kami dipertahankan dalam setiap prosedur keamanan yang kami jalankan demi melindungi aset paling berharga perusahaan: tenaga kerja kami.</p>" }
         };
+
         function openNewsModal(id) {
             const news = newsData[id];
             if (!news) return;
@@ -1269,6 +1276,9 @@
             document.body.style.overflow = 'auto';
         }
 
+        // =============================================
+        // LOGIN MODAL
+        // =============================================
         function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; document.body.style.overflow = 'hidden'; }
         function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
         function handleLogin() {
@@ -1278,6 +1288,7 @@
             else alert('Username atau password salah!');
         }
 
+        // Tutup modal jika klik di luar konten
         window.onclick = function(event) {
             if (event.target == document.getElementById('portfolioModal')) closePortfolioModal();
             if (event.target == document.getElementById('newsModal')) closeNewsModal();
