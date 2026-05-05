@@ -8,3 +8,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/admin', function () {
     return view('admin.home');
 })->name('admin');
+
+Route::get('/', function () {
+    return view('home');
+});
