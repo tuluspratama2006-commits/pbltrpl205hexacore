@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>PT. Berkah Alam Tabantang - Konstruksi & Infrastruktur Batam</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
@@ -75,7 +76,7 @@
         </div>
     </section>
 
-    <!-- LAYANAN -->
+   <!-- LAYANAN -->
     <section id="layanan">
         <div class="layanan-header">
             <h1 class="section-title">L A Y A N A N</h1>
@@ -83,74 +84,41 @@
         <div class="layanan-scroll-area">
             <div class="services-scroll-wrapper">
                 <div class="services-track">
+                    @forelse($layanans as $index => $item)
                     <div class="service-card">
-                        <img src="{{ asset('images/layanan_1.jpg') }}" class="service-card-img" alt="BG009">
+                        {{-- Gambar --}}
+                        @if($item->gambar)
+                            <img src="{{ asset('storage/' . $item->gambar) }}"
+                                 class="service-card-img"
+                                 alt="{{ $item->judul_layanan }}">
+                        @else
+                            <img src="{{ asset('images/layanan_' . (($index % 4) + 1) . '.jpg') }}"
+                                 class="service-card-img"
+                                 alt="{{ $item->judul_layanan }}">
+                        @endif
+
+                        {{-- Preview atas --}}
                         <div class="service-card-top">
-                            <div class="service-title">Konstruksi Gedung Lainnya</div>
-                            <div class="service-code">(BG009)</div>
+                            <div class="service-title">{{ $item->judul_layanan }}</div>
+                            <div class="service-code">({{ $item->icon }})</div>
                         </div>
+
+                        {{-- Body hover --}}
                         <div class="service-card-body">
-                            <div class="service-title" style="margin-bottom:6px;">Konstruksi Gedung Lainnya</div>
-                            <div class="service-code" style="margin-bottom:12px;">(BG009)</div>
-                            <div class="service-desc">Penyediaan jasa konstruksi untuk berbagai jenis gedung komersial maupun fasilitas publik lainnya dengan mengutamakan fungsionalitas ruang dan kekuatan struktur bangunan.</div>
-                            <ul class="service-features">
-                                <li><i class="fas fa-check-circle"></i> Gedung Komersial</li>
-                                <li><i class="fas fa-check-circle"></i> Fasilitas Publik</li>
-                                <li><i class="fas fa-check-circle"></i> Struktur Berkualitas</li>
-                            </ul>
+                            <div class="service-title" style="margin-bottom:6px;">{{ $item->judul_layanan }}</div>
+                            <div class="service-code" style="margin-bottom:12px;">({{ $item->icon }})</div>
+                            <div class="service-desc">{{ $item->deskripsi }}</div>
                         </div>
                     </div>
+                    @empty
+                    {{-- Fallback jika belum ada data --}}
                     <div class="service-card">
-                        <img src="{{ asset('images/layanan_2.jpg') }}" class="service-card-img" alt="SI001">
+                        <img src="{{ asset('images/layanan_1.jpg') }}" class="service-card-img" alt="Layanan">
                         <div class="service-card-top">
-                            <div class="service-title">Pekerjaan Bangunan Sipil – Sumber Daya Air</div>
-                            <div class="service-code">(SI001)</div>
-                        </div>
-                        <div class="service-card-body">
-                            <div class="service-title" style="margin-bottom:6px;">Pekerjaan Bangunan Sipil – Sumber Daya Air</div>
-                            <div class="service-code" style="margin-bottom:12px;">(SI001)</div>
-                            <div class="service-desc">Kami melayani jasa pelaksana untuk konstruksi jaringan saluran air, pelabuhan, dam, bendungan, serta prasarana sumber daya air lainnya. Fokus kami adalah efisiensi aliran dan ketahanan struktur jangka panjang.</div>
-                            <ul class="service-features">
-                                <li><i class="fas fa-check-circle"></i> Jaringan Saluran Air</li>
-                                <li><i class="fas fa-check-circle"></i> Dam & Bendungan</li>
-                                <li><i class="fas fa-check-circle"></i> Prasarana Sumber Daya Air</li>
-                            </ul>
+                            <div class="service-title">Belum ada layanan</div>
                         </div>
                     </div>
-                    <div class="service-card">
-                        <img src="{{ asset('images/layanan_3.jpg') }}" class="service-card-img" alt="SI003">
-                        <div class="service-card-top">
-                            <div class="service-title">Pembangunan Infrastruktur Jalan Raya</div>
-                            <div class="service-code">(SI003)</div>
-                        </div>
-                        <div class="service-card-body">
-                            <div class="service-title" style="margin-bottom:6px;">Pembangunan Infrastruktur Jalan Raya</div>
-                            <div class="service-code" style="margin-bottom:12px;">(SI003)</div>
-                            <div class="service-desc">Layanan khusus pelaksanaan konstruksi jalan raya (kecuali jalan layang), jalan lokal, rel kereta api, hingga landas pacu bandara. Kami memastikan kualitas pengaspalan dan fondasi yang mampu menahan beban kendaraan berat.</div>
-                            <ul class="service-features">
-                                <li><i class="fas fa-check-circle"></i> Jalan Raya & Lokal</li>
-                                <li><i class="fas fa-check-circle"></i> Rel Kereta Api</li>
-                                <li><i class="fas fa-check-circle"></i> Landas Pacu Bandara</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="service-card">
-                        <img src="{{ asset('images/layanan_4.jpeg') }}" class="service-card-img" alt="SI004">
-                        <div class="service-card-top">
-                            <div class="service-title">Konstruksi Jembatan & Jalan Layang</div>
-                            <div class="service-code">(SI004)</div>
-                        </div>
-                        <div class="service-card-body">
-                            <div class="service-title" style="margin-bottom:6px;">Konstruksi Jembatan & Jalan Layang</div>
-                            <div class="service-code" style="margin-bottom:12px;">(SI004)</div>
-                            <div class="service-desc">Spesialisasi kami mencakup pengerjaan jembatan, jalan layang, terowongan, hingga jalur bawah tanah (subway). Menggunakan perhitungan teknis yang presisi untuk menghubungkan konektivitas antar wilayah.</div>
-                            <ul class="service-features">
-                                <li><i class="fas fa-check-circle"></i> Jembatan & Jalan Layang</li>
-                                <li><i class="fas fa-check-circle"></i> Terowongan</li>
-                                <li><i class="fas fa-check-circle"></i> Jalur Bawah Tanah</li>
-                            </ul>
-                        </div>
-                    </div>
+                    @endforelse
                 </div>
             </div>
         </div>
@@ -401,8 +369,8 @@
             <span class="login-modal-close" onclick="closeLoginModal()">&times;</span>
             <h2>LOGIN</h2>
             <div class="login-input-group">
-                <label>Username</label>
-                <input type="text" id="username" placeholder="Masukkan username">
+                <label>email</label>
+                <input type="email" id="username" placeholder="Masukkan email">
             </div>
             <div class="login-input-group">
                 <label>Password</label>
@@ -415,20 +383,12 @@
     <script>
         const NAVBAR_HEIGHT = 56;
 
-        // =============================================
-        // FUNGSI SCROLL UTAMA — diperbaiki
-        // Semua section menggunakan getBoundingClientRect
-        // agar offset navbar 56px selalu akurat,
-        // termasuk #portofolio, #berita, dan #lokasi
-        // =============================================
         function scrollToSection(targetId) {
             const target = document.getElementById(targetId);
             if (!target) return;
-            // scroll-margin-top: 56px di CSS sudah handle offset navbar secara otomatis
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        // Pasang event listener ke semua link navbar
         const navLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
@@ -438,7 +398,6 @@
             });
         });
 
-        // Pasang juga ke link di footer
         document.querySelectorAll('.footer-col a[href^="#"]').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -447,16 +406,12 @@
             });
         });
 
-        // =============================================
-        // ACTIVE NAV — highlight menu sesuai posisi scroll
-        // =============================================
         const sections = document.querySelectorAll('section[id]');
 
         function updateActiveNav() {
             let current = '';
             sections.forEach(section => {
                 const sectionTop = section.getBoundingClientRect().top;
-                // Section dianggap aktif jika sudah melewati navbar + sedikit buffer
                 if (sectionTop <= NAVBAR_HEIGHT + 10) {
                     current = section.getAttribute('id');
                 }
@@ -472,9 +427,7 @@
         window.addEventListener('scroll', updateActiveNav);
         updateActiveNav();
 
-        // =============================================
         // PORTFOLIO MODAL
-        // =============================================
         const portfolioData = {
             1: {
                 title: "Konstruksi Area Komersial & Fasilitas Publik – Opus Bay Project",
@@ -515,9 +468,7 @@
             document.body.style.overflow = 'auto';
         }
 
-        // =============================================
         // BERITA MODAL
-        // =============================================
         const newsData = {
             1: { date: "20 Februari 2026", title: "Peran PT BAT dalam Mendukung Mega Proyek Opus Bay Batam", image: "{{ asset('images/berita_1(opus by).jpg') }}", content: "<p>Menjadi bagian dari proyek sebesar Opus Bay adalah bukti nyata kepercayaan industri terhadap PT Berkah Alam Tabantang. Dalam proyek ini, tim kami fokus pada pengembangan infrastruktur dasar yang presisi. Kami memahami bahwa proyek skala internasional membutuhkan koordinasi tim yang solid dan ketepatan teknis. Melalui pendekatan kolaboratif, PT BAT memastikan setiap tahapan konstruksi, mulai dari pematangan lahan hingga infrastruktur pendukung, dikerjakan sesuai spesifikasi dan deadline yang ketat demi mendukung kemajuan properti di Batam.</p>" },
             2: { date: "3 Desember 2025", title: "Mengapa Infrastruktur Jalan yang Baik Sangat Penting bagi Hunian Mewah?", image: "{{ asset('images/berita_2.jpg') }}", content: "<p>Dalam pembangunan hunian mewah, akses jalan adalah impresi pertama bagi penghuni. Mengacu pada standar SNI 003, PT BAT menerapkan teknik pengaspalan dan fondasi jalan yang mampu menahan beban berat tanpa mengabaikan kerapian visual. Jalan yang dibangun dengan drainase yang tepat dan material berkualitas tinggi tidak hanya bertahan lama, tetapi juga secara signifikan meningkatkan nilai jual investasi properti tersebut. Kami memastikan bahwa setiap jengkal aspal yang kami hampar memberikan kenyamanan berkendara dan kemewahan yang nyata bagi penghuni.</p>" },
@@ -540,16 +491,36 @@
             document.body.style.overflow = 'auto';
         }
 
-        // =============================================
         // LOGIN MODAL
-        // =============================================
         function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; document.body.style.overflow = 'hidden'; }
         function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
+
         function handleLogin() {
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
-            if (user === 'admin' && pass === 'admin123') { alert('Login berhasil!'); closeLoginModal(); }
-            else alert('Username atau password salah!');
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+                alert('Username dan password wajib diisi!');
+                return;
+            }
+
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = data.redirect;
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(() => alert('Terjadi kesalahan. Coba lagi.'));
         }
 
         // Tutup modal jika klik di luar konten

@@ -779,7 +779,7 @@ body {
 .page-title {
     font-size: 2rem;
     font-weight: 800;
-    color: #1a2d5a;
+    color: #ffffff;
     letter-spacing: 1px;
     margin: 0;
 }
@@ -1335,4 +1335,57 @@ body {
     margin-top: 8px;
     color: #dcecff;
     font-size: 12px;
+}
+.btn-logout {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(230, 57, 70, 0.15);
+    color: #ff6b6b;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    transition: background 0.2s;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0;
+}
+ 
+.btn-logout:hover { background: rgba(230, 57, 70, 0.3); }
+ 
+.page-header .btn-tambah {
+    margin-left: auto;
+}
+/* ========================================
+   TOAST NOTIFICATION
+   Tambahkan di bagian bawah admin.css
+======================================== */
+.toast-notif {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 99999;
+    background: #1a7a4a;
+    color: white;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    animation: slideInRight 0.3s ease, fadeOut 0.5s ease 3s forwards;
+    max-width: 360px;
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(120%); opacity: 0; }
+    to   { transform: translateX(0);    opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateX(0); }
+    to   { opacity: 0; transform: translateX(120%); }
 }

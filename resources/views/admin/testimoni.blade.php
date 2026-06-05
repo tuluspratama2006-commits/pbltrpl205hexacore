@@ -5,7 +5,7 @@
 
 {{-- Header --}}
 <div class="page-header">
-    <h1 class="page-heading">TESTIMONI</h1>
+    <h1 class="page-heading"></h1>
      <button class="btn-tambah"
        <button class="btn-tambah"
         onclick="document.getElementById('modalTambahTestimoni').style.display='flex'">

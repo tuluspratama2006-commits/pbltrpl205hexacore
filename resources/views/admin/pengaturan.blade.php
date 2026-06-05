@@ -6,7 +6,7 @@
 
 {{-- Header --}}
 <div class="page-header" style="margin-bottom: 28px;">
-    <h1 class="page-heading" style="text-decoration: underline; text-underline-offset: 6px;">PENGATURAN</h1>
+    <h1 class="page-heading" style="text-decoration: underline; text-underline-offset: 6px;"></h1>
 </div>
 
 <div class="pengaturan-grid">

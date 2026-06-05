@@ -75,7 +75,7 @@
         </div>
     </section>
 
-    <!-- LAYANAN -->
+<!-- LAYANAN -->
     <section id="layanan">
         <div class="layanan-header">
             <h1 class="section-title">L A Y A N A N</h1>
@@ -83,74 +83,38 @@
         <div class="layanan-scroll-area">
             <div class="services-scroll-wrapper">
                 <div class="services-track">
+                    @forelse($layanans as $item)
                     <div class="service-card">
-                        <img src="images/layanan_1.jpg" class="service-card-img" alt="BG009">
+                        {{-- Gambar --}}
+                        @if($item->gambar)
+                            <img src="{{ asset('storage/' . $item->gambar) }}"
+                                 class="service-card-img"
+                                 alt="{{ $item->judul_layanan }}">
+                        @else
+                            <img src="{{ asset('images/layanan_1.jpg') }}"
+                                 class="service-card-img"
+                                 alt="{{ $item->judul_layanan }}">
+                        @endif
+
+                        {{-- Preview di atas card --}}
                         <div class="service-card-top">
-                            <div class="service-title">Konstruksi Gedung Lainnya</div>
-                            <div class="service-code">(BG009)</div>
+                            <div class="service-title">{{ $item->judul_layanan }}</div>
+                            <div class="service-code">({{ $item->icon }})</div>
                         </div>
+
+                        {{-- Body card saat di-hover --}}
                         <div class="service-card-body">
-                            <div class="service-title" style="margin-bottom:6px;">Konstruksi Gedung Lainnya</div>
-                            <div class="service-code" style="margin-bottom:12px;">(BG009)</div>
-                            <div class="service-desc">Penyediaan jasa konstruksi untuk berbagai jenis gedung komersial maupun fasilitas publik lainnya dengan mengutamakan fungsionalitas ruang dan kekuatan struktur bangunan.</div>
-                            <ul class="service-features">
-                                <li><i class="fas fa-check-circle"></i> Gedung Komersial</li>
-                                <li><i class="fas fa-check-circle"></i> Fasilitas Publik</li>
-                                <li><i class="fas fa-check-circle"></i> Struktur Berkualitas</li>
-                            </ul>
+                            <div class="service-title" style="margin-bottom:6px;">{{ $item->judul_layanan }}</div>
+                            <div class="service-code" style="margin-bottom:12px;">({{ $item->icon }})</div>
+                            <div class="service-desc">{{ $item->deskripsi }}</div>
                         </div>
                     </div>
-                    <div class="service-card">
-                        <img src="images/layanan_2.jpg" class="service-card-img" alt="SI001">
-                        <div class="service-card-top">
-                            <div class="service-title">Pekerjaan Bangunan Sipil – Sumber Daya Air</div>
-                            <div class="service-code">(SI001)</div>
-                        </div>
-                        <div class="service-card-body">
-                            <div class="service-title" style="margin-bottom:6px;">Pekerjaan Bangunan Sipil – Sumber Daya Air</div>
-                            <div class="service-code" style="margin-bottom:12px;">(SI001)</div>
-                            <div class="service-desc">Kami melayani jasa pelaksana untuk konstruksi jaringan saluran air, pelabuhan, dam, bendungan, serta prasarana sumber daya air lainnya. Fokus kami adalah efisiensi aliran dan ketahanan struktur jangka panjang.</div>
-                            <ul class="service-features">
-                                <li><i class="fas fa-check-circle"></i> Jaringan Saluran Air</li>
-                                <li><i class="fas fa-check-circle"></i> Dam & Bendungan</li>
-                                <li><i class="fas fa-check-circle"></i> Prasarana Sumber Daya Air</li>
-                            </ul>
-                        </div>
+                    @empty
+                    {{-- Fallback jika belum ada data publish --}}
+                    <div style="padding: 40px; color: #888; text-align:center; width:100%;">
+                        Belum ada layanan yang tersedia.
                     </div>
-                    <div class="service-card">
-                        <img src="images/layanan_3.jpg" class="service-card-img" alt="SI003">
-                        <div class="service-card-top">
-                            <div class="service-title">Pembangunan Infrastruktur Jalan Raya</div>
-                            <div class="service-code">(SI003)</div>
-                        </div>
-                        <div class="service-card-body">
-                            <div class="service-title" style="margin-bottom:6px;">Pembangunan Infrastruktur Jalan Raya</div>
-                            <div class="service-code" style="margin-bottom:12px;">(SI003)</div>
-                            <div class="service-desc">Layanan khusus pelaksanaan konstruksi jalan raya (kecuali jalan layang), jalan lokal, rel kereta api, hingga landas pacu bandara. Kami memastikan kualitas pengaspalan dan fondasi yang mampu menahan beban kendaraan berat.</div>
-                            <ul class="service-features">
-                                <li><i class="fas fa-check-circle"></i> Jalan Raya & Lokal</li>
-                                <li><i class="fas fa-check-circle"></i> Rel Kereta Api</li>
-                                <li><i class="fas fa-check-circle"></i> Landas Pacu Bandara</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="service-card">
-                        <img src="images/layanan_4.jpeg" class="service-card-img" alt="SI004">
-                        <div class="service-card-top">
-                            <div class="service-title">Konstruksi Jembatan & Jalan Layang</div>
-                            <div class="service-code">(SI004)</div>
-                        </div>
-                        <div class="service-card-body">
-                            <div class="service-title" style="margin-bottom:6px;">Konstruksi Jembatan & Jalan Layang</div>
-                            <div class="service-code" style="margin-bottom:12px;">(SI004)</div>
-                            <div class="service-desc">Spesialisasi kami mencakup pengerjaan jembatan, jalan layang, terowongan, hingga jalur bawah tanah (subway). Menggunakan perhitungan teknis yang presisi untuk menghubungkan konektivitas antar wilayah.</div>
-                            <ul class="service-features">
-                                <li><i class="fas fa-check-circle"></i> Jembatan & Jalan Layang</li>
-                                <li><i class="fas fa-check-circle"></i> Terowongan</li>
-                                <li><i class="fas fa-check-circle"></i> Jalur Bawah Tanah</li>
-                            </ul>
-                        </div>
-                    </div>
+                    @endforelse
                 </div>
             </div>
         </div>
