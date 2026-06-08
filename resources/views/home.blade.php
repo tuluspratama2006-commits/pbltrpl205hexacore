@@ -266,15 +266,23 @@
             </div>
             <div class="lokasi-grid">
                 <div class="lokasi-card">
-                    <img src="{{ asset('images/lokasi_1.jpg') }}" alt="Alamat Kantor">
+                    @if($profil && $profil->maps_embed)
+                        {!! $profil->maps_embed !!}
+                    @else
+                        <img src="{{ asset('images/lokasi_1.jpg') }}" alt="Alamat Kantor">
+                    @endif
                     <div class="lokasi-card-content">
-                        <p><strong>Alamat :</strong> Perum Griya Batu Aji Asri THP. 6 Blok V2 No.6<br>Kel. Sei Langkai, Kec.Sagulung, Batam</p>
+                        <p><strong>Alamat :</strong> {{ $profil->alamat ?? 'Perum Griya Batu Aji Asri THP. 6 Blok V2 No.6, Kel. Sei Langkai, Kec.Sagulung, Batam' }}</p>
                     </div>
                 </div>
                 <div class="lokasi-card">
-                    <img src="{{ asset('images/lokasi_2.jpg') }}" alt="Kantor Operasional">
+                    @if($profil && $profil->maps_embed_2)
+                        {!! $profil->maps_embed_2 !!}
+                    @else
+                        <img src="{{ asset('images/lokasi_2.jpg') }}" alt="Kantor Operasional">
+                    @endif
                     <div class="lokasi-card-content">
-                        <p><strong>Kantor Operasional :</strong> Ruko Marbella 2 Blok D6 No.7<br>Batam Center – Batam</p>
+                        <p><strong>Kantor Operasional :</strong> {{ $profil->alamat_2 ?? 'Ruko Marbella 2 Blok D6 No.7, Batam Center – Batam' }}</p>
                     </div>
                 </div>
             </div>
@@ -288,25 +296,37 @@
                 <div class="footer-brand">
                     <div class="footer-brand-row">
                         <img src="{{ asset('images/logo_pt_bat2.jpg') }}" alt="Logo">
-                        <h3>PT. Berkah Alam Tabantang</h3>
+                        <h3>{{ $profil->nama_perusahaan ?? 'PT. Berkah Alam Tabantang' }}</h3>
                     </div>
                     <p>Solusi Terpercaya untuk Konstruksi & Infrastruktur di Batam</p>
-                    <p>Email : <a href="mailto:berkahat@yahoo.com">berkahat@yahoo.com</a></p>
-                    <p>Telp : 0813-6332-7109 / 0822-6877-7317</p>
+                    <p>Email : <a href="mailto:{{ $profil->email ?? 'berkahat@yahoo.com' }}">{{ $profil->email ?? 'berkahat@yahoo.com' }}</a></p>
+                    <p>Telp : {{ $profil->telepon ?? '0813-6332-7109' }}{{ $profil->telepon_2 ? ' / ' . $profil->telepon_2 : '' }}</p>
                     <div class="footer-social">
-                        <a href="https://wa.me/6281363327109" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                        <a href="https://instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="mailto:berkahat@yahoo.com"><i class="fas fa-envelope"></i></a>
-                        <a href="https://facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://linkedin.com/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        @if($profil && $profil->whatsapp)
+                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $profil->whatsapp) }}" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        @endif
+                        @if($profil && $profil->instagram)
+                        <a href="{{ $profil->instagram }}" target="_blank"><i class="fab fa-instagram"></i></a>
+                        @endif
+                        @if($profil && $profil->email)
+                        <a href="mailto:{{ $profil->email }}"><i class="fas fa-envelope"></i></a>
+                        @endif
+                        @if($profil && $profil->facebook)
+                        <a href="{{ $profil->facebook }}" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        @endif
+                        @if($profil && $profil->linkedin)
+                        <a href="{{ $profil->linkedin }}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        @endif
                     </div>
                 </div>
                 <div class="footer-links">
                     <div class="footer-col">
                         <h4>Kontak Kami</h4>
-                        <p><i class="fas fa-envelope"></i> berkahat@yahoo.com</p>
-                        <p><i class="fas fa-phone"></i> 0813-6332-7109</p>
-                        <p><i class="fas fa-phone"></i> 0822-6877-7317</p>
+                        <p><i class="fas fa-envelope"></i> {{ $profil->email ?? 'berkahat@yahoo.com' }}</p>
+                        <p><i class="fas fa-phone"></i> {{ $profil->telepon ?? '0813-6332-7109' }}</p>
+                        @if($profil && $profil->telepon_2)
+                        <p><i class="fas fa-phone"></i> {{ $profil->telepon_2 }}</p>
+                        @endif
                     </div>
                     <div class="footer-col">
                         <h4>Menu Cepat</h4>
@@ -327,7 +347,7 @@
             </div>
         </div>
         <div class="footer-bottom-full">
-            <p>Copyright © PT Berkah Alam Tabantang (BAT). All Rights Reserved.</p>
+            <p>Copyright © {{ $profil->nama_perusahaan ?? 'PT Berkah Alam Tabantang (BAT)' }}. All Rights Reserved.</p>
         </div>
     </footer>
 

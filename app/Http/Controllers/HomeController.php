@@ -7,15 +7,16 @@ use App\Models\Layanan;
 
 class HomeController extends Controller
 {
-    public function index()
-    {
-        $layanans = Layanan::where('status', 'publish')
-                           ->orderBy('urutan')
-                           ->get();
+ public function index()
+{
+    $layanans = Layanan::where('status', 'publish')
+                       ->orderBy('urutan')
+                       ->get();
 
-        return view('home', compact('layanans'));
-    }
+    $profil = \App\Models\ProfilPerusahaan::first();
 
+    return view('home', compact('layanans', 'profil'));
+}
     public function create()
     {
         return view('home');

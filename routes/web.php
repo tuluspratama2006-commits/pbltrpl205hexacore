@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\LayananController;
+use App\Http\Controllers\Admin\PengaturanController;
 
 // =========================
 // FRONTEND / USER
@@ -23,7 +24,10 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/portofolio', fn() => view('admin.portofolio'))->name('portofolio');
     Route::get('/berita',    fn() => view('admin.berita'))->name('berita');
     Route::get('/testimoni', fn() => view('admin.testimoni'))->name('testimoni');
-    Route::get('/pengaturan',fn() => view('admin.pengaturan'))->name('pengaturan');
+
+    // Pengaturan
+    Route::get('/pengaturan',  [PengaturanController::class, 'index'])->name('pengaturan');
+    Route::post('/pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
 
     // Layanan (CRUD)
     Route::get('/layanan',           [LayananController::class, 'index'])->name('layanan');
