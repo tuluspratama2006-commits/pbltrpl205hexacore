@@ -50,7 +50,7 @@
 
     <div class="stat-card">
         <div class="stat-info">
-            <span class="stat-label">Drafts</span>
+            <span class="stat-label">Unpublished</span>
             <span class="stat-value">{{ $totalDraft ?? 0 }}</span>
         </div>
 

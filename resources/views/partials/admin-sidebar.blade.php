@@ -92,13 +92,7 @@
             </li>
         </ul>
     </nav>
-
     <div class="sidebar-footer">
-        <a href="/" class="btn-kembali">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="15 18 9 12 15 6"/>
-            </svg>
-            Kembali
         </a>
         <a href="{{ route('logout') }}" class="btn-logout"
            onclick="return confirm('Yakin ingin logout?')">
@@ -107,7 +101,7 @@
                 <polyline points="16 17 21 12 16 7"/>
                 <line x1="21" y1="12" x2="9" y2="12"/>
             </svg>
-            Logout
+            Keluar
         </a>
     </div>
 </div>

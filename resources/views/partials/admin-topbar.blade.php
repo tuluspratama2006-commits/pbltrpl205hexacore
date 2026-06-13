@@ -25,12 +25,18 @@
                     <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
                 </svg>
             </button>
-            <div class="user-avatar" title="Profil">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                </svg>
-            </div>
+           @php $adminUser = DB::table('admin')->first(); @endphp
+<div class="user-avatar" title="Profil">
+    @if($adminUser && $adminUser->foto)
+        <img src="{{ asset('storage/' . $adminUser->foto) }}"
+             style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+    @else
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+        </svg>
+    @endif
+</div>
         </div>
     </div>
 </div>
