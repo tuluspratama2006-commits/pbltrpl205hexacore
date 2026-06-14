@@ -27,7 +27,7 @@
             </button>
            @php $adminUser = DB::table('admin')->first(); @endphp
 <div class="user-avatar" title="Profil">
-    @if($adminUser && $adminUser->foto)
+    @if($adminUser && isset ($adminUser->foto))
         <img src="{{ asset('storage/' . $adminUser->foto) }}"
              style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
     @else
