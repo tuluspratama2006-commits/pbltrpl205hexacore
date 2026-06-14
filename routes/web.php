@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\LayananController;
 use App\Http\Controllers\Admin\PengaturanController;
+use App\Http\Controllers\Admin\BeritaController;
 
 // =========================
 // FRONTEND / USER
@@ -35,4 +36,9 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::put('/layanan/{id}',      [LayananController::class, 'update'])->name('layanan.update');
     Route::delete('/layanan/{id}',   [LayananController::class, 'destroy'])->name('layanan.destroy');
 
+    //Berita(CRUD)
+    Route::get('/berita',           [BeritaController::class, 'index'])->name('berita');
+    Route::post('/berita',          [BeritaController::class, 'store'])->name('berita.store');
+    Route::put('/berita/{id}',      [BeritaController::class, 'update'])->name('berita.update');
+    Route::delete('/berita/{id}',   [BeritaController::class, 'destroy'])->name('berita.destroy');
 });
