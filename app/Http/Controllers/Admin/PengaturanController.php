@@ -7,6 +7,7 @@ use App\Models\ProfilPerusahaan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class PengaturanController extends Controller
 {
@@ -57,7 +58,7 @@ $updateData = [
 if ($request->hasFile('foto')) {
     // Hapus foto lama kalau ada
     if ($user->foto) {
-        \Storage::disk('public')->delete($user->foto);
+        Storage::disk('public')->delete($user->foto);
     }
     $updateData['foto'] = $request->file('foto')->store('admin', 'public');
 }
