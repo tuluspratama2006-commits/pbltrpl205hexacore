@@ -12,6 +12,11 @@ return new class extends Migration
             if (!Schema::hasColumn('profil_perusahaan', 'alamat_2')) {
                 $table->string('alamat_2')->nullable();
             }
+
+            if (!Schema::hasColumn('profil_perusahaan', 'maps_embed')) {
+                $table->text('maps_embed')->nullable();
+            }
+
             if (!Schema::hasColumn('profil_perusahaan', 'maps_embed_2')) {
                 $table->text('maps_embed_2')->nullable();
             }
@@ -33,14 +38,28 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('profil_perusahaan', function (Blueprint $table) {
-            $table->dropColumn([
-                'alamat_2',
-                'maps_embed_2',
-                'instagram',
-                'facebook',
-                'linkedin',
-                'telepon_2',
-            ]);
+        // Kita cek satu-persatu, jika kolomnya ada baru kita Hapus (Drop)
+        if (Schema::hasColumn('profil_perusahaan', 'alamat_2')) {
+            $table->dropColumn('alamat_2');
+        }
+        if (Schema::hasColumn('profil_perusahaan', 'maps_embed')) {
+            $table->dropColumn('maps_embed');
+        }
+        if (Schema::hasColumn('profil_perusahaan', 'maps_embed_2')) {
+            $table->dropColumn('maps_embed_2');
+        }
+        if (Schema::hasColumn('profil_perusahaan', 'instagram')) {
+            $table->dropColumn('instagram');
+        }
+        if (Schema::hasColumn('profil_perusahaan', 'facebook')) {
+            $table->dropColumn('facebook');
+        }
+        if (Schema::hasColumn('profil_perusahaan', 'linkedin')) {
+            $table->dropColumn('linkedin');
+        }
+        if (Schema::hasColumn('profil_perusahaan', 'telepon_2')) {
+            $table->dropColumn('telepon_2');
+        }
         });
     }
 };
