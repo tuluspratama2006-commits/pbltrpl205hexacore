@@ -44,7 +44,7 @@
     <div class="stat-card">
         <div class="stat-info">
             <span class="stat-label">Published</span>
-            <span class="stat-value">{{ $totalPublished ?? 0 }}</span>
+            <span class="stat-value">{{ $Published ?? 0 }}</span>
         </div>
         <div class="stat-icon">
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.5">
@@ -56,7 +56,7 @@
     <div class="stat-card">
         <div class="stat-info">
             <span class="stat-label">Unpublished</span>
-            <span class="stat-value">{{ $totalDraft ?? 0 }}</span>
+            <span class="stat-value">{{ $Unpublished ?? 0 }}</span>
         </div>
         <div class="stat-icon">
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="1.5">
@@ -116,11 +116,11 @@
             </tr>
         </thead>
         <tbody>
-            {{-- @forelse($beritas as $item)
+            @forelse($semuaBerita as $item)
             <tr data-status="{{ $item->status }}">
                 <td>
-                    @if($item->foto)
-                        <img src="{{ asset('storage/' . $item->foto) }}" class="table-img" alt="{{ $item->judul }}">
+                    @if($item->thumbnail)
+                        <img src="{{ asset('storage/' . $item->thumbnail) }}" class="table-img" alt="{{ $item->judul_berita  }}">
                     @else
                         <div style="width:70px;height:50px;background:#e2e8f0;border-radius:6px;display:flex;align-items:center;justify-content:center;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5">
@@ -131,32 +131,46 @@
                         </div>
                     @endif
                 </td>
-                <td><a href="#" class="judul-link">{{ $item->judul }}</a></td>
-                <td>{{ $item->penulis }}</td>
-                <td>{{ $item->tanggal_terbit ? \Carbon\Carbon::parse($item->tanggal_terbit)->format('d/m/y') : '-' }}</td>
+                <td><a href="#" class="judul-link">{{ $item->judul_berita }}</a></td>
+                <td>{{ $item->admin->name ?? '-' }}</td>
+                <td>{{ $item->tanggal_posting ? \Carbon\Carbon::parse($item->tanggal_posting)->format('d/m/y') : '-' }}</td>
                 <td>
                     <span class="badge-status {{ $item->status == 'publish' ? 'publish' : 'draft' }}">
                         {{ strtoupper($item->status) }}
                     </span>
                 </td>
                 <td class="aksi-col">
-                    <button class="btn-edit">
+                    <button class="btn-edit"
+                    onclick="bukaModalEdit(
+                        '{{ $item->id_berita }}',
+                        '{{ addslashes($item->judul_berita) }}',
+                        '{{ $item->tanggal_posting }}',
+                        '{{ $item->status }}',
+                        {{ json_encode($item->isi_berita) }},
+                         '{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : '' }}'
+                        )">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                         </svg>
                     </button>
-                    <button class="btn-delete">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="3 6 5 6 21 6"/>
-                            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                            <path d="M10 11v6"/><path d="M14 11v6"/>
-                            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
-                        </svg>
-                    </button>
+
+                    <form action="{{ route('admin.berita.destroy', $item->id_berita) }}" method="POST"
+                        onsubmit="return confirm('Yakin hapus berita ini?')" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn-delete">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                                <path d="M10 11v6"/><path d="M14 11v6"/>
+                                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                            </svg>
+                        </button>
+                    </form>
                 </td>
             </tr>
-            @empty --}}
+            @empty
             <tr>
                 <td colspan="6" class="empty-state">
                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.5">
@@ -167,7 +181,7 @@
                     <p>Belum ada data berita</p>
                 </td>
             </tr>
-            {{-- @endforelse --}}
+            @endforelse
         </tbody>
     </table>
 </div>
@@ -183,47 +197,103 @@
                 </svg>
             </button>
         </div>
-        <div class="modal-body">
-            <div class="modal-field">
-                <label>Judul</label>
-                <input type="text" class="modal-input" placeholder="Judul berita...">
-            </div>
-            <div class="modal-row">
+        <form action="{{ route('admin.berita.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-body">
                 <div class="modal-field">
-                    <label>Tanggal Terbit</label>
-                    <input type="date" class="modal-input">
+                    <label>Judul</label>
+                    <input type="text" name="judul_berita" class="modal-input" placeholder="Judul berita...">
+                </div>
+                <div class="modal-row">
+                    <div class="modal-field">
+                        <label>Tanggal Terbit</label>
+                        <input type="date" name="tanggal_posting" class="modal-input">
+                    </div>
+                    <div class="modal-field">
+                        <label>Foto</label>
+                        <input type="file" name="thumbnail" class="modal-input" accept="image/jpeg,image/png,image/jpg">
+                    </div>
+                </div>
+                <div class="modal-row">
+                    <div class="modal-field">
+                        <label>Penulis</label>
+                        <input type="text" class="modal-input" placeholder="Nama penulis...">
+                    </div>
+                    <div class="modal-field">
+                        <label>Status</label>
+                        <select name="status" class="modal-input">
+                            <option value="publish">Publish</option>
+                            <option value="draft">Draft</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-field">
-                    <label>Foto</label>
-                    <input type="file" class="modal-input" accept="image/*">
+                    <label>Isi Berita</label>
+                    <textarea name="isi_berita" class="modal-input modal-textarea" rows="4" placeholder="Tulis isi berita..."></textarea>
                 </div>
             </div>
-            <div class="modal-row">
-                <div class="modal-field">
-                    <label>Penulis</label>
-                    <input type="text" class="modal-input" placeholder="Nama penulis...">
-                </div>
-                <div class="modal-field">
-                    <label>Status</label>
-                    <select class="modal-input">
-                        <option value="publish">Publish</option>
-                        <option value="draft">Draft</option>
-                    </select>
-                </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn-modal-simpan">
+                    Simpan
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </button>
             </div>
-            <div class="modal-field">
-                <label>Isi Berita</label>
-                <textarea class="modal-input modal-textarea" rows="4" placeholder="Tulis isi berita..."></textarea>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn-modal-simpan">
-                Simpan
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <polyline points="20 6 9 17 4 12"/>
+        </form>
+    </div>
+</div>
+
+{{-- MODAL EDIT BERITA --}}
+<div class="modal-overlay" id="modalEditBerita" onclick="if(event.target===this) this.style.display='none'">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 class="modal-title">EDIT BERITA</h3>
+            <button class="modal-close" onclick="document.getElementById('modalEditBerita').style.display='none'">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
                 </svg>
             </button>
         </div>
+        <form id="formEditBerita" action="" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <div class="modal-body">
+                <div class="modal-field">
+                    <label>Judul Berita <span style="color:red">*</span></label>
+                    <input type="text" name="judul_berita" id="edit_judul" class="modal-input" required>
+                </div>
+                <div class="modal-field">
+                    <label>Isi Berita <span style="color:red">*</span></label>
+                    <textarea name="isi_berita" id="edit_isi" class="modal-input modal-textarea" rows="4" required></textarea>
+                </div>
+                <div class="modal-field">
+                    <label>Thumbnail Baru (kosongkan jika tidak diganti)</label>
+                    <input type="file" name="thumbnail" class="modal-input" accept="image/jpeg,image/png,image/jpg">
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div class="modal-field">
+                        <label>Tanggal Posting <span style="color:red">*</span></label>
+                        <input type="date" name="tanggal_posting" id="edit_tanggal" class="modal-input" required>
+                    </div>
+                    <div class="modal-field">
+                        <label>Status <span style="color:red">*</span></label>
+                        <select name="status" id="edit_status" class="modal-input" required>
+                            <option value="publish">Publish</option>
+                            <option value="draft">Draft</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn-modal-simpan">
+                    Update
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -231,6 +301,15 @@
 
 @push('scripts')
 <script>
+function bukaModalEditBerita(id, judul, isi, tanggal, status) {
+    document.getElementById('formEditBerita').action = '{{ url("admin/berita") }}/' + id;
+    document.getElementById('edit_judul').value   = judul;
+    document.getElementById('edit_isi').value     = isi;
+    document.getElementById('edit_tanggal').value = tanggal;
+    document.getElementById('edit_status').value  = status;
+    document.getElementById('modalEditBerita').style.display = 'flex';
+}
+
 function filterTable() {
     const search = document.getElementById('searchInput').value.toLowerCase();
     const status = document.getElementById('filterStatus').value.toLowerCase();
