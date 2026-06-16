@@ -32,8 +32,8 @@ class BeritaController extends Controller
         // 1. Validasi Kelayakan Data Inputan Form Modal
         $request->validate([
             'judul_berita'    => 'required|max:200',
-            'tanggal_posting' => 'required',
-            'thumbnail'       => 'required|image|mimes:jpeg,png,jpg|max:2048', // Maksimal file foto 2MB
+            'tanggal_posting' => 'required|date',
+            'thumbnail'       => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'status'          => 'required|in:draft,publish',
             'isi_berita'      => 'required'
         ]);
