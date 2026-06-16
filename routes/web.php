@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\LayananController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\BeritaController;
+use App\Http\Controllers\Admin\PortofolioController;
 
 // =========================
 // FRONTEND / USER
@@ -41,4 +42,10 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::post('/berita',          [BeritaController::class, 'store'])->name('berita.store');
     Route::put('/berita/{id}',      [BeritaController::class, 'update'])->name('berita.update');
     Route::delete('/berita/{id}',   [BeritaController::class, 'destroy'])->name('berita.destroy');
+
+    //Portofolio(CRUD)
+    Route::get('/portofolio',           [PortofolioController::class, 'index'])->name('portofolio');
+    Route::post('/portofolio',          [PortofolioController::class, 'store'])->name('portofolio.store');
+    Route::put('/portofolio/{id}',      [PortofolioController::class, 'update'])->name('portofolio.update');
+    Route::delete('/portofolio/{id}',   [PortofolioController::class, 'destroy'])->name('portofolio.destroy');
 });
