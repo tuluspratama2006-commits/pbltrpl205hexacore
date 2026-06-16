@@ -136,8 +136,8 @@
 
         <div class="akun-avatar-row">
     <div class="akun-avatar" style="{{ $user->foto ? 'background:none;padding:0;' : '' }}">
-        @if(auth()->user()?->foto)
-            <img src="{{ asset('storage/' . auth()->user()?->foto) }}"
+        @if($user->foto)
+            <img src="{{ asset('storage/' . $user->foto) }}"
                  style="width:48px;height:48px;border-radius:50%;object-fit:cover;">
         @else
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
