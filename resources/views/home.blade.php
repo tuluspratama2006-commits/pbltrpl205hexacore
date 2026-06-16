@@ -174,52 +174,54 @@
             <div class="berita-header">
                 <h1 class="section-title">BERITA</h1>
             </div>
+            @php
+                $featured   = $publishedBerita->first();
+                $listBerita = $publishedBerita->skip(1)->take(3);
+            @endphp
             <div class="berita-layout">
+
+                {{-- FEATURED / BERITA UTAMA --}}
+                @if($featured)
                 <div class="featured-card">
                     <div class="featured-img-wrap">
-                        <img src="{{ asset('images/berita_1(opus by).jpg') }}" alt="Berita Utama">
-                        <div class="featured-date-badge">20 Feb 26</div>
+                        <img src="{{ asset('storage/' . $featured->thumbnail) }}" alt="{{ $featured->judul_berita }}">
+                        <div class="featured-date-badge">
+                            {{ \Carbon\Carbon::parse($featured->tanggal_posting)->isoFormat('D MMM YY') }}
+                        </div>
                     </div>
                     <div class="featured-card-body">
-                        <span class="featured-title-link">Peran PT BAT dalam Mendukung Mega Proyek Opus Bay Batam</span>
-                        <p class="featured-excerpt">PT Berkah Alam Tabantang bangga dipercaya berkontribusi dalam pembangunan infrastruktur Opus Bay, kawasan township mewah di Batam. Dengan tim profesional dan standar pengerjaan tinggi, kami memastikan kualitas terbaik di lapangan.</p>
-                        <button class="btn-selengkapnya" onclick="openNewsModal(1)">Selengkapnya &rsaquo;</button>
+                        <span class="featured-title-link">{{ $featured->judul_berita }}</span>
+                        <p class="featured-excerpt">{{ Str::limit(strip_tags($featured->isi_berita), 180) }}</p>
+                        <button class="btn-selengkapnya" onclick="openNewsModal({{ $featured->id_berita }})">
+                            Selengkapnya &rsaquo;
+                        </button>
                     </div>
                 </div>
+                @endif
+
+                {{-- LIST BERITA KANAN --}}
                 <div class="news-list">
-                    <div class="news-item" onclick="openNewsModal(2)">
+                    @forelse($listBerita as $berita)
+                    <div class="news-item" onclick="openNewsModal({{ $berita->id_berita }})">
                         <div class="news-item-img">
-                            <img src="{{ asset('images/berita_2.jpg') }}" alt="Berita 2">
-                            <div class="news-item-date">3 Des 25</div>
+                            <img src="{{ asset('storage/' . $berita->thumbnail) }}" alt="{{ $berita->judul_berita }}">
+                            <div class="news-item-date">
+                                {{ \Carbon\Carbon::parse($berita->tanggal_posting)->isoFormat('D MMM YY') }}
+                            </div>
                         </div>
                         <div class="news-item-body">
-                            <div class="news-item-title">Mengapa Infrastruktur Jalan yang Baik Sangat Penting bagi Hunian Mewah?</div>
-                            <div class="news-item-excerpt">Jalan yang mulus di kawasan elit bukan sekadar estetika, tapi aset investasi. Simak bagaimana standar teknis SI003 kami meningkatkan nilai properti hunian mewah.</div>
+                            <div class="news-item-title">{{ $berita->judul_berita }}</div>
+                            <div class="news-item-excerpt">{{ Str::limit(strip_tags($berita->isi_berita), 120) }}</div>
                             <button class="btn-baca">Baca &rsaquo;</button>
                         </div>
                     </div>
-                    <div class="news-item" onclick="openNewsModal(3)">
-                        <div class="news-item-img">
-                            <img src="{{ asset('images/berita_3.jpg') }}" alt="Berita 3">
-                            <div class="news-item-date">24 Jun 25</div>
-                        </div>
+                    @empty
+                    <div class="news-item">
                         <div class="news-item-body">
-                            <div class="news-item-title">Kontribusi Infrastruktur Terhadap Pertumbuhan Ekonomi di Kota Batam</div>
-                            <div class="news-item-excerpt">Batam sedang bertransformasi menjadi Kota Mandiri. PT BAT siap bersaing secara global untuk memajukan wajah infrastruktur kota tercinta.</div>
-                            <button class="btn-baca">Baca &rsaquo;</button>
+                            <div class="news-item-title" style="color:#94a3b8;">Belum ada berita lainnya.</div>
                         </div>
                     </div>
-                    <div class="news-item" onclick="openNewsModal(4)">
-                        <div class="news-item-img">
-                            <img src="{{ asset('images/berita_4.jpg') }}" alt="Berita 4">
-                            <div class="news-item-date">14 Mei 25</div>
-                        </div>
-                        <div class="news-item-body">
-                            <div class="news-item-title">Mengapa Keamanan Adalah Prioritas Utama dalam Setiap Proyek Kami?</div>
-                            <div class="news-item-excerpt">Keamanan adalah prioritas utama kami. Intip bagaimana protokol "Safety First" PT BAT diterapkan secara ketat di setiap area proyek komersial.</div>
-                            <button class="btn-baca">Baca &rsaquo;</button>
-                        </div>
-                    </div>
+                    @endforelse
                 </div>
             </div>
         </div>
