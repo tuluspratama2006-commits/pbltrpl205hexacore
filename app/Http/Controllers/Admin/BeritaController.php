@@ -29,7 +29,7 @@ class BeritaController extends Controller
 
     public function store(Request $request)
     {
-        // 1. Validasi Kelayakan Data Inputan Form Modal
+        //Validasi Kelayakan Data Inputan Form Modal
         $request->validate([
             'judul_berita'    => 'required|max:200',
             'tanggal_posting' => 'required|date',
@@ -38,21 +38,20 @@ class BeritaController extends Controller
             'isi_berita'      => 'required'
         ]);
 
-        // 2. Upload file gambar ke dalam folder: storage/app/public/thumbnails
+        //Upload file gambar ke dalam folder: storage/app/public/thumbnails
         $pathFoto = $request->file('thumbnail')->store('thumbnails', 'public');
 
-        // 3. Eksekusi simpan data ke database phpMyAdmin
+        //Eksekusi simpan data ke database phpMyAdmin
         Berita::create([
             'judul_berita'    => $request->judul_berita,
-            'slug'            => Str::slug($request->judul_berita), // Membuat URL ramah SEO otomatis
+            'slug'            => Str::slug($request->judul_berita),
             'isi_berita'      => $request->isi_berita,
             'thumbnail'       => $pathFoto,
             'tanggal_posting' => $request->tanggal_posting,
             'status'          => $request->status,
-            'id_admin'        => Auth::id() // Otomatis mencatat ID Admin yang sedang login saat ini
+            'id_admin'        => Auth::id()
         ]);
 
-        // 4. Kembali ke halaman tabel disertai notifikasi sukses berbentuk toast/alert
         return redirect()->route('admin.berita')->with('success', 'Berita baru berhasil diterbitkan!');
     }
 
