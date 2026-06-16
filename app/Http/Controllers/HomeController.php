@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Layanan;
+use App\Models\Berita;
 
 class HomeController extends Controller
 {
@@ -15,7 +16,11 @@ class HomeController extends Controller
 
     $profil = \App\Models\ProfilPerusahaan::first();
 
-    return view('home', compact('layanans', 'profil'));
+    $publishedBerita = Berita::where('status', 'publish')
+                                ->latest('tanggal_posting')
+                                ->get();
+
+    return view('home', compact('layanans', 'profil', 'publishedBerita'));
 }
     public function create()
     {
