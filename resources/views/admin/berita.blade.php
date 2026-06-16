@@ -44,7 +44,7 @@
     <div class="stat-card">
         <div class="stat-info">
             <span class="stat-label">Published</span>
-            <span class="stat-value">{{ $Published ?? 0 }}</span>
+            <span class="stat-value">{{ $published ?? 0 }}</span>
         </div>
         <div class="stat-icon">
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.5">
@@ -56,7 +56,7 @@
     <div class="stat-card">
         <div class="stat-info">
             <span class="stat-label">Unpublished</span>
-            <span class="stat-value">{{ $Unpublished ?? 0 }}</span>
+            <span class="stat-value">{{ $unpublished ?? 0 }}</span>
         </div>
         <div class="stat-icon">
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="1.5">
@@ -130,7 +130,7 @@
                 </td>
                 <td class="aksi-col">
                     <button class="btn-edit"
-                    onclick="bukaModalEdit(
+                    onclick="bukaModalEditBerita(
                         '{{ $item->id_berita }}',
                         '{{ addslashes($item->judul_berita) }}',
                         '{{ $item->tanggal_posting }}',
