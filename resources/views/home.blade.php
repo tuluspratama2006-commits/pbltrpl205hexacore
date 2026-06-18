@@ -492,10 +492,14 @@
 
         // BERITA MODAL
         const newsData = {
-            1: { date: "20 Februari 2026", title: "Peran PT BAT dalam Mendukung Mega Proyek Opus Bay Batam", image: "{{ asset('images/berita_1(opus by).jpg') }}", content: "<p>Menjadi bagian dari proyek sebesar Opus Bay adalah bukti nyata kepercayaan industri terhadap PT Berkah Alam Tabantang. Dalam proyek ini, tim kami fokus pada pengembangan infrastruktur dasar yang presisi. Kami memahami bahwa proyek skala internasional membutuhkan koordinasi tim yang solid dan ketepatan teknis. Melalui pendekatan kolaboratif, PT BAT memastikan setiap tahapan konstruksi, mulai dari pematangan lahan hingga infrastruktur pendukung, dikerjakan sesuai spesifikasi dan deadline yang ketat demi mendukung kemajuan properti di Batam.</p>" },
-            2: { date: "3 Desember 2025", title: "Mengapa Infrastruktur Jalan yang Baik Sangat Penting bagi Hunian Mewah?", image: "{{ asset('images/berita_2.jpg') }}", content: "<p>Dalam pembangunan hunian mewah, akses jalan adalah impresi pertama bagi penghuni. Mengacu pada standar SNI 003, PT BAT menerapkan teknik pengaspalan dan fondasi jalan yang mampu menahan beban berat tanpa mengabaikan kerapian visual. Jalan yang dibangun dengan drainase yang tepat dan material berkualitas tinggi tidak hanya bertahan lama, tetapi juga secara signifikan meningkatkan nilai jual investasi properti tersebut. Kami memastikan bahwa setiap jengkal aspal yang kami hampar memberikan kenyamanan berkendara dan kemewahan yang nyata bagi penghuni.</p>" },
-            3: { date: "24 Juni 2025", title: "Kontribusi Infrastruktur Terhadap Pertumbuhan Ekonomi di Kota Batam", image: "{{ asset('images/berita_3.jpg') }}", content: "<p>Transformasi Batam menuju Kota Mandiri membuka peluang besar bagi industri konstruksi lokal. Sebagai perusahaan yang berbasis di Batam, PT Berkah Alam Tabantang tidak hanya ingin menjadi penonton, tetapi penggerak perubahan. Kami terus berinvestasi pada teknologi konstruksi terbaru untuk menyamai standar global. Dengan pemahaman mendalam tentang lanskap kota dan komitmen pada kualitas, PT BAT siap bermitra dalam pembangunan investasi strategis, membuktikan bahwa perusahaan lokal Batam mampu memberikan hasil kelas dunia.</p>" },
-            4: { date: "14 Mei 2025", title: "Mengapa Keamanan Adalah Prioritas Utama dalam Setiap Proyek Kami?", image: "{{ asset('images/berita_4.jpg') }}", content: "<p>Bagi PT Berkah Alam Tabantang, keselamatan kerja bukan sekadar aturan, melainkan budaya. Di proyek skala besar, risiko kecelakaan kerja selalu ada, itulah sebabnya kami menerapkan protokol APD lengkap, safety briefing harian, dan pengawasan ketat oleh ahli K3 di lapangan. Kami percaya bahwa lingkungan kerja yang aman akan melahirkan produktivitas maksimal dan hasil bangunan yang berkualitas. Integritas kami dipertahankan dalam setiap prosedur keamanan yang kami jalankan demi melindungi aset paling berharga perusahaan: tenaga kerja kami.</p>" }
+            @foreach($publishedBerita as $b)
+            {{ $b->id_berita }}: {
+                date:    "{{ \Carbon\Carbon::parse($b->tanggal_posting)->isoFormat('D MMMM YYYY') }}",
+                title:   "{{ addslashes($b->judul_berita) }}",
+                image:   "{{ asset('storage/' . $b->thumbnail) }}",
+                content: {!! json_encode('<p>' . nl2br(e($b->isi_berita)) . '</p>') !!}
+            },
+            @endforeach
         };
 
         function openNewsModal(id) {
