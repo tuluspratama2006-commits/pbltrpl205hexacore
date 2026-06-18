@@ -769,4 +769,17 @@ body {
     font-weight: 500;
 }
 
+.ck-editor__editable_inline {
+    min-height: 220px;
+    background: #d1d5db !important;
+    color: #111827;
+    border-radius: 0 0 8px 8px !important;
+}
+.ck.ck-toolbar {
+    border-radius: 8px 8px 0 0 !important;
+}
+.ck.ck-editor__top .ck-sticky-panel__content {
+    border: none !important;
+}
+
 .judul-link:hover { color: var(--sidebar-active); }
