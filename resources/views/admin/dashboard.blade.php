@@ -39,7 +39,7 @@
     <div class="stat-card">
         <div class="stat-info">
             <span class="stat-label">Total Berita</span>
-            <span class="stat-value">5</span>
+            <span class="stat-value">{{ $totalPost ?? 0 }}</span>
         </div>
         <div class="stat-icon">
             {{-- Dokumen berwarna oranye --}}
