@@ -11,13 +11,22 @@ use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $semuaBerita = Berita::latest('tanggal_posting')->get();
 
         $totalPost = Berita::count();
         $published = Berita::where('status', 'publish')->count();
         $unpublished = Berita::where('status', 'draft')->count();
+
+        if ($request->routeIs('admin.dashboard')) {
+                return view('admin.dashboard', compact(
+                    'semuaBerita',
+                    'totalPost',
+                    'published',
+                    'unpublished'
+                ));
+            }
 
         return view('admin.berita', compact(
             'semuaBerita',

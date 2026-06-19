@@ -34,6 +34,9 @@ Route::prefix('admin')->group(function () {
     Route::get('/pengaturan',  [PengaturanController::class, 'index'])->name('pengaturan');
     Route::post('/pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
 
+    //Dashboard
+    Route::get('/dashboard', [BeritaController::class, 'index'])->name('dashboard');
+
     // Layanan (CRUD)
     Route::get('/layanan',           [LayananController::class, 'index'])->name('layanan');
     Route::post('/layanan',          [LayananController::class, 'store'])->name('layanan.store');
