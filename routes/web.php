@@ -7,11 +7,14 @@ use App\Http\Controllers\Admin\LayananController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\PortofolioController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TestimoniController;
 
 // =========================
 // FRONTEND / USER
 // =========================
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 // Login & Logout
 Route::post('/login', [LoginController::class, 'login'])->name('login');
@@ -21,7 +24,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 // ADMIN — dilindungi middleware
 // =========================
 Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
-
+Route::prefix('admin')->group(function () {
     Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
     Route::get('/portofolio', fn() => view('admin.portofolio'))->name('portofolio');
     Route::get('/berita',    fn() => view('admin.berita'))->name('berita');
@@ -48,4 +51,12 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::post('/portofolio',          [PortofolioController::class, 'store'])->name('portofolio.store');
     Route::put('/portofolio/{id}',      [PortofolioController::class, 'update'])->name('portofolio.update');
     Route::delete('/portofolio/{id}',   [PortofolioController::class, 'destroy'])->name('portofolio.destroy');
+    
+    Route::get('/testimoni',           [TestimoniController::class, 'index'])->name('testimoni');
+    Route::post('/testimoni',          [TestimoniController::class, 'store'])->name('testimoni.store');
+    Route::put('/testimoni/{id}',      [TestimoniController::class, 'update'])->name('testimoni.update');
+    Route::delete('/testimoni/{id}',   [TestimoniController::class, 'destroy'])->name('testimoni.destroy');
+
+    
+});
 });
