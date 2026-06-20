@@ -60,17 +60,6 @@
     <div class="toolbar-left">
         <div class="filter-dropdown">
             <select>
-                <option>Semua kategori</option>
-                <option>Engineering</option>
-                <option>Infrastruktur</option>
-                <option>Konstruksi</option>
-            </select>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <polyline points="6 9 12 15 18 9"/>
-            </svg>
-        </div>
-        <div class="filter-dropdown">
-            <select>
                 <option>Status</option>
                 <option>Aktif</option>
                 <option>Nonaktif</option>

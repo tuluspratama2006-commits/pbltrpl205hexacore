@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\PortofolioController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\TestimoniController;
+use App\Http\Controllers\Admin\TestimoniController;
 
 // =========================
 // FRONTEND / USER
@@ -59,7 +59,8 @@ Route::prefix('admin')->group(function () {
     Route::post('/testimoni',          [TestimoniController::class, 'store'])->name('testimoni.store');
     Route::put('/testimoni/{id}',      [TestimoniController::class, 'update'])->name('testimoni.update');
     Route::delete('/testimoni/{id}',   [TestimoniController::class, 'destroy'])->name('testimoni.destroy');
-
+     Route::get('/testimoni/{id}/edit', [TestimoniController::class, 'edit'])->name('testimoni.edit');
+});
     
 });
-});
+
