@@ -29,17 +29,6 @@ class PortofolioController extends Controller
         ));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         // Validasi input data
@@ -76,25 +65,6 @@ class PortofolioController extends Controller
         return redirect()->route('admin.portofolio')->with('success', 'Proyek portofolio berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Portofolio $portofolio)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Portofolio $portofolio)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id_portofolio)
     {
         // Cari data portofolio berdasarkan primary key Anda

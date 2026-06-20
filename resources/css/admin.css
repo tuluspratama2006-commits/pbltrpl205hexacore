@@ -17,6 +17,8 @@
     --border: #e2eaf5;
     --shadow: 0 2px 12px rgba(30, 42, 74, 0.08);
     --radius: 12px;
+    --sidebar-width: 260px;
+    --transition-speed: 0.3s;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -41,6 +43,7 @@ body {
     display: flex;
     flex-direction: column;
     z-index: 100;
+    transition: width var(--transition-speed) ease;
 }
 
 .main-content {
@@ -49,6 +52,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    transition: margin-left var(--transition-speed) ease;
 }
 
 .content {
@@ -62,9 +66,12 @@ body {
 .sidebar-logo {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 20px 20px 24px;
+    justify-content: center;
+    height: 70px;
+    padding: 10px 0;
+    width: 100%;
     border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-sizing: border-box ;
 }
 
 .logo-text {
@@ -102,7 +109,13 @@ body {
     font-weight: 600;
 }
 
-.nav-icon { display: flex; align-items: center; opacity: 0.85; }
+.nav-icon {
+    display: flex;
+    align-items: center;
+    opacity: 0.85;
+    min-width: 20px;
+    justify-content: center;
+ }
 
 .sidebar-footer {
     padding: 20px;
@@ -122,9 +135,60 @@ body {
     transition: background 0.2s;
     width: 100%;
     justify-content: center;
+    box-sizing: border-box;
 }
 
 .btn-kembali:hover { background: rgba(255,255,255,0.2); }
+
+/* --- TOMBOL TOGGLE PANAH --- */
+.toggle-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.btn-toggle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--transition-speed) ease, background 0.2s;
+}
+.btn-toggle:hover { background: rgba(255,255,255,0.2); }
+
+/* =================================================== */
+/* --- LOGIC STATE SAAT HIDE MODE (.collapsed) ---    */
+/* =================================================== */
+
+/* Ubah nilai variabel lebar untuk memperkecil layout & memperluas tabel */
+body:has(.sidebar.collapsed) {
+    --sidebar-width: 80px;
+}
+/* Sembunyikan tulisan menu */
+.sidebar.collapsed .menu-text {
+    display: none !important;
+}
+/* Pusatkan posisi item menu nav saat mengecil */
+.sidebar.collapsed .sidebar-nav li a {
+    justify-content: center;
+    padding: 11px 0;
+    gap: 0;
+}
+/* Hilangkan teks/gap pada tombol kembali, sisakan ikonnya saja */
+.sidebar.collapsed .btn-kembali {
+    padding: 9px 0;
+    gap: 0;
+}
+/* Putar ikon panah ke kanan ketika tersembunyi */
+.sidebar.collapsed .btn-toggle {
+    transform: rotate(180deg);
+}
 
 /* ===========================
    TOPBAR

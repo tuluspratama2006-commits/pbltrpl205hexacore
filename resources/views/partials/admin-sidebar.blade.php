@@ -1,7 +1,8 @@
 <div class="sidebar">
     <div class="sidebar-logo">
         <div class="logo-icon">
-            <img src="{{ asset('images/logo_pt_bat2.jpg') }}" alt="BAT" width="36" height="36"
+            <img src="{{ asset('images/Logo_BAT_White.png') }}" alt="BAT" width="50" height="50"
+                style="display: block; margin: 0 auto;"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
             <div style="display:none; width:36px; height:36px; background:white; border-radius:50%; align-items:center; justify-content:center;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1e2a4a" stroke-width="2">
@@ -9,7 +10,6 @@
                 </svg>
             </div>
         </div>
-        <span class="logo-text">BAT</span>
     </div>
 
     <nav class="sidebar-nav">
