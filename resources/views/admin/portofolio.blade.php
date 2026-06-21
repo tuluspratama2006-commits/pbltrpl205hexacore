@@ -7,11 +7,11 @@
 {{-- Header --}}
 <div class="page-header">
     <h1 class="page-heading"></h1>
-    <button class="btn-tambah" onclick="document.getElementById('modalTambahProjek').style.display='flex'">
+    <button class="btn-tambah" onclick="document.getElementById('modalTambahPortofolio').style.display='flex'">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
         </svg>
-        Tambah Projek
+        Tambah Portofolio
     </button>
 </div>
 
@@ -20,8 +20,8 @@
 
     <div class="stat-card">
         <div class="stat-info">
-            <span class="stat-label">Total Projek</span>
-            <span class="stat-value">{{ $totalProjek ?? 0 }}</span>
+            <span class="stat-label">Total Portofolio</span>
+            <span class="stat-value">{{ $totalPortofolio ?? 0 }}</span>
         </div>
 
         <div class="stat-icon">
@@ -37,7 +37,7 @@
     <div class="stat-card">
         <div class="stat-info">
             <span class="stat-label">Published</span>
-            <span class="stat-value">{{ $totalPublished ?? 0 }}</span>
+            <span class="stat-value">{{ $Portofoliopublished ?? 0 }}</span>
         </div>
 
         <div class="stat-icon">
@@ -51,7 +51,7 @@
     <div class="stat-card">
         <div class="stat-info">
             <span class="stat-label">Unpublished</span>
-            <span class="stat-value">{{ $totalDraft ?? 0 }}</span>
+            <span class="stat-value">{{ $Portofoliounpublished ?? 0 }}</span>
         </div>
 
         <div class="stat-icon">
@@ -106,26 +106,73 @@
             </tr>
         </thead>
         <tbody>
-            {{-- @foreach($portofolios as $item)
+            @forelse($semuaPortofolio as $item)
             <tr>
-                <td><img src="{{ asset('storage/' . $item->foto) }}" alt="{{ $item->nama_projek }}" class="table-img"></td>
-                <td>{{ $item->nama_projek }}</td>
-                <td><span class="badge-kategori">{{ $item->kategori }}</span></td>
-                <td>{{ $item->created_at->format('d/m/y') }}</td>
+                <td>
+                    @if($item->thumbnail)
+                        <img src="{{ asset('storage/' . $item->thumbnail) }}" alt="{{ $item->nama_projek }}" class="table-img">
+                    @else
+                        <span class="text-muted">No Image</span>
+                    @endif
+                </td>
+                <td>{{ $item->judul_proyek }}</td>
+                <td>{{ $item->nama_klien }}</td>
+                <td>{{ \Carbon\Carbon::parse($item->tanggal_proyek)->format('d M Y') }}</td>
+                <td>{{ $item->lokasi }}</td>
+                <td>
+                    @if($item->file_pdf)
+                        <a href="{{ asset('storage/' . $item->file_pdf) }}" target="_blank" class="btn-link" style="color: #2563eb; text-decoration: underline;">
+                            Lihat PDF
+                        </a>
+                    @else
+                        <span class="text-muted">-</span>
+                    @endif
+                </td>
                 <td>
                     <span class="badge-status {{ $item->status == 'publish' ? 'publish' : 'draft' }}">
                         {{ ucfirst($item->status) }}
                     </span>
                 </td>
+                <td>{{ $item->created_at->format('d/m/y H:i') }}</td>
+                <td>{{ $item->updated_at->format('d/m/y H:i') }}</td>
                 <td class="aksi-col">
-                    <a href="#" class="btn-edit">...</a>
-                    <button class="btn-delete">...</button>
+                    <button class="btn-edit"
+                        onclick="bukaModalEditPortofolio(
+                            '{{ $item->id_portofolio }}',
+                            '{{ addslashes($item->judul_proyek) }}',
+                            '{{ $item->tanggal_proyek }}',
+                            '{{ $item->nama_klien }}',
+                            '{{ addslashes($item->lokasi) }}',
+                            '{{ $item->status }}',
+                            {{ json_encode($item->deskripsi) }},
+                            '{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : '' }}',
+                            '{{ $item->file_pdf ? asset('storage/' . $item->file_pdf) : '' }}'
+                        )">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                    </button>
+
+                   <form action="{{ route('admin.portofolio.destroy', $item->id_portofolio) }}" method="POST"
+                        onsubmit="return confirm('Yakin hapus data portofolio ini?')" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn-delete" title="Hapus Portofolio">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                                <path d="M10 11v6"/>
+                                <path d="M14 11v6"/>
+                                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                            </svg>
+                        </button>
+                    </form>
                 </td>
             </tr>
-            @endforeach --}}
-
+            @empty
             <tr>
-                <td colspan="6" class="empty-state">
+                <td colspan="20" class="empty-state">
                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.5">
                         <rect x="2" y="7" width="20" height="14" rx="2"/>
                         <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
@@ -133,50 +180,226 @@
                     <p>Belum ada data portofolio</p>
                 </td>
             </tr>
+            @endforelse
         </tbody>
     </table>
 </div>
 
-{{-- MODAL TAMBAH PROJEK --}}
-<div class="modal-overlay" id="modalTambahProjek" onclick="if(event.target===this) this.style.display='none'">
-    <div class="modal-box">
+{{-- MODAL TAMBAH PORTOFOLIO --}}
+<div class="modal-overlay" id="modalTambahPortofolio" onclick="if(event.target===this) this.style.display='none'">
+    <div class="modal-box" style="max-width: 650px; max-height: 90vh; display: flex; flex-direction: column;">
         <div class="modal-header">
             <h3 class="modal-title">PORTOFOLIO</h3>
-            <button class="modal-close" onclick="document.getElementById('modalTambahProjek').style.display='none'">
+            <button class="modal-close" onclick="document.getElementById('modalTambahPortofolio').style.display='none'">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
                 </svg>
             </button>
         </div>
-        <div class="modal-body">
-            <div class="modal-field">
-                <label>Judul</label>
-                <input type="text" class="modal-input" placeholder="">
-            </div>
-            <div class="modal-row">
+        <form action="{{ route('admin.portofolio.store') }}" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; overflow: hidden; margin: 0;">
+            @csrf
+            {{-- Body: fitur SCROLL --}}
+            <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px; max-height: calc(90vh - 120px);">
                 <div class="modal-field">
-                    <label>Tanggal</label>
-                    <input type="date" class="modal-input">
+                    <label>Nama Proyek <span style="color:red">*</span></label>
+                    <input type="text" name="judul_proyek" class="modal-input" placeholder="Nama proyek..." required>
                 </div>
-                <div class="modal-field">
-                    <label>Foto</label>
-                    <input type="file" class="modal-input" accept="image/*">
+                <div class="modal-row" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div class="modal-field">
+                        <label>Tanggal Proyek <span style="color:red">*</span></label>
+                        <input type="date" name="tanggal_proyek" class="modal-input" required>
+                    </div>
+                    <div class="modal-field">
+                        <label>Foto Portofolio <span style="color:red">*</span></label>
+                        <input type="file" name="thumbnail" class="modal-input" accept="image/jpeg,image/png,image/jpg" required>
+                    </div>
+                </div>
+                <div class="modal-row" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top: 8px;">
+                    <div class="modal-field">
+                        <label>Klien <span style="color:red">*</span></label>
+                        <input type="text" name="nama_klien" class="modal-input" placeholder="Nama klien..." required>
+                    </div>
+                    <div class="modal-field">
+                        <label>Lokasi <span style="color:red">*</span></label>
+                        <input type="text" name="lokasi" class="modal-input" placeholder="Lokasi proyek..." required>
+                    </div>
+                </div>
+                <div class="modal-row" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top: 8px;">
+                    <div class="modal-field">
+                        <label>Dokumen</label>
+                        <input type="file" name="file_pdf" class="modal-input" accept="application/pdf">
+                    </div>
+                    <div class="modal-field">
+                        <label>Status <span style="color:red">*</span></label>
+                        <select name="status" class="modal-input" required>
+                            <option value="publish">Publish</option>
+                            <option value="draft">Draft</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-field" style="margin-top: 8px;">
+                    <label>Isi / Deskripsi<span style="color:red">*</span></label>
+                    <textarea name="deskripsi" class="modal-input modal-textarea" rows="4" placeholder="Tulis deskripsi lengkap proyek..." required></textarea>
                 </div>
             </div>
-            <div class="modal-field">
-                <label>Isi</label>
-                <textarea class="modal-input modal-textarea" rows="4" placeholder=""></textarea>
+            <div class="modal-footer" padding-top: 12px; border-top: 1px solid #e5e7eb;">
+                <button type="submit" class="btn-modal-simpan">
+                    Simpan
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </button>
             </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn-modal-simpan">
-                Simpan
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <polyline points="20 6 9 17 4 12"/>
+        </form>
+    </div>
+</div>
+
+{{-- MODAL EDIT PORTOFOLIO --}}
+<div class="modal-overlay" id="modalEditPortofolio" onclick="if(event.target===this) this.style.display='none'">
+    <div class="modal-box" style="max-width: 650px; max-height: 90vh; display: flex; flex-direction: column;">
+
+        {{-- Header: Tetap di atas --}}
+        <div class="modal-header">
+            <h3 class="modal-title">EDIT PORTOFOLIO</h3>
+            <button class="modal-close" onclick="document.getElementById('modalEditPortofolio').style.display='none'">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
                 </svg>
             </button>
         </div>
+        <form id="formEditPortofolio" action="" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; overflow: hidden; margin: 0;">
+            @csrf
+            @method('PUT')
+            {{-- Body: fitur SCROLL --}}
+            <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px; max-height: calc(90vh - 120px);">
+                <div class="modal-field">
+                    <label>Nama Proyek <span style="color:red">*</span></label>
+                    <input type="text" name="judul_proyek" id="edit_judul_proyek" class="modal-input" required>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div class="modal-field">
+                        <label>Tanggal Proyek <span style="color:red">*</span></label>
+                        <input type="date" name="tanggal_proyek" id="edit_tanggal_proyek" class="modal-input" required>
+                    </div>
+                    <div class="modal-field">
+                        <label>Foto Baru</label>
+                        <input type="file" name="thumbnail" class="modal-input" accept="image/jpeg,image/png,image/jpg">
+
+                        {{-- Perbaikan: Ditata rapi agar tidak merusak layout saat muncul --}}
+                        <div style="margin-top: 8px;">
+                            <a id="preview_thumbnail" href="" target="_blank" style="display: none; font-size: 13px; color: #2563eb; text-decoration: underline;">
+                                Lihat Foto Sebelumnya
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top: 8px;">
+                    <div class="modal-field">
+                        <label>Klien <span style="color:red">*</span></label>
+                        <input type="text" name="nama_klien" id="edit_nama_klien" class="modal-input" required>
+                    </div>
+                    <div class="modal-field">
+                        <label>Lokasi <span style="color:red">*</span></label>
+                        <input type="text" name="lokasi" id="edit_lokasi" class="modal-input" required>
+                    </div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top: 8px;">
+                    <div class="modal-field">
+                        <label>Dokumen Baru</label>
+                        <input type="file" name="file_pdf" class="modal-input" accept="application/pdf">
+                        <div style="margin-top: 6px;">
+                            <a id="preview_pdf" href="" target="_blank" style="display: none; font-size: 13px; color: #2563eb; text-decoration: underline;">
+                                📄 Lihat PDF Sebelumnya
+                            </a>
+                        </div>
+                    </div>
+                    <div class="modal-field">
+                        <label>Status <span style="color:red">*</span></label>
+                        <select name="status" id="edit_status" class="modal-input" required>
+                            <option value="publish">Publish</option>
+                            <option value="draft">Draft</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-field" style="margin-top: 8px;">
+                    <label>Isi / Deskripsi<span style="color:red">*</span></label>
+                    <textarea name="deskripsi" id="edit_deskripsi" class="modal-input modal-textarea" rows="4" required></textarea>
+                </div>
+
+            </div>
+
+            {{-- Footer: Tetap menempel di bawah modal --}}
+            <div class="modal-footer" padding-top: 12px; border-top: 1px solid #e5e7eb;">
+                <button type="submit" class="btn-modal-simpan">
+                    Update Portofolio
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
 @endsection
+
+@push('scripts')
+<script>
+// 1. FUNGSI UNTUK MEMBUKA MODAL EDIT PORTOFOLIO DAN MENGISI DATA LAMA
+function bukaModalEditPortofolio(id, judul, tanggal, klien, lokasi, status, deskripsi, urlThumbnail, urlPdf)
+{
+    document.getElementById('formEditPortofolio').action = '{{ url("admin/portofolio") }}/' + id;
+    document.getElementById('edit_judul_proyek').value = judul;
+    document.getElementById('edit_tanggal_proyek').value = tanggal;
+    document.getElementById('edit_nama_klien').value = klien;
+    document.getElementById('edit_lokasi').value = lokasi;
+    document.getElementById('edit_status').value = status;
+    document.getElementById('edit_deskripsi').value = deskripsi;
+
+    // Logika Preview Foto Sebelumnya (Opsional - pastikan id 'preview_thumbnail' ada di modal)
+    const previewImg = document.getElementById('preview_thumbnail');
+    if (previewImg && urlThumbnail) {
+        previewImg.src = urlThumbnail;
+        previewImg.style.display = 'block';
+    } else if (previewImg) {
+        previewImg.style.display = 'none';
+    }
+
+    // Logika Link PDF Sebelumnya (Opsional - pastikan id 'preview_pdf' ada di modal)
+    const previewPdf = document.getElementById('preview_pdf');
+    if (previewPdf && urlPdf) {
+        previewPdf.href = urlPdf;
+        previewPdf.style.display = 'inline-block';
+    } else if (previewPdf) {
+        previewPdf.style.display = 'none';
+    }
+
+    // Tampilkan Modal Edit
+    document.getElementById('modalEditPortofolio').style.display = 'flex';
+}
+
+// 2. FUNGSI FILTER PENCARIAN DAN STATUS PADA TABEL
+function filterTable() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const status = document.getElementById('filterStatus').value.toLowerCase();
+
+    // Pastikan pada tag <table> Anda memiliki id="portofolioTable"
+    // dan pada setiap tag <tr> di dalam tbody memiliki atribut data-status="{{ $item->status }}"
+    const rows = document.querySelectorAll('#portofolioTable tbody tr[data-status]');
+
+    rows.forEach(row => {
+        const text        = row.innerText.toLowerCase();
+        const rowStatus   = row.getAttribute('data-status');
+        const matchText   = text.includes(search);
+        const matchStatus = status === '' || rowStatus === status;
+
+        row.style.display = (matchText && matchStatus) ? '' : 'none';
+    });
+}
+
+// 3. LOGIKA TOAST NOTIFIKASI (OTOMATIS HILANG)
+const toast = document.getElementById('toastNotif');
+if (toast) setTimeout(() => toast.remove(), 3500);
+</script>
+@endpush
+
