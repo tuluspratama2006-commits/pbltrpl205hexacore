@@ -30,6 +30,9 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/berita', fn() => view('admin.berita'))->name('berita');
     Route::get('/testimoni', fn() => view('admin.testimoni'))->name('testimoni');
 
+    // Dashboard Admin
+    Route::get('/dashboard', [BeritaController::class, 'index'])->name('dashboard');
+
     // Pengaturan
     Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan');
     Route::post('/pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
