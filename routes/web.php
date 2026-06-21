@@ -28,7 +28,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
 
     // Dashboard Admin
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [BeritaController::class, 'index'])->name('dashboard');
 
     // Pengaturan
     Route::get('/pengaturan',  [PengaturanController::class, 'index'])->name('pengaturan');
