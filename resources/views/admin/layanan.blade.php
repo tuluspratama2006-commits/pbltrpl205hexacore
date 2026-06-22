@@ -185,14 +185,10 @@
         </div>
         <form action="{{ route('admin.layanan.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px; max-height: calc(90vh - 120px);">
                 <div class="modal-field">
                     <label>Judul Layanan <span style="color:red">*</span></label>
                     <input type="text" name="judul_layanan" class="modal-input" required placeholder="Contoh: Konstruksi Gedung">
-                </div>
-                <div class="modal-field">
-                    <label>Deskripsi <span style="color:red">*</span></label>
-                    <textarea name="deskripsi" class="modal-input modal-textarea" rows="4" required placeholder="Deskripsi layanan..."></textarea>
                 </div>
                 <div class="modal-field">
                     <label>Icon (nama icon)</label>
@@ -214,6 +210,10 @@
                             <option value="draft">Unpublished</option>
                         </select>
                     </div>
+                </div>
+                <div class="modal-field">
+                    <label>Deskripsi <span style="color:red">*</span></label>
+                    <textarea name="deskripsi" id="tambah_deskripsi" class="modal-input modal-textarea" rows="4" required placeholder="Deskripsi layanan..."></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -287,7 +287,20 @@
 
 @endsection
 @push('scripts')
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 <script>
+let portoTambahEditor, portoEditEditor;
+
+ClassicEditor
+    .create(document.querySelector('#tambah_deskripsi'))
+    .then(editor => { portoTambahEditor = editor; })
+    .catch(error => { console.error(error); });
+
+ClassicEditor
+    .create(document.querySelector('#edit_deskripsi'))
+    .then(editor => { portoEditEditor = editor; })
+    .catch(error => { console.error(error); });
+
 // Buka modal edit dan isi field
 function bukaModalEdit(id, judul, deskripsi, icon, urutan, status) {
     document.getElementById('formEdit').action = '/admin/layanan/' + id;
