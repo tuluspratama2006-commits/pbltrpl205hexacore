@@ -15,24 +15,24 @@ class PortofolioController extends Controller
      */
     public function index()
     {
-        $totalProyek = Portofolio::count();
-        $totalPublished = Portofolio::where('status', 'publish')->count();
-        $totalUnpublished = Portofolio::where('status', 'draft')->count();
+        $totalPortofolio = Portofolio::count();
+        $Portofoliopublished = Portofolio::where('status', 'publish')->count();
+        $Portofoliounpublished = Portofolio::where('status', 'draft')->count();
 
-        $portofolios = Portofolio::latest()->get();
+        $semuaPortofolio = Portofolio::latest()->get();
 
         return view('admin.portofolio', compact(
-            'totalProyek',
-            'totalPublished',
-            'totalUnpublished',
-            'portofolios'
+            'totalPortofolio',
+            'Portofoliopublished',
+            'Portofoliounpublished',
+            'semuaPortofolio'
         ));
     }
 
     public function store(Request $request)
     {
         // Validasi input data
-        $request->validate([
+        $validatedData = $request->validate([
             'judul_proyek'   => 'required|string|max:255',
             'deskripsi'      => 'required',
             'lokasi'         => 'required|string|max:255',
@@ -43,24 +43,21 @@ class PortofolioController extends Controller
             'status'         => 'required|in:publish,draft',
         ]);
 
-        // Inisialisasi data untuk disimpan
-        $data = $request->validated();
-
-        // Generate Slug otomatis dari judul proyek
-        $data['slug'] = Str::slug($request->judul_proyek);
+        // Gabungkan data hasil validasi dengan slug manual
+        $validatedData['slug'] = Str::slug($request->judul_proyek);
 
         // Handle upload file Gambar (Thumbnail)
         if ($request->hasFile('thumbnail')) {
-            $data['thumbnail'] = $request->file('thumbnail')->store('portofolio/thumbnails', 'public');
+            $validatedData['thumbnail'] = $request->file('thumbnail')->store('portofolio/thumbnails', 'public');
         }
 
         // Handle upload file PDF (jika ada)
         if ($request->hasFile('file_pdf')) {
-            $data['file_pdf'] = $request->file('file_pdf')->store('portofolio/pdfs', 'public');
+            $validatedData['file_pdf'] = $request->file('file_pdf')->store('portofolio/pdfs', 'public');
         }
 
-        // Simpan ke database
-        Portofolio::create($data);
+        // Simpan menggunakan data yang sudah aman ($validatedData)
+        Portofolio::create($validatedData);
 
         return redirect()->route('admin.portofolio')->with('success', 'Proyek portofolio berhasil ditambahkan!');
     }
@@ -71,7 +68,7 @@ class PortofolioController extends Controller
         $portofolio = Portofolio::where('id_portofolio', $id_portofolio)->firstOrFail();
 
         // Validasi input data
-        $request->validate([
+        $validatedData = $request->validate([
             'judul_proyek'   => 'required|string|max:255',
             'deskripsi'      => 'required',
             'lokasi'         => 'required|string|max:255',
@@ -82,35 +79,34 @@ class PortofolioController extends Controller
             'status'         => 'required|in:publish,draft',
         ]);
 
-        $data = $request->validated();
-        $data['slug'] = Str::slug($request->judul_proyek);
+        // Update slug otomatis jika judul proyek berubah
+        $validatedData['slug'] = Str::slug($request->judul_proyek);
 
         // Jika mengupload thumbnail baru
         if ($request->hasFile('thumbnail')) {
-            // Hapus berkas thumbnail yang lama dari storage
-            if ($portofolio->thumbnail) {
+            // Hapus berkas thumbnail yang lama dari storage jika ada
+            if ($portofolio->thumbnail && Storage::disk('public')->exists($portofolio->thumbnail)) {
                 Storage::disk('public')->delete($portofolio->thumbnail);
             }
             // Simpan yang baru
-            $data['thumbnail'] = $request->file('thumbnail')->store('portofolio/thumbnails', 'public');
+            $validatedData['thumbnail'] = $request->file('thumbnail')->store('portofolio/thumbnails', 'public');
         }
 
         // Jika mengupload berkas PDF baru
         if ($request->hasFile('file_pdf')) {
             // Hapus berkas PDF lama jika ada
-            if ($portofolio->file_pdf) {
+            if ($portofolio->file_pdf && Storage::disk('public')->exists($portofolio->file_pdf)) {
                 Storage::disk('public')->delete($portofolio->file_pdf);
             }
             // Simpan yang baru
-            $data['file_pdf'] = $request->file('file_pdf')->store('portofolio/pdfs', 'public');
+            $validatedData['file_pdf'] = $request->file('file_pdf')->store('portofolio/pdfs', 'public');
         }
 
-        // Eksekusi update data di database
-        $portofolio->update($data);
+        // Eksekusi update data di database menggunakan data ter-validasi
+        $portofolio->update($validatedData);
 
         return redirect()->route('admin.portofolio')->with('success', 'Proyek portofolio berhasil diperbarui!');
     }
-
     /**
      * Remove the specified resource from storage.
      */
@@ -118,13 +114,13 @@ class PortofolioController extends Controller
     {
         $portofolio = Portofolio::where('id_portofolio', $id_portofolio)->firstOrFail();
 
-        // Hapus file gambar thumbnail dari folder storage
-        if ($portofolio->thumbnail) {
+        // Hapus file gambar thumbnail dari folder storage jika ada berkasnya
+        if ($portofolio->thumbnail && Storage::disk('public')->exists($portofolio->thumbnail)) {
             Storage::disk('public')->delete($portofolio->thumbnail);
         }
 
-        // Hapus file PDF dari folder storage
-        if ($portofolio->file_pdf) {
+        // Hapus file PDF dari folder storage jika ada berkasnya
+        if ($portofolio->file_pdf && Storage::disk('public')->exists($portofolio->file_pdf)) {
             Storage::disk('public')->delete($portofolio->file_pdf);
         }
 

@@ -624,8 +624,11 @@ body:has(.sidebar.collapsed) {
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     border: 1px solid var(--border);
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
+
+.table-card table { min-width: max-content; }
 
 .data-table {
     width: 100%;
@@ -692,7 +695,9 @@ body:has(.sidebar.collapsed) {
     color: #b36200;
 }
 
-.aksi-col { display: flex; gap: 8px; align-items: center; }
+.aksi-col { white-space: nowrap; }
+
+.aksi-wrapper { display: flex; gap: 8px; align-items: center; }
 
 .btn-edit {
     display: flex;
@@ -831,6 +836,30 @@ body:has(.sidebar.collapsed) {
     text-decoration: underline;
     font-size: 13px;
     font-weight: 500;
+}
+
+/* ===========================
+   MODAL SCROLL
+=========================== */
+.modal-box {
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-box form {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex: 1;
+    min-height: 0;
+}
+
+.modal-body {
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    padding-right: 4px;
 }
 
 .ck-editor__editable_inline {

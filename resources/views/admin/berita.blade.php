@@ -76,7 +76,7 @@
             <select id="filterStatus" onchange="filterTable()">
                 <option value="">Status</option>
                 <option value="publish">Publish</option>
-                <option value="draft">Draft</option>
+                <option value="draft">Unpublished</option>
             </select>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <polyline points="6 9 12 15 18 9"/>
@@ -125,38 +125,40 @@
                 <td>{{ $item->tanggal_posting ? \Carbon\Carbon::parse($item->tanggal_posting)->format('d/m/y') : '-' }}</td>
                 <td>
                     <span class="badge-status {{ $item->status == 'publish' ? 'publish' : 'draft' }}">
-                        {{ strtoupper($item->status) }}
+                        {{ $item->status == 'publish' ? 'PUBLISH' : 'UNPUBLISHED' }}
                     </span>
                 </td>
                 <td class="aksi-col">
-                    <button class="btn-edit"
-                    onclick="bukaModalEditBerita(
-                        '{{ $item->id_berita }}',
-                        '{{ addslashes($item->judul_berita) }}',
-                        '{{ $item->tanggal_posting }}',
-                        '{{ $item->status }}',
-                        {{ json_encode($item->isi_berita) }},
-                         '{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : '' }}'
-                        )">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                        </svg>
-                    </button>
-
-                    <form action="{{ route('admin.berita.destroy', $item->id_berita) }}" method="POST"
-                        onsubmit="return confirm('Yakin hapus berita ini?')" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn-delete">
+                    <div class="aksi-wrapper">
+                        <button class="btn-edit"
+                        onclick="bukaModalEditBerita(
+                            '{{ $item->id_berita }}',
+                            '{{ addslashes($item->judul_berita) }}',
+                            '{{ $item->tanggal_posting }}',
+                            '{{ $item->status }}',
+                            {{ json_encode($item->isi_berita) }},
+                             '{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : '' }}'
+                            )">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="3 6 5 6 21 6"/>
-                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                                <path d="M10 11v6"/><path d="M14 11v6"/>
-                                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                             </svg>
                         </button>
-                    </form>
+
+                        <form action="{{ route('admin.berita.destroy', $item->id_berita) }}" method="POST"
+                            onsubmit="return confirm('Yakin hapus berita ini?')" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-delete">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="3 6 5 6 21 6"/>
+                                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                                    <path d="M10 11v6"/><path d="M14 11v6"/>
+                                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             @empty
@@ -212,13 +214,13 @@
                         <label>Status</label>
                         <select name="status" class="modal-input">
                             <option value="publish">Publish</option>
-                            <option value="draft">Draft</option>
+                            <option value="draft">Unpublished</option>
                         </select>
                     </div>
                 </div>
                 <div class="modal-field">
                     <label>Isi Berita</label>
-                    <textarea name="isi_berita" class="modal-input modal-textarea" rows="4" placeholder="Tulis isi berita..."></textarea>
+                    <textarea name="isi_berita" id="tambah_isi" class="modal-input modal-textarea" rows="4" placeholder="Tulis isi berita..."></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -269,7 +271,7 @@
                         <label>Status <span style="color:red">*</span></label>
                         <select name="status" id="edit_status" class="modal-input" required>
                             <option value="publish">Publish</option>
-                            <option value="draft">Draft</option>
+                            <option value="draft">Unpublished</option>
                         </select>
                     </div>
                 </div>
@@ -289,11 +291,34 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 <script>
+let tambahEditor, editEditor;
+
+ClassicEditor
+    .create(document.querySelector('#tambah_isi'))
+    .then(editor => {
+        tambahEditor = editor;
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+ClassicEditor
+    .create(document.querySelector('#edit_isi'))
+    .then(editor => {
+        editEditor = editor;
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
 function bukaModalEditBerita(id, judul, isi, tanggal, status) {
     document.getElementById('formEditBerita').action = '{{ url("admin/berita") }}/' + id;
     document.getElementById('edit_judul').value   = judul;
-    document.getElementById('edit_isi').value     = isi;
+    if (editEditor) {
+        editEditor.setData(isi);
+    }
     document.getElementById('edit_tanggal').value = tanggal;
     document.getElementById('edit_status').value  = status;
     document.getElementById('modalEditBerita').style.display = 'flex';
