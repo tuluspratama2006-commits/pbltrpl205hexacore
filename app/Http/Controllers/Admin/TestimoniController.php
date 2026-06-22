@@ -12,8 +12,8 @@ class TestimoniController extends Controller
     public function index()
     {
         $testimonis = Testimoni::orderBy('created_at', 'desc')->get();
-        $totalUlasan = $testimonis->count();
-        $rataRating = $testimonis->avg('rating') ?? 0;
+        $totalUlasan = Testimoni::where('status', 'publish')->count();
+        $rataRating = Testimoni::where('status', 'publish')->avg('rating') ?? 0;
 
         return view('admin.testimoni', compact('testimonis', 'totalUlasan', 'rataRating'));
     }
