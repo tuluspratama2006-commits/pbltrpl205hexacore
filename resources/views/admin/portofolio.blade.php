@@ -7,7 +7,7 @@
 {{-- Header --}}
 <div class="page-header">
     <h1 class="page-heading"></h1>
-    <button class="btn-tambah" onclick="document.getElementById('modalTambahPortofolio').style.display='flex'">
+    <button class="btn-tambah" onclick="bukaModalTambahPortofolio()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
         </svg>
@@ -135,20 +135,19 @@
                 </td>
                 <td>{{ $item->created_at->format('d/m/y H:i') }}</td>
                 <td>{{ $item->updated_at->format('d/m/y H:i') }}</td>
-                <td class="aksi-col">
+                    <td class="aksi-col">
                     <div class="aksi-wrapper">
                         <button class="btn-edit"
-                            onclick="bukaModalEditPortofolio(
-                                '{{ $item->id_portofolio }}',
-                                '{{ addslashes($item->judul_proyek) }}',
-                                '{{ $item->tanggal_proyek }}',
-                                '{{ $item->nama_klien }}',
-                                '{{ addslashes($item->lokasi) }}',
-                                '{{ $item->status }}',
-                                {{ json_encode($item->deskripsi) }},
-                                '{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : '' }}',
-                                '{{ $item->file_pdf ? asset('storage/' . $item->file_pdf) : '' }}'
-                            )">
+                            data-id="{{ $item->id_portofolio }}"
+                            data-judul="{{ $item->judul_proyek }}"
+                            data-tanggal="{{ $item->tanggal_proyek }}"
+                            data-klien="{{ $item->nama_klien }}"
+                            data-lokasi="{{ $item->lokasi }}"
+                            data-status="{{ $item->status }}"
+                            data-deskripsi="{{ $item->deskripsi }}"
+                            data-thumbnail="{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : '' }}"
+                            data-pdf="{{ $item->file_pdf ? asset('storage/' . $item->file_pdf) : '' }}"
+                            onclick="bukaModalEditPortofolio(this)">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
@@ -198,7 +197,7 @@
                 </svg>
             </button>
         </div>
-        <form action="{{ route('admin.portofolio.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.portofolio.store') }}" method="POST" enctype="multipart/form-data" onsubmit="if(portoTambahEditor) portoTambahEditor.updateSourceElement();">
             @csrf
             {{-- Body: fitur SCROLL --}}
             <div class="modal-body">
@@ -269,7 +268,7 @@
                 </svg>
             </button>
         </div>
-        <form id="formEditPortofolio" action="" method="POST" enctype="multipart/form-data">
+        <form id="formEditPortofolio" action="" method="POST" enctype="multipart/form-data" onsubmit="if(portoEditEditor) portoEditEditor.updateSourceElement();">
             @csrf
             @method('PUT')
             {{-- Body: fitur SCROLL --}}
@@ -346,43 +345,49 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+<script src="{{ asset('js/ckeditor.js') }}"></script>
 <script>
 let portoTambahEditor, portoEditEditor;
 
-ClassicEditor
-    .create(document.querySelector('#tambah_deskripsi'))
-    .then(editor => { portoTambahEditor = editor; })
-    .catch(error => { console.error(error); });
+function bukaModalTambahPortofolio() {
+    if (!portoTambahEditor) {
+        ClassicEditor.create(document.querySelector('#tambah_deskripsi'))
+            .then(editor => { portoTambahEditor = editor; })
+            .catch(error => { console.error(error); });
+    }
+    document.getElementById('modalTambahPortofolio').style.display = 'flex';
+}
 
-ClassicEditor
-    .create(document.querySelector('#edit_deskripsi'))
-    .then(editor => { portoEditEditor = editor; })
-    .catch(error => { console.error(error); });
+function bukaModalEditPortofolio(button) {
+    const d = button.dataset;
+    document.getElementById('formEditPortofolio').action = '{{ url("admin/portofolio") }}/' + d.id;
+    document.getElementById('edit_judul_proyek').value = d.judul;
+    document.getElementById('edit_tanggal_proyek').value = d.tanggal;
+    document.getElementById('edit_nama_klien').value = d.klien;
+    document.getElementById('edit_lokasi').value = d.lokasi;
+    document.getElementById('edit_status').value = d.status;
 
-function bukaModalEditPortofolio(id, judul, tanggal, klien, lokasi, status, deskripsi, urlThumbnail, urlPdf)
-{
-    document.getElementById('formEditPortofolio').action = '{{ url("admin/portofolio") }}/' + id;
-    document.getElementById('edit_judul_proyek').value = judul;
-    document.getElementById('edit_tanggal_proyek').value = tanggal;
-    document.getElementById('edit_nama_klien').value = klien;
-    document.getElementById('edit_lokasi').value = lokasi;
-    document.getElementById('edit_status').value = status;
-    if (portoEditEditor) {
-        portoEditEditor.setData(deskripsi);
+    const ta = document.getElementById('edit_deskripsi');
+    ta.value = d.deskripsi;
+    if (!portoEditEditor) {
+        ClassicEditor.create(ta)
+            .then(editor => { portoEditEditor = editor; })
+            .catch(error => { console.error(error); });
+    } else {
+        portoEditEditor.setData(d.deskripsi);
     }
 
     const previewImg = document.getElementById('preview_thumbnail');
-    if (previewImg && urlThumbnail) {
-        previewImg.src = urlThumbnail;
+    if (previewImg && d.thumbnail) {
+        previewImg.href = d.thumbnail;
         previewImg.style.display = 'block';
     } else if (previewImg) {
         previewImg.style.display = 'none';
     }
 
     const previewPdf = document.getElementById('preview_pdf');
-    if (previewPdf && urlPdf) {
-        previewPdf.href = urlPdf;
+    if (previewPdf && d.pdf) {
+        previewPdf.href = d.pdf;
         previewPdf.style.display = 'inline-block';
     } else if (previewPdf) {
         previewPdf.style.display = 'none';

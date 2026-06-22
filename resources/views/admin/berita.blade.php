@@ -18,7 +18,7 @@
 {{-- Header --}}
 <div class="page-header">
     <h1 class="page-heading"></h1>
-    <button class="btn-tambah" onclick="document.getElementById('modalTambahBerita').style.display='flex'">
+    <button class="btn-tambah" onclick="bukaModalTambahBerita()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
         </svg>
@@ -128,17 +128,16 @@
                         {{ $item->status == 'publish' ? 'PUBLISH' : 'UNPUBLISHED' }}
                     </span>
                 </td>
-                <td class="aksi-col">
+                    <td class="aksi-col">
                     <div class="aksi-wrapper">
                         <button class="btn-edit"
-                        onclick="bukaModalEditBerita(
-                            '{{ $item->id_berita }}',
-                            '{{ addslashes($item->judul_berita) }}',
-                            '{{ $item->tanggal_posting }}',
-                            '{{ $item->status }}',
-                            {{ json_encode($item->isi_berita) }},
-                             '{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : '' }}'
-                            )">
+                            data-id="{{ $item->id_berita }}"
+                            data-judul="{{ $item->judul_berita }}"
+                            data-tanggal="{{ $item->tanggal_posting }}"
+                            data-status="{{ $item->status }}"
+                            data-isi="{{ $item->isi_berita }}"
+                            data-thumbnail="{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : '' }}"
+                            onclick="bukaModalEditBerita(this)">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
@@ -188,7 +187,7 @@
                 </svg>
             </button>
         </div>
-        <form action="{{ route('admin.berita.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.berita.store') }}" method="POST" enctype="multipart/form-data" onsubmit="if(tambahEditor) tambahEditor.updateSourceElement();">
             @csrf
             <div class="modal-body">
                 <div class="modal-field">
@@ -246,7 +245,7 @@
                 </svg>
             </button>
         </div>
-        <form id="formEditBerita" action="" method="POST" enctype="multipart/form-data">
+        <form id="formEditBerita" action="" method="POST" enctype="multipart/form-data" onsubmit="if(editEditor) editEditor.updateSourceElement();">
             @csrf
             @method('PUT')
             <div class="modal-body">
@@ -261,6 +260,11 @@
                 <div class="modal-field">
                     <label>Thumbnail Baru (kosongkan jika tidak diganti)</label>
                     <input type="file" name="thumbnail" class="modal-input" accept="image/jpeg,image/png,image/jpg">
+                    <div style="margin-top: 8px;">
+                        <a id="preview_thumbnail_berita" href="" target="_blank" style="display: none; font-size: 13px; color: #2563eb; text-decoration: underline;">
+                            Lihat Foto Sebelumnya
+                        </a>
+                    </div>
                 </div>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
                     <div class="modal-field">
@@ -291,36 +295,44 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+<script src="{{ asset('js/ckeditor.js') }}"></script>
 <script>
 let tambahEditor, editEditor;
 
-ClassicEditor
-    .create(document.querySelector('#tambah_isi'))
-    .then(editor => {
-        tambahEditor = editor;
-    })
-    .catch(error => {
-        console.error(error);
-    });
-
-ClassicEditor
-    .create(document.querySelector('#edit_isi'))
-    .then(editor => {
-        editEditor = editor;
-    })
-    .catch(error => {
-        console.error(error);
-    });
-
-function bukaModalEditBerita(id, judul, isi, tanggal, status) {
-    document.getElementById('formEditBerita').action = '{{ url("admin/berita") }}/' + id;
-    document.getElementById('edit_judul').value   = judul;
-    if (editEditor) {
-        editEditor.setData(isi);
+function bukaModalTambahBerita() {
+    if (!tambahEditor) {
+        ClassicEditor.create(document.querySelector('#tambah_isi'))
+            .then(editor => { tambahEditor = editor; })
+            .catch(error => { console.error(error); });
     }
-    document.getElementById('edit_tanggal').value = tanggal;
-    document.getElementById('edit_status').value  = status;
+    document.getElementById('modalTambahBerita').style.display = 'flex';
+}
+
+function bukaModalEditBerita(button) {
+    const d = button.dataset;
+    document.getElementById('formEditBerita').action = '{{ url("admin/berita") }}/' + d.id;
+    document.getElementById('edit_judul').value   = d.judul;
+    document.getElementById('edit_tanggal').value = d.tanggal;
+    document.getElementById('edit_status').value  = d.status;
+
+    const ta = document.getElementById('edit_isi');
+    ta.value = d.isi;
+    if (!editEditor) {
+        ClassicEditor.create(ta)
+            .then(editor => { editEditor = editor; })
+            .catch(error => { console.error(error); });
+    } else {
+        editEditor.setData(d.isi);
+    }
+
+    const preview = document.getElementById('preview_thumbnail_berita');
+    if (preview && d.thumbnail) {
+        preview.href = d.thumbnail;
+        preview.style.display = 'block';
+    } else if (preview) {
+        preview.style.display = 'none';
+    }
+
     document.getElementById('modalEditBerita').style.display = 'flex';
 }
 
