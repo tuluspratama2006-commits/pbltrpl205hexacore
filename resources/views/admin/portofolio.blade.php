@@ -272,7 +272,7 @@
             @csrf
             @method('PUT')
             {{-- Body: fitur SCROLL --}}
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px; max-height: calc(90vh - 120px);">
                 <div class="modal-field">
                     <label>Nama Proyek <span style="color:red">*</span></label>
                     <input type="text" name="judul_proyek" id="edit_judul_proyek" class="modal-input" required>
@@ -328,11 +328,9 @@
                 </div>
 
             </div>
-
-            {{-- Footer: Tetap menempel di bawah modal --}}
-            <div class="modal-footer" style="padding-top: 12px; border-top: 1px solid #e5e7eb;">
+            <div class="modal-footer" style="padding-top: 12px;">
                 <button type="submit" class="btn-modal-simpan">
-                    Update Portofolio
+                    Update
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <polyline points="20 6 9 17 4 12"/>
                     </svg>
