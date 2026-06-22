@@ -201,7 +201,7 @@
         <form action="{{ route('admin.portofolio.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             {{-- Body: fitur SCROLL --}}
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px; max-height: calc(90vh - 120px);">
                 <div class="modal-field">
                     <label>Nama Proyek <span style="color:red">*</span></label>
                     <input type="text" name="judul_proyek" class="modal-input" placeholder="Nama proyek..." required>
@@ -244,7 +244,7 @@
                     <textarea name="deskripsi" id="tambah_deskripsi" class="modal-input modal-textarea" rows="4" placeholder="Tulis deskripsi lengkap proyek..." required></textarea>
                 </div>
             </div>
-            <div class="modal-footer" style="padding-top: 12px; border-top: 1px solid #e5e7eb;">
+            <div class="modal-footer">
                 <button type="submit" class="btn-modal-simpan">
                     Simpan
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
