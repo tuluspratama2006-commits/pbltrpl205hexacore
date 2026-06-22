@@ -189,7 +189,7 @@
         </div>
         <form action="{{ route('admin.berita.store') }}" method="POST" enctype="multipart/form-data" onsubmit="if(tambahEditor) tambahEditor.updateSourceElement();">
             @csrf
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px; max-height: calc(90vh - 120px);">
                 <div class="modal-field">
                     <label>Judul</label>
                     <input type="text" name="judul_berita" class="modal-input" placeholder="Judul berita...">
@@ -254,10 +254,6 @@
                     <input type="text" name="judul_berita" id="edit_judul" class="modal-input" required>
                 </div>
                 <div class="modal-field">
-                    <label>Isi Berita <span style="color:red">*</span></label>
-                    <textarea name="isi_berita" id="edit_isi" class="modal-input modal-textarea" rows="4" required></textarea>
-                </div>
-                <div class="modal-field">
                     <label>Thumbnail Baru (kosongkan jika tidak diganti)</label>
                     <input type="file" name="thumbnail" class="modal-input" accept="image/jpeg,image/png,image/jpg">
                     <div style="margin-top: 8px;">
@@ -278,6 +274,10 @@
                             <option value="draft">Unpublished</option>
                         </select>
                     </div>
+                </div>
+                <div class="modal-field">
+                    <label>Isi Berita <span style="color:red">*</span></label>
+                    <textarea name="isi_berita" id="edit_isi" class="modal-input modal-textarea" rows="4" required></textarea>
                 </div>
             </div>
             <div class="modal-footer">
