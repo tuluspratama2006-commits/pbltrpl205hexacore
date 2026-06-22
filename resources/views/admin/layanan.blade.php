@@ -242,14 +242,10 @@
         <form id="formEdit" action="" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px; max-height: calc(90vh - 120px);">
                 <div class="modal-field">
                     <label>Judul Layanan <span style="color:red">*</span></label>
                     <input type="text" name="judul_layanan" id="edit_judul" class="modal-input" required>
-                </div>
-                <div class="modal-field">
-                    <label>Deskripsi <span style="color:red">*</span></label>
-                    <textarea name="deskripsi" id="edit_deskripsi" class="modal-input modal-textarea" rows="4" required></textarea>
                 </div>
                 <div class="modal-field">
                     <label>Icon (nama icon)</label>
@@ -271,6 +267,10 @@
                             <option value="draft">Unpublished</option>
                         </select>
                     </div>
+                </div>
+                <div class="modal-field">
+                    <label>Deskripsi <span style="color:red">*</span></label>
+                    <textarea name="deskripsi" id="edit_deskripsi" class="modal-input modal-textarea" rows="4" required></textarea>
                 </div>
             </div>
             <div class="modal-footer">
