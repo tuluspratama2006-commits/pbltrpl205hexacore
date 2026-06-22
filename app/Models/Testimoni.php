@@ -8,22 +8,19 @@ class Testimoni extends Model
 {
     protected $table = 'testimoni';
     protected $primaryKey = 'id_testimoni';
-    
-    public $timestamps = false;
-    
+    public $incrementing = true;
+
     protected $fillable = [
         'nama_client',
         'jabatan',
         'nama_perusahaan',
-        'isi_testimoni',
         'foto_client',
         'rating',
+        'isi_testimoni',
         'status',
-        'created_at',
     ];
-    
+
     protected $casts = [
         'rating' => 'integer',
-        'created_at' => 'datetime',
     ];
 }
