@@ -70,10 +70,10 @@
 <div class="table-toolbar">
     <div class="toolbar-left">
         <div class="filter-dropdown">
-            <select>
-                <option>Status</option>
-                <option>Publish</option>
-                <option>Draft</option>
+            <select id="filterStatus" onchange="filterTable()">
+                <option value="">Status</option>
+                <option value="publish">Publish</option>
+                <option value="draft">Unpublished</option>
             </select>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <polyline points="6 9 12 15 18 9"/>
@@ -84,13 +84,13 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
-        <input type="text" placeholder="Search...">
+        <input type="text" id="searchInput" placeholder="Search..." oninput="filterTable()">
     </div>
 </div>
 
 {{-- Table --}}
 <div class="table-card">
-    <table class="data-table">
+    <table class="data-table" id="portofolioTable">
         <thead>
             <tr>
                 <th>Foto</th>
@@ -107,7 +107,7 @@
         </thead>
         <tbody>
             @forelse($semuaPortofolio as $item)
-            <tr>
+            <tr data-status="{{ $item->status }}">
                 <td>
                     @if($item->thumbnail)
                         <img src="{{ asset('storage/' . $item->thumbnail) }}" alt="{{ $item->nama_projek }}" class="table-img">
@@ -130,44 +130,46 @@
                 </td>
                 <td>
                     <span class="badge-status {{ $item->status == 'publish' ? 'publish' : 'draft' }}">
-                        {{ ucfirst($item->status) }}
+                        {{ $item->status == 'publish' ? 'Publish' : 'Unpublished' }}
                     </span>
                 </td>
                 <td>{{ $item->created_at->format('d/m/y H:i') }}</td>
                 <td>{{ $item->updated_at->format('d/m/y H:i') }}</td>
                 <td class="aksi-col">
-                    <button class="btn-edit"
-                        onclick="bukaModalEditPortofolio(
-                            '{{ $item->id_portofolio }}',
-                            '{{ addslashes($item->judul_proyek) }}',
-                            '{{ $item->tanggal_proyek }}',
-                            '{{ $item->nama_klien }}',
-                            '{{ addslashes($item->lokasi) }}',
-                            '{{ $item->status }}',
-                            {{ json_encode($item->deskripsi) }},
-                            '{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : '' }}',
-                            '{{ $item->file_pdf ? asset('storage/' . $item->file_pdf) : '' }}'
-                        )">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                        </svg>
-                    </button>
-
-                   <form action="{{ route('admin.portofolio.destroy', $item->id_portofolio) }}" method="POST"
-                        onsubmit="return confirm('Yakin hapus data portofolio ini?')" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn-delete" title="Hapus Portofolio">
+                    <div class="aksi-wrapper">
+                        <button class="btn-edit"
+                            onclick="bukaModalEditPortofolio(
+                                '{{ $item->id_portofolio }}',
+                                '{{ addslashes($item->judul_proyek) }}',
+                                '{{ $item->tanggal_proyek }}',
+                                '{{ $item->nama_klien }}',
+                                '{{ addslashes($item->lokasi) }}',
+                                '{{ $item->status }}',
+                                {{ json_encode($item->deskripsi) }},
+                                '{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : '' }}',
+                                '{{ $item->file_pdf ? asset('storage/' . $item->file_pdf) : '' }}'
+                            )">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="3 6 5 6 21 6"/>
-                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                                <path d="M10 11v6"/>
-                                <path d="M14 11v6"/>
-                                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                             </svg>
                         </button>
-                    </form>
+
+                       <form action="{{ route('admin.portofolio.destroy', $item->id_portofolio) }}" method="POST"
+                            onsubmit="return confirm('Yakin hapus data portofolio ini?')" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-delete" title="Hapus Portofolio">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="3 6 5 6 21 6"/>
+                                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                                    <path d="M10 11v6"/>
+                                    <path d="M14 11v6"/>
+                                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             @empty
@@ -187,7 +189,7 @@
 
 {{-- MODAL TAMBAH PORTOFOLIO --}}
 <div class="modal-overlay" id="modalTambahPortofolio" onclick="if(event.target===this) this.style.display='none'">
-    <div class="modal-box" style="max-width: 650px; max-height: 90vh; display: flex; flex-direction: column;">
+    <div class="modal-box">
         <div class="modal-header">
             <h3 class="modal-title">PORTOFOLIO</h3>
             <button class="modal-close" onclick="document.getElementById('modalTambahPortofolio').style.display='none'">
@@ -196,10 +198,10 @@
                 </svg>
             </button>
         </div>
-        <form action="{{ route('admin.portofolio.store') }}" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; overflow: hidden; margin: 0;">
+        <form action="{{ route('admin.portofolio.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             {{-- Body: fitur SCROLL --}}
-            <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px; max-height: calc(90vh - 120px);">
+            <div class="modal-body">
                 <div class="modal-field">
                     <label>Nama Proyek <span style="color:red">*</span></label>
                     <input type="text" name="judul_proyek" class="modal-input" placeholder="Nama proyek..." required>
@@ -231,18 +233,18 @@
                     </div>
                     <div class="modal-field">
                         <label>Status <span style="color:red">*</span></label>
-                        <select name="status" class="modal-input" required>
-                            <option value="publish">Publish</option>
-                            <option value="draft">Draft</option>
-                        </select>
+                    <select name="status" class="modal-input" required>
+                        <option value="publish">Publish</option>
+                        <option value="draft">Unpublished</option>
+                    </select>
                     </div>
                 </div>
                 <div class="modal-field" style="margin-top: 8px;">
                     <label>Isi / Deskripsi<span style="color:red">*</span></label>
-                    <textarea name="deskripsi" class="modal-input modal-textarea" rows="4" placeholder="Tulis deskripsi lengkap proyek..." required></textarea>
+                    <textarea name="deskripsi" id="tambah_deskripsi" class="modal-input modal-textarea" rows="4" placeholder="Tulis deskripsi lengkap proyek..." required></textarea>
                 </div>
             </div>
-            <div class="modal-footer" padding-top: 12px; border-top: 1px solid #e5e7eb;">
+            <div class="modal-footer" style="padding-top: 12px; border-top: 1px solid #e5e7eb;">
                 <button type="submit" class="btn-modal-simpan">
                     Simpan
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -256,7 +258,7 @@
 
 {{-- MODAL EDIT PORTOFOLIO --}}
 <div class="modal-overlay" id="modalEditPortofolio" onclick="if(event.target===this) this.style.display='none'">
-    <div class="modal-box" style="max-width: 650px; max-height: 90vh; display: flex; flex-direction: column;">
+    <div class="modal-box">
 
         {{-- Header: Tetap di atas --}}
         <div class="modal-header">
@@ -267,11 +269,11 @@
                 </svg>
             </button>
         </div>
-        <form id="formEditPortofolio" action="" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; overflow: hidden; margin: 0;">
+        <form id="formEditPortofolio" action="" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             {{-- Body: fitur SCROLL --}}
-            <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px; max-height: calc(90vh - 120px);">
+            <div class="modal-body">
                 <div class="modal-field">
                     <label>Nama Proyek <span style="color:red">*</span></label>
                     <input type="text" name="judul_proyek" id="edit_judul_proyek" class="modal-input" required>
@@ -317,7 +319,7 @@
                         <label>Status <span style="color:red">*</span></label>
                         <select name="status" id="edit_status" class="modal-input" required>
                             <option value="publish">Publish</option>
-                            <option value="draft">Draft</option>
+                            <option value="draft">Unpublished</option>
                         </select>
                     </div>
                 </div>
@@ -329,7 +331,7 @@
             </div>
 
             {{-- Footer: Tetap menempel di bawah modal --}}
-            <div class="modal-footer" padding-top: 12px; border-top: 1px solid #e5e7eb;">
+            <div class="modal-footer" style="padding-top: 12px; border-top: 1px solid #e5e7eb;">
                 <button type="submit" class="btn-modal-simpan">
                     Update Portofolio
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -344,8 +346,20 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 <script>
-// 1. FUNGSI UNTUK MEMBUKA MODAL EDIT PORTOFOLIO DAN MENGISI DATA LAMA
+let portoTambahEditor, portoEditEditor;
+
+ClassicEditor
+    .create(document.querySelector('#tambah_deskripsi'))
+    .then(editor => { portoTambahEditor = editor; })
+    .catch(error => { console.error(error); });
+
+ClassicEditor
+    .create(document.querySelector('#edit_deskripsi'))
+    .then(editor => { portoEditEditor = editor; })
+    .catch(error => { console.error(error); });
+
 function bukaModalEditPortofolio(id, judul, tanggal, klien, lokasi, status, deskripsi, urlThumbnail, urlPdf)
 {
     document.getElementById('formEditPortofolio').action = '{{ url("admin/portofolio") }}/' + id;
@@ -354,9 +368,10 @@ function bukaModalEditPortofolio(id, judul, tanggal, klien, lokasi, status, desk
     document.getElementById('edit_nama_klien').value = klien;
     document.getElementById('edit_lokasi').value = lokasi;
     document.getElementById('edit_status').value = status;
-    document.getElementById('edit_deskripsi').value = deskripsi;
+    if (portoEditEditor) {
+        portoEditEditor.setData(deskripsi);
+    }
 
-    // Logika Preview Foto Sebelumnya (Opsional - pastikan id 'preview_thumbnail' ada di modal)
     const previewImg = document.getElementById('preview_thumbnail');
     if (previewImg && urlThumbnail) {
         previewImg.src = urlThumbnail;
@@ -365,7 +380,6 @@ function bukaModalEditPortofolio(id, judul, tanggal, klien, lokasi, status, desk
         previewImg.style.display = 'none';
     }
 
-    // Logika Link PDF Sebelumnya (Opsional - pastikan id 'preview_pdf' ada di modal)
     const previewPdf = document.getElementById('preview_pdf');
     if (previewPdf && urlPdf) {
         previewPdf.href = urlPdf;
@@ -374,17 +388,13 @@ function bukaModalEditPortofolio(id, judul, tanggal, klien, lokasi, status, desk
         previewPdf.style.display = 'none';
     }
 
-    // Tampilkan Modal Edit
     document.getElementById('modalEditPortofolio').style.display = 'flex';
 }
 
-// 2. FUNGSI FILTER PENCARIAN DAN STATUS PADA TABEL
 function filterTable() {
     const search = document.getElementById('searchInput').value.toLowerCase();
     const status = document.getElementById('filterStatus').value.toLowerCase();
 
-    // Pastikan pada tag <table> Anda memiliki id="portofolioTable"
-    // dan pada setiap tag <tr> di dalam tbody memiliki atribut data-status="{{ $item->status }}"
     const rows = document.querySelectorAll('#portofolioTable tbody tr[data-status]');
 
     rows.forEach(row => {
@@ -397,7 +407,6 @@ function filterTable() {
     });
 }
 
-// 3. LOGIKA TOAST NOTIFIKASI (OTOMATIS HILANG)
 const toast = document.getElementById('toastNotif');
 if (toast) setTimeout(() => toast.remove(), 3500);
 </script>

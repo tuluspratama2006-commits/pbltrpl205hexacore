@@ -62,7 +62,7 @@
             <select id="filterStatus" onchange="filterTable()">
                 <option value="">Status</option>
                 <option value="publish">Publish</option>
-                <option value="draft">Draft</option>
+                <option value="draft">Unpublished</option>
             </select>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <polyline points="6 9 12 15 18 9"/>
@@ -113,46 +113,48 @@
                         </div>
                     </div>
                 </td>
-                <td style="max-width:200px; color:#64748b; font-size:13px;">
+                <td>
                     {{ Str::limit($item->deskripsi, 60) }}
                 </td>
-                <td style="text-align:center;">{{ $item->urutan }}</td>
+                <td>{{ $item->urutan }}</td>
                 <td>
                     <span class="badge-status {{ $item->status === 'publish' ? 'publish' : 'draft' }}">
-                        {{ strtoupper($item->status) }}
+                        {{ $item->status === 'publish' ? 'PUBLISH' : 'UNPUBLISHED' }}
                     </span>
                 </td>
                 <td class="aksi-col">
-                    {{-- Tombol Edit --}}
-                    <button class="btn-edit" onclick="bukaModalEdit(
-                        {{ $item->id_layanan }},
-                        '{{ addslashes($item->judul_layanan) }}',
-                        '{{ addslashes($item->deskripsi) }}',
-                        '{{ $item->icon }}',
-                        {{ $item->urutan }},
-                        '{{ $item->status }}'
-                    )">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                        </svg>
-                    </button>
-
-                    {{-- Tombol Hapus --}}
-                    <form action="{{ route('admin.layanan.destroy', $item->id_layanan) }}"
-                          method="POST" style="display:inline;"
-                          onsubmit="return confirm('Yakin hapus layanan ini?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn-delete">
+                    <div class="aksi-wrapper">
+                        {{-- Tombol Edit --}}
+                        <button class="btn-edit" onclick="bukaModalEdit(
+                            {{ $item->id_layanan }},
+                            '{{ addslashes($item->judul_layanan) }}',
+                            '{{ addslashes($item->deskripsi) }}',
+                            '{{ $item->icon }}',
+                            {{ $item->urutan }},
+                            '{{ $item->status }}'
+                        )">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="3 6 5 6 21 6"/>
-                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                                <path d="M10 11v6"/><path d="M14 11v6"/>
-                                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                             </svg>
                         </button>
-                    </form>
+
+                        {{-- Tombol Hapus --}}
+                        <form action="{{ route('admin.layanan.destroy', $item->id_layanan) }}"
+                              method="POST" style="display:inline;"
+                              onsubmit="return confirm('Yakin hapus layanan ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-delete">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="3 6 5 6 21 6"/>
+                                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                                    <path d="M10 11v6"/><path d="M14 11v6"/>
+                                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             @empty
@@ -209,7 +211,7 @@
                         <label>Status <span style="color:red">*</span></label>
                         <select name="status" class="modal-input" required>
                             <option value="publish">Publish</option>
-                            <option value="draft">Draft</option>
+                            <option value="draft">Unpublished</option>
                         </select>
                     </div>
                 </div>
@@ -266,7 +268,7 @@
                         <label>Status <span style="color:red">*</span></label>
                         <select name="status" id="edit_status" class="modal-input" required>
                             <option value="publish">Publish</option>
-                            <option value="draft">Draft</option>
+                            <option value="draft">Unpublished</option>
                         </select>
                     </div>
                 </div>
