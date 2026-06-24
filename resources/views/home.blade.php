@@ -131,39 +131,22 @@
                 <h1 class="section-title">PORTOFOLIO</h1>
             </div>
             <div class="portfolio-grid">
-                <div class="portfolio-card">
-                    <div class="portfolio-image">
-                        <img src="{{ asset('images/portofolio_1.jpg') }}" alt="Portofolio 1">
-                        <div class="portfolio-img-overlay">
-                            <h3 class="portfolio-title">Konstruksi Area Komersial & Fasilitas Publik – Opus Bay Project</h3>
+                @foreach($semuaPortofolio as $item)
+                    @if($item->status == 'publish')
+                        <div class="portfolio-card">
+                            <div class="portfolio-image">
+                                <img src="{{ asset('storage/' . $item->thumbnail) }}" alt="{{ $item->judul_proyek }}">
+                                <div class="portfolio-img-overlay">
+                                    <h3 class="portfolio-title">{{ $item->judul_proyek }}</h3>
+                                </div>
+                            </div>
+                            <div class="portfolio-bottom">
+                                <button class="portfolio-btn" onclick="openPortfolioModal({{ $item->id_portofolio }})">Selengkapnya &rsaquo;
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="portfolio-bottom">
-                        <button class="portfolio-btn" onclick="openPortfolioModal(1)">Selengkapnya &rsaquo;</button>
-                    </div>
-                </div>
-                <div class="portfolio-card">
-                    <div class="portfolio-image">
-                        <img src="{{ asset('images/portofolio_2.jpg') }}" alt="Portofolio 2">
-                        <div class="portfolio-img-overlay">
-                            <h3 class="portfolio-title">Pengembangan Infrastruktur Terpadu – Opus Bay Waterfront</h3>
-                        </div>
-                    </div>
-                    <div class="portfolio-bottom">
-                        <button class="portfolio-btn" onclick="openPortfolioModal(2)">Selengkapnya &rsaquo;</button>
-                    </div>
-                </div>
-                <div class="portfolio-card">
-                    <div class="portfolio-image">
-                        <img src="{{ asset('images/portofolio_3.jpg') }}" alt="Portofolio 3">
-                        <div class="portfolio-img-overlay">
-                            <h3 class="portfolio-title">Pembangunan Akses Jalan Utama & Konektivitas – Opus Bay Project</h3>
-                        </div>
-                    </div>
-                    <div class="portfolio-bottom">
-                        <button class="portfolio-btn" onclick="openPortfolioModal(3)">Selengkapnya &rsaquo;</button>
-                    </div>
-                </div>
+                    @endif
+                @endforeach
             </div>
         </div>
     </section>
@@ -450,45 +433,76 @@
         updateActiveNav();
 
         // PORTFOLIO MODAL
+
         const portfolioData = {
-            1: {
-                title: "Konstruksi Area Komersial & Fasilitas Publik – Opus Bay Project",
-                photos: ["{{ asset('images/portofolio_1.jpg') }}", "{{ asset('images/portofolio_1.jpg') }}"],
-                body: `<p><strong>Ringkasan Proyek:</strong> Pelaksanaan konstruksi bangunan gedung fungsional yang menjadi fasilitas pendukung bagi penghuni dan pengunjung kawasan.</p>
-                <p><span class="spec-title">Spesifikasi Teknis (BG009):</span></p>
-                <ul class="spec-list"><li>Pengerjaan struktur beton bertulang.</li><li>Instalasi mekanikal, elektrikal, dan plumbing (MEP) standar gedung komersial.</li><li>Finishing eksterior yang sesuai dengan desain arsitektur modern Opus Bay.</li></ul>
-                <p><strong>Hasil Akhir:</strong> Fasilitas gedung yang kokoh secara struktur dan estetis secara visual.</p>`
+            @foreach($semuaPortofolio as $item)
+            {{ $item->id_portofolio }}: {
+                title:      "{{ addslashes($item->judul_proyek) }}",
+                client:     "{{ addslashes($item->nama_klien) }}",
+                location:   "{{ addslashes($item->lokasi) }}",
+                date:       "{{ \Carbon\Carbon::parse($item->tanggal_proyek)->isoFormat('D MMMM YYYY') }}",
+                image:      "{{ asset('storage/' . $item->thumbnail) }}",
+                pdfFile:    "{{ $item->file_pdf ? asset('storage/' . $item->file_pdf) : '' }}",
+                description: {!! json_encode($item->deskripsi) !!}
             },
-            2: {
-                title: "Pengembangan Infrastruktur Terpadu – Opus Bay Waterfront",
-                photos: ["{{ asset('images/portofolio_2.jpg') }}", "{{ asset('images/portofolio_2.jpg') }}"],
-                body: `<p><strong>Ringkasan Proyek:</strong> Pembangunan sistem drainase makro dan mikro untuk memastikan kawasan bebas genangan.</p>
-                <ul class="spec-list"><li>Pemasangan saluran U-Ditch beton pracetak.</li><li>Pembangunan kolam retensi air hujan.</li><li>Sistem pembuangan akhir ke arah laut dengan katup penahan pasang surut.</li></ul>`
-            },
-            3: {
-                title: "Pembangunan Akses Jalan Utama & Konektivitas – Opus Bay Project",
-                photos: ["{{ asset('images/portofolio_3.jpg') }}", "{{ asset('images/portofolio_3.jpg') }}"],
-                body: `<p><strong>Ringkasan Proyek:</strong> Konstruksi jaringan jalan utama yang menghubungkan area residensial Opus Bay dengan akses publik.</p>
-                <ul class="spec-list"><li>Pengaspalan Hotmix standar ketahanan tinggi.</li><li>Pemasangan trotoar pedestarian dan marka jalan reflektif.</li><li>Sistem drainase tepi jalan yang terintegrasi.</li></ul>`
-            }
+            @endforeach
         };
 
+        /**
+         * Membuka modal portofolio berdasarkan ID data global
+         */
         function openPortfolioModal(id) {
-            const data = portfolioData[id];
-            if (!data) return;
-            document.getElementById('portfolioModalTitle').innerHTML = data.title;
-            document.getElementById('portfolioModalBody').innerHTML = data.body;
-            document.getElementById('portfolioModalPhotos').innerHTML = `
-                <div class="photo-main"><img src="${data.photos[0]}" alt="Foto 1"></div>
-                <div class="photo-secondary"><img src="${data.photos[1]}" alt="Foto 2"></div>
+            const item = portfolioData[id];
+            if (!item) return;
+
+            // 1. Set Judul Proyek
+            document.getElementById('portfolioModalTitle').innerHTML = item.title;
+
+            // 2. Set Konten Informasi Pendukung dan Deskripsi Utama
+            let bodyContent = `
+                <div class="project-info-meta" style="margin-bottom: 15px; font-size: 0.9em; color: #666; line-height: 1.6;">
+                    <p style="margin: 4px 0;"><i class="fas fa-user"></i> <strong>Klien:</strong> ${item.client || '-'}</p>
+                    <p style="margin: 4px 0;"><i class="fas fa-map-marker-alt"></i> <strong>Lokasi:</strong> ${item.location || '-'}</p>
+                    <p style="margin: 4px 0;"><i class="fas fa-calendar-alt"></i> <strong>Tanggal:</strong> ${item.date}</p>
+                </div>
+                <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 15px;">
+                <div class="project-description">
+                    ${item.description}
+                </div>
             `;
+            document.getElementById('portfolioModalBody').innerHTML = bodyContent;
+
+            // 3. Set Foto Utama (Thumbnail) ke dalam Modal
+            document.getElementById('portfolioModalPhotos').innerHTML = `
+                <div class="photo-main" style="width: 100%; height: 100%;">
+                    <img src="${item.image}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                </div>
+            `;
+
+            // 4. Set Link Tombol Unduh PDF
+            const pdfButton = document.getElementById('portfolioModalPdf');
+            if (pdfButton) {
+                if (item.pdfFile) {
+                    pdfButton.href = item.pdfFile;
+                    pdfButton.style.display = 'inline-block';
+                } else {
+                    pdfButton.style.display = 'none';
+                }
+            }
+
+            // 5. Tampilkan Modal & Kunci Scroll
             document.getElementById('portfolioModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
+
+        /**
+         * Menutup modal portofolio
+         */
         function closePortfolioModal() {
             document.getElementById('portfolioModal').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
+
 
         // BERITA MODAL
         const newsData = {
