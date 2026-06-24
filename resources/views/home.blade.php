@@ -348,7 +348,8 @@
                 </div>
             </div>
             <div class="portfolio-modal-footer">
-                <a href="#" class="btn-unduh-pdf"><i class="fas fa-file-pdf"></i> Unduh PDF</a>
+                <a href="#" id="portfolioModalPdf" class="btn-unduh-pdf" download>
+                    <i class="fas fa-file-pdf"></i> Unduh PDF</a>
             </div>
         </div>
     </div>
