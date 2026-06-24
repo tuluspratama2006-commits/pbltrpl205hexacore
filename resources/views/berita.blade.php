@@ -526,7 +526,7 @@
                 date:    "{{ \Carbon\Carbon::parse($b->tanggal_posting)->isoFormat('D MMMM YYYY') }}",
                 title:   "{{ addslashes($b->judul_berita) }}",
                 image:   "{{ asset('storage/' . $b->thumbnail) }}",
-                content: {!! json_encode('<p>' . nl2br(e($b->isi_berita)) . '</p>') !!}
+                content: {!! json_encode($b->isi_berita) !!}
             },
             @endforeach
         };

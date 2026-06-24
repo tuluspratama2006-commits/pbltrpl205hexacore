@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Berita extends Model
 {
     protected $table = 'berita';
+
     protected $primaryKey = 'id_berita';
 
     // 3. Daftarkan kolom yang boleh diisi via form CMS
@@ -17,8 +18,9 @@ class Berita extends Model
         'thumbnail',
         'tanggal_posting',
         'status',
-        'id_admin'
+        'id_admin',
     ];
+
     protected $casts = [
         'tanggal_posting' => 'datetime',
     ];

@@ -135,7 +135,7 @@
                             data-judul="{{ $item->judul_berita }}"
                             data-tanggal="{{ $item->tanggal_posting }}"
                             data-status="{{ $item->status }}"
-                            data-isi="{{ $item->isi_berita }}"
+                            data-isi="{{ preg_replace('/\s+/', ' ', $item->isi_berita) }}"
                             data-thumbnail="{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : '' }}"
                             onclick="bukaModalEditBerita(this)">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -177,11 +177,11 @@
 </div>
 
 {{-- MODAL TAMBAH BERITA --}}
-<div class="modal-overlay" id="modalTambahBerita" onclick="if(event.target===this) this.style.display='none'">
+<div class="modal-overlay" id="modalTambahBerita" onclick="if(event.target===this) tutupModalTambahBerita()">
     <div class="modal-box">
         <div class="modal-header">
             <h3 class="modal-title">TAMBAH BERITA</h3>
-            <button class="modal-close" onclick="document.getElementById('modalTambahBerita').style.display='none'">
+            <button class="modal-close" onclick="tutupModalTambahBerita()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
                 </svg>
@@ -191,34 +191,34 @@
             @csrf
             <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px; max-height: calc(90vh - 120px);">
                 <div class="modal-field">
-                    <label>Judul</label>
-                    <input type="text" name="judul_berita" class="modal-input" placeholder="Judul berita...">
+                    <label>Judul <span style="color:red">*</span></label>
+                    <input type="text" name="judul_berita" class="modal-input" placeholder="Judul berita..." required>
                 </div>
                 <div class="modal-row">
                     <div class="modal-field">
-                        <label>Tanggal Terbit</label>
-                        <input type="date" name="tanggal_posting" class="modal-input">
+                        <label>Tanggal Terbit <span style="color:red">*</span></label>
+                        <input type="date" name="tanggal_posting" class="modal-input" required>
                     </div>
                     <div class="modal-field">
-                        <label>Foto</label>
-                        <input type="file" name="thumbnail" class="modal-input" accept="image/jpeg,image/png,image/jpg">
+                        <label>Foto <span style="color:red">*</span></label>
+                        <input type="file" name="thumbnail" class="modal-input" accept="image/jpeg,image/png,image/jpg" required>
                     </div>
                 </div>
                 <div class="modal-row">
                     <div class="modal-field">
                         <label>Penulis</label>
-                        <input type="text" class="modal-input" placeholder="Nama penulis...">
+                        <input type="text" class="modal-input" value="{{ Auth::user()->name ?? 'Admin' }}" readonly>
                     </div>
                     <div class="modal-field">
-                        <label>Status</label>
-                        <select name="status" class="modal-input">
+                        <label>Status <span style="color:red">*</span></label>
+                        <select name="status" class="modal-input" required>
                             <option value="publish">Publish</option>
                             <option value="draft">Unpublished</option>
                         </select>
                     </div>
                 </div>
                 <div class="modal-field">
-                    <label>Isi Berita</label>
+                    <label>Isi Berita <span style="color:red">*</span></label>
                     <textarea name="isi_berita" id="tambah_isi" class="modal-input modal-textarea" rows="4" placeholder="Tulis isi berita..."></textarea>
                 </div>
             </div>
@@ -235,11 +235,11 @@
 </div>
 
 {{-- MODAL EDIT BERITA --}}
-<div class="modal-overlay" id="modalEditBerita" onclick="if(event.target===this) this.style.display='none'">
+<div class="modal-overlay" id="modalEditBerita" onclick="if(event.target===this) tutupModalEditBerita()">
     <div class="modal-box">
         <div class="modal-header">
             <h3 class="modal-title">EDIT BERITA</h3>
-            <button class="modal-close" onclick="document.getElementById('modalEditBerita').style.display='none'">
+            <button class="modal-close" onclick="tutupModalEditBerita()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
                 </svg>
@@ -277,7 +277,7 @@
                 </div>
                 <div class="modal-field">
                     <label>Isi Berita <span style="color:red">*</span></label>
-                    <textarea name="isi_berita" id="edit_isi" class="modal-input modal-textarea" rows="4" required></textarea>
+                    <textarea name="isi_berita" id="edit_isi" class="modal-input modal-textarea" rows="4"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -299,12 +299,24 @@
 <script>
 let tambahEditor, editEditor;
 
-function bukaModalTambahBerita() {
-    if (!tambahEditor) {
-        ClassicEditor.create(document.querySelector('#tambah_isi'))
-            .then(editor => { tambahEditor = editor; })
-            .catch(error => { console.error(error); });
+function destroyEditor(editorRef) {
+    if (editorRef && typeof editorRef.destroy === 'function') {
+        editorRef.destroy();
     }
+    return null;
+}
+
+function initTambahEditor() {
+    const el = document.querySelector('#tambah_isi');
+    if (!el) return;
+    if (tambahEditor) { tambahEditor = destroyEditor(tambahEditor); }
+    ClassicEditor.create(el)
+        .then(editor => { tambahEditor = editor; })
+        .catch(error => { console.error(error); });
+}
+
+function bukaModalTambahBerita() {
+    initTambahEditor();
     document.getElementById('modalTambahBerita').style.display = 'flex';
 }
 
@@ -317,13 +329,10 @@ function bukaModalEditBerita(button) {
 
     const ta = document.getElementById('edit_isi');
     ta.value = d.isi;
-    if (!editEditor) {
-        ClassicEditor.create(ta)
-            .then(editor => { editEditor = editor; })
-            .catch(error => { console.error(error); });
-    } else {
-        editEditor.setData(d.isi);
-    }
+    if (editEditor) { editEditor = destroyEditor(editEditor); }
+    ClassicEditor.create(ta)
+        .then(editor => { editEditor = editor; })
+        .catch(error => { console.error(error); });
 
     const preview = document.getElementById('preview_thumbnail_berita');
     if (preview && d.thumbnail) {
@@ -334,6 +343,16 @@ function bukaModalEditBerita(button) {
     }
 
     document.getElementById('modalEditBerita').style.display = 'flex';
+}
+
+function tutupModalTambahBerita() {
+    document.getElementById('modalTambahBerita').style.display = 'none';
+    if (tambahEditor) { tambahEditor = destroyEditor(tambahEditor); }
+}
+
+function tutupModalEditBerita() {
+    document.getElementById('modalEditBerita').style.display = 'none';
+    if (editEditor) { editEditor = destroyEditor(editEditor); }
 }
 
 function filterTable() {

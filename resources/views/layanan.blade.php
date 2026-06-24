@@ -106,7 +106,7 @@
                         <div class="service-card-body">
                             <div class="service-title" style="margin-bottom:6px;">{{ $item->judul_layanan }}</div>
                             <div class="service-code" style="margin-bottom:12px;">({{ $item->icon }})</div>
-                            <div class="service-desc">{{ $item->deskripsi }}</div>
+                            <div class="service-desc">{{ strip_tags($item->deskripsi) }}</div>
                         </div>
                     </div>
                     @empty

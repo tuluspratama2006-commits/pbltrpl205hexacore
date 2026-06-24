@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Portofolio extends Model
 {
     protected $table = 'portofolio';
+
     protected $primaryKey = 'id_portofolio';
 
     // Daftarkan kolom yang boleh diisi via form CMS Portofolio
@@ -20,7 +21,7 @@ class Portofolio extends Model
         'thumbnail',
         'file_pdf',
         'status',
-        'id_admin'
+        'id_admin',
     ];
 
     // Mengubah string tanggal_proyek menjadi objek Datetime/Carbon otomatis

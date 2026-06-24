@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProfilPerusahaan extends Model
 {
     protected $table = 'profil_perusahaan';
+
     protected $primaryKey = 'id_profil';
 
     protected $fillable = [

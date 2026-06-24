@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Portofolio;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PortofolioController extends Controller
 {
@@ -33,18 +33,19 @@ class PortofolioController extends Controller
     {
         // Validasi input data
         $validatedData = $request->validate([
-            'judul_proyek'   => 'required|string|max:255',
-            'deskripsi'      => 'required',
-            'lokasi'         => 'required|string|max:255',
+            'judul_proyek' => 'required|string|max:255',
+            'deskripsi' => 'required',
+            'lokasi' => 'required|string|max:255',
             'tanggal_proyek' => 'required|date',
-            'nama_klien'     => 'required|string|max:255',
-            'thumbnail'      => 'required|image|mimes:jpeg,png,jpg|max:2048', // Maks 2MB
-            'file_pdf'       => 'nullable|mimes:pdf|max:10000', // Maks 10MB
-            'status'         => 'required|in:publish,draft',
+            'nama_klien' => 'required|string|max:255',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Maks 2MB
+            'file_pdf' => 'nullable|mimes:pdf|max:10000', // Maks 10MB
+            'status' => 'required|in:publish,draft',
         ]);
 
         // Gabungkan data hasil validasi dengan slug manual
         $validatedData['slug'] = Str::slug($request->judul_proyek);
+        $validatedData['deskripsi'] = preg_replace(['/&nbsp;(?=\s*<)/', '/(?:\s*<(\w+)>\s*<\/\1>\s*)+$/u'], ['', ''], $validatedData['deskripsi']);
 
         // Handle upload file Gambar (Thumbnail)
         if ($request->hasFile('thumbnail')) {
@@ -69,18 +70,19 @@ class PortofolioController extends Controller
 
         // Validasi input data
         $validatedData = $request->validate([
-            'judul_proyek'   => 'required|string|max:255',
-            'deskripsi'      => 'required',
-            'lokasi'         => 'required|string|max:255',
+            'judul_proyek' => 'required|string|max:255',
+            'deskripsi' => 'required',
+            'lokasi' => 'required|string|max:255',
             'tanggal_proyek' => 'required|date',
-            'nama_klien'     => 'required|string|max:255',
-            'thumbnail'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'file_pdf'       => 'nullable|mimes:pdf|max:10000',
-            'status'         => 'required|in:publish,draft',
+            'nama_klien' => 'required|string|max:255',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'file_pdf' => 'nullable|mimes:pdf|max:10000',
+            'status' => 'required|in:publish,draft',
         ]);
 
         // Update slug otomatis jika judul proyek berubah
         $validatedData['slug'] = Str::slug($request->judul_proyek);
+        $validatedData['deskripsi'] = preg_replace(['/&nbsp;(?=\s*<)/', '/(?:\s*<(\w+)>\s*<\/\1>\s*)+$/u'], ['', ''], $validatedData['deskripsi']);
 
         // Jika mengupload thumbnail baru
         if ($request->hasFile('thumbnail')) {
@@ -107,6 +109,7 @@ class PortofolioController extends Controller
 
         return redirect()->route('admin.portofolio')->with('success', 'Proyek portofolio berhasil diperbarui!');
     }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -127,6 +130,6 @@ class PortofolioController extends Controller
         // Hapus baris data dari database
         $portofolio->delete();
 
-        return redirect()->route('admin.portofolio')->with('success','Proyek portofolio berhasil dihapus!');
+        return redirect()->route('admin.portofolio')->with('success', 'Proyek portofolio berhasil dihapus!');
     }
 }

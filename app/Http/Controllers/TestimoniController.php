@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Testimoni;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class TestimoniController extends Controller
 {
@@ -40,9 +39,9 @@ class TestimoniController extends Controller
             Testimoni::create($validated);
 
             return redirect()->back()->with('success', 'Testimoni berhasil disimpan!');
-            
+
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menyimpan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menyimpan: '.$e->getMessage());
         }
     }
 }

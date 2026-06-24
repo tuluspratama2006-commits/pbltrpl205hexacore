@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Berita;
-use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BeritaController extends Controller
 {
@@ -20,13 +20,13 @@ class BeritaController extends Controller
         $unpublished = Berita::where('status', 'draft')->count();
 
         if ($request->routeIs('admin.dashboard')) {
-                return view('admin.dashboard', compact(
-                    'semuaBerita',
-                    'totalPost',
-                    'published',
-                    'unpublished'
-                ));
-            }
+            return view('admin.dashboard', compact(
+                'semuaBerita',
+                'totalPost',
+                'published',
+                'unpublished'
+            ));
+        }
 
         return view('admin.berita', compact(
             'semuaBerita',
@@ -38,27 +38,27 @@ class BeritaController extends Controller
 
     public function store(Request $request)
     {
-        //Validasi Kelayakan Data Inputan Form Modal
+        // Validasi Kelayakan Data Inputan Form Modal
         $request->validate([
-            'judul_berita'    => 'required|max:200',
+            'judul_berita' => 'required|max:200',
             'tanggal_posting' => 'required|date',
-            'thumbnail'       => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'status'          => 'required|in:draft,publish',
-            'isi_berita'      => 'required'
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'status' => 'required|in:draft,publish',
+            'isi_berita' => 'required',
         ]);
 
-        //Upload file gambar ke dalam folder: storage/app/public/thumbnails
+        // Upload file gambar ke dalam folder: storage/app/public/thumbnails
         $pathFoto = $request->file('thumbnail')->store('thumbnails', 'public');
 
-        //Eksekusi simpan data ke database phpMyAdmin
+        // Eksekusi simpan data ke database phpMyAdmin
         Berita::create([
-            'judul_berita'    => $request->judul_berita,
-            'slug'            => Str::slug($request->judul_berita),
-            'isi_berita'      => $request->isi_berita,
-            'thumbnail'       => $pathFoto,
+            'judul_berita' => $request->judul_berita,
+            'slug' => Str::slug($request->judul_berita),
+            'isi_berita' => preg_replace(['/&nbsp;(?=\s*<)/', '/(?:\s*<(\w+)>\s*<\/\1>\s*)+$/u'], ['', ''], $request->isi_berita),
+            'thumbnail' => $pathFoto,
             'tanggal_posting' => $request->tanggal_posting,
-            'status'          => $request->status,
-            'id_admin'        => Auth::id()
+            'status' => $request->status,
+            'id_admin' => Auth::id(),
         ]);
 
         return redirect()->route('admin.berita')->with('success', 'Berita baru berhasil diterbitkan!');
@@ -71,11 +71,11 @@ class BeritaController extends Controller
 
         // 2. Validasi data (Thumbnail dibuat nullable agar foto tidak wajib diganti)
         $request->validate([
-            'judul_berita'    => 'required|max:200',
+            'judul_berita' => 'required|max:200',
             'tanggal_posting' => 'required',
-            'thumbnail'       => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'status'          => 'required|in:draft,publish',
-            'isi_berita'      => 'required'
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'status' => 'required|in:draft,publish',
+            'isi_berita' => 'required',
         ]);
 
         $pathFoto = $berita->thumbnail; // Set standar menggunakan alamat foto lama
@@ -92,12 +92,12 @@ class BeritaController extends Controller
 
         // 4. Update data ke database
         $berita->update([
-            'judul_berita'    => $request->judul_berita,
-            'slug'            => Str::slug($request->judul_berita),
-            'isi_berita'      => $request->isi_berita,
-            'thumbnail'       => $pathFoto,
+            'judul_berita' => $request->judul_berita,
+            'slug' => Str::slug($request->judul_berita),
+            'isi_berita' => preg_replace(['/&nbsp;(?=\s*<)/', '/(?:\s*<(\w+)>\s*<\/\1>\s*)+$/u'], ['', ''], $request->isi_berita),
+            'thumbnail' => $pathFoto,
             'tanggal_posting' => $request->tanggal_posting,
-            'status'          => $request->status,
+            'status' => $request->status,
         ]);
 
         return redirect()->route('admin.berita')->with('success', 'Data berita berhasil diperbarui!');
@@ -106,7 +106,6 @@ class BeritaController extends Controller
     /**
      * Menghapus Berita Beserta Berkas Fisik Fotonya
      */
-
     public function destroy(string $id_berita)
     {
         $berita = Berita::findOrFail($id_berita);

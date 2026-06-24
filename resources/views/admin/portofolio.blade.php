@@ -4,6 +4,17 @@
 
 @section('content')
 
+{{-- Toast Notif --}}
+@if(session('success'))
+<div class="toast-notif" id="toastNotif">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="20 6 9 17 4 12"/>
+    </svg>
+    {{ session('success') }}
+    <button onclick="document.getElementById('toastNotif').remove()" style="background:none;border:none;cursor:pointer;color:inherit;margin-left:8px;font-size:16px;">×</button>
+</div>
+@endif
+
 {{-- Header --}}
 <div class="page-header">
     <h1 class="page-heading"></h1>
@@ -100,8 +111,6 @@
                 <th>Lokasi</th>
                 <th>Dokumen</th>
                 <th>Status</th>
-                <th>Rilis</th>
-                <th>Pembaruan</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -133,8 +142,6 @@
                         {{ $item->status == 'publish' ? 'Publish' : 'Unpublished' }}
                     </span>
                 </td>
-                <td>{{ $item->created_at->format('d/m/y H:i') }}</td>
-                <td>{{ $item->updated_at->format('d/m/y H:i') }}</td>
                     <td class="aksi-col">
                     <div class="aksi-wrapper">
                         <button class="btn-edit"
@@ -144,7 +151,7 @@
                             data-klien="{{ $item->nama_klien }}"
                             data-lokasi="{{ $item->lokasi }}"
                             data-status="{{ $item->status }}"
-                            data-deskripsi="{{ $item->deskripsi }}"
+                            data-deskripsi="{{ preg_replace('/\s+/', ' ', $item->deskripsi) }}"
                             data-thumbnail="{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : '' }}"
                             data-pdf="{{ $item->file_pdf ? asset('storage/' . $item->file_pdf) : '' }}"
                             onclick="bukaModalEditPortofolio(this)">
@@ -173,7 +180,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="20" class="empty-state">
+                <td colspan="10" class="empty-state">
                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.5">
                         <rect x="2" y="7" width="20" height="14" rx="2"/>
                         <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
@@ -187,11 +194,11 @@
 </div>
 
 {{-- MODAL TAMBAH PORTOFOLIO --}}
-<div class="modal-overlay" id="modalTambahPortofolio" onclick="if(event.target===this) this.style.display='none'">
+<div class="modal-overlay" id="modalTambahPortofolio" onclick="if(event.target===this) tutupModalTambahPortofolio()">
     <div class="modal-box">
         <div class="modal-header">
             <h3 class="modal-title">PORTOFOLIO</h3>
-            <button class="modal-close" onclick="document.getElementById('modalTambahPortofolio').style.display='none'">
+            <button class="modal-close" onclick="tutupModalTambahPortofolio()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
                 </svg>
@@ -240,7 +247,7 @@
                 </div>
                 <div class="modal-field" style="margin-top: 8px;">
                     <label>Isi / Deskripsi<span style="color:red">*</span></label>
-                    <textarea name="deskripsi" id="tambah_deskripsi" class="modal-input modal-textarea" rows="4" placeholder="Tulis deskripsi lengkap proyek..." required></textarea>
+                    <textarea name="deskripsi" id="tambah_deskripsi" class="modal-input modal-textarea" rows="4" placeholder="Tulis deskripsi lengkap proyek..."></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -256,13 +263,13 @@
 </div>
 
 {{-- MODAL EDIT PORTOFOLIO --}}
-<div class="modal-overlay" id="modalEditPortofolio" onclick="if(event.target===this) this.style.display='none'">
+<div class="modal-overlay" id="modalEditPortofolio" onclick="if(event.target===this) tutupModalEditPortofolio()">
     <div class="modal-box">
 
         {{-- Header: Tetap di atas --}}
         <div class="modal-header">
             <h3 class="modal-title">EDIT PORTOFOLIO</h3>
-            <button class="modal-close" onclick="document.getElementById('modalEditPortofolio').style.display='none'">
+            <button class="modal-close" onclick="tutupModalEditPortofolio()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
                 </svg>
@@ -324,7 +331,7 @@
                 </div>
                 <div class="modal-field" style="margin-top: 8px;">
                     <label>Isi / Deskripsi<span style="color:red">*</span></label>
-                    <textarea name="deskripsi" id="edit_deskripsi" class="modal-input modal-textarea" rows="4" required></textarea>
+                    <textarea name="deskripsi" id="edit_deskripsi" class="modal-input modal-textarea" rows="4"></textarea>
                 </div>
 
             </div>
@@ -347,12 +354,24 @@
 <script>
 let portoTambahEditor, portoEditEditor;
 
-function bukaModalTambahPortofolio() {
-    if (!portoTambahEditor) {
-        ClassicEditor.create(document.querySelector('#tambah_deskripsi'))
-            .then(editor => { portoTambahEditor = editor; })
-            .catch(error => { console.error(error); });
+function destroyEditor(editorRef) {
+    if (editorRef && typeof editorRef.destroy === 'function') {
+        editorRef.destroy();
     }
+    return null;
+}
+
+function initTambahEditor() {
+    const el = document.querySelector('#tambah_deskripsi');
+    if (!el) return;
+    if (portoTambahEditor) { portoTambahEditor = destroyEditor(portoTambahEditor); }
+    ClassicEditor.create(el)
+        .then(editor => { portoTambahEditor = editor; })
+        .catch(error => { console.error(error); });
+}
+
+function bukaModalTambahPortofolio() {
+    initTambahEditor();
     document.getElementById('modalTambahPortofolio').style.display = 'flex';
 }
 
@@ -367,13 +386,10 @@ function bukaModalEditPortofolio(button) {
 
     const ta = document.getElementById('edit_deskripsi');
     ta.value = d.deskripsi;
-    if (!portoEditEditor) {
-        ClassicEditor.create(ta)
-            .then(editor => { portoEditEditor = editor; })
-            .catch(error => { console.error(error); });
-    } else {
-        portoEditEditor.setData(d.deskripsi);
-    }
+    if (portoEditEditor) { portoEditEditor = destroyEditor(portoEditEditor); }
+    ClassicEditor.create(ta)
+        .then(editor => { portoEditEditor = editor; })
+        .catch(error => { console.error(error); });
 
     const previewImg = document.getElementById('preview_thumbnail');
     if (previewImg && d.thumbnail) {
@@ -408,6 +424,16 @@ function filterTable() {
 
         row.style.display = (matchText && matchStatus) ? '' : 'none';
     });
+}
+
+function tutupModalTambahPortofolio() {
+    document.getElementById('modalTambahPortofolio').style.display = 'none';
+    if (portoTambahEditor) { portoTambahEditor = destroyEditor(portoTambahEditor); }
+}
+
+function tutupModalEditPortofolio() {
+    document.getElementById('modalEditPortofolio').style.display = 'none';
+    if (portoEditEditor) { portoEditEditor = destroyEditor(portoEditEditor); }
 }
 
 const toast = document.getElementById('toastNotif');

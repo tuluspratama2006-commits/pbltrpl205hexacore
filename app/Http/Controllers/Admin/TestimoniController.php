@@ -39,7 +39,7 @@ class TestimoniController extends Controller
 
             return redirect()->back()->with('success', 'Testimoni berhasil disimpan!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menyimpan: ' . $e->getMessage())->withInput();
+            return redirect()->back()->with('error', 'Gagal menyimpan: '.$e->getMessage())->withInput();
         }
     }
 
@@ -69,7 +69,7 @@ class TestimoniController extends Controller
 
             return redirect()->back()->with('success', 'Testimoni berhasil diupdate!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal mengupdate: ' . $e->getMessage())->withInput();
+            return redirect()->back()->with('error', 'Gagal mengupdate: '.$e->getMessage())->withInput();
         }
     }
 
@@ -86,7 +86,7 @@ class TestimoniController extends Controller
 
             return redirect()->back()->with('success', 'Testimoni berhasil dihapus!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menghapus: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menghapus: '.$e->getMessage());
         }
     }
 }

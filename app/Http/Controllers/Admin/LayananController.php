@@ -5,23 +5,23 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Layanan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class LayananController extends Controller
 {
     public function index()
     {
-        $layanans      = Layanan::orderBy('urutan')->get();
-        $totalLayanan  = $layanans->count();
-        $layananAktif  = $layanans->where('status', 'publish')->count();
-        $bestSeller    = 0; // sesuaikan jika ada kolom best_seller nantinya
+        $layanans = Layanan::orderBy('urutan')->get();
+        $totalLayanan = $layanans->count();
+        $layananAktif = $layanans->where('status', 'publish')->count();
+        $layananNonAktif = $layanans->where('status', 'draft')->count();
 
         return view('admin.layanan', compact(
             'layanans',
             'totalLayanan',
             'layananAktif',
-            'bestSeller'
+            'layananNonAktif'
         ));
     }
 
@@ -29,20 +29,20 @@ class LayananController extends Controller
     {
         $request->validate([
             'judul_layanan' => 'required|string|max:255',
-            'deskripsi'     => 'required|string',
-            'icon'          => 'nullable|string|max:100',
-            'gambar'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'urutan'        => 'nullable|integer',
-            'status'        => 'required|in:publish,draft',
+            'deskripsi' => 'required|string',
+            'icon' => 'nullable|string|max:100',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'urutan' => 'nullable|integer',
+            'status' => 'required|in:publish,draft',
         ]);
 
         $data = [
             'judul_layanan' => $request->judul_layanan,
-            'slug'          => Str::slug($request->judul_layanan),
-            'deskripsi'     => $request->deskripsi,
-            'icon'          => $request->icon,
-            'urutan'        => $request->urutan ?? 0,
-            'status'        => $request->status,
+            'slug' => Str::slug($request->judul_layanan),
+            'deskripsi' => preg_replace(['/&nbsp;(?=\s*<)/', '/(?:\s*<(\w+)>\s*<\/\1>\s*)+$/u'], ['', ''], $request->deskripsi),
+            'icon' => $request->icon,
+            'urutan' => $request->urutan ?? 0,
+            'status' => $request->status,
         ];
 
         if ($request->hasFile('gambar')) {
@@ -60,20 +60,20 @@ class LayananController extends Controller
 
         $request->validate([
             'judul_layanan' => 'required|string|max:255',
-            'deskripsi'     => 'required|string',
-            'icon'          => 'nullable|string|max:100',
-            'gambar'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'urutan'        => 'nullable|integer',
-            'status'        => 'required|in:publish,draft',
+            'deskripsi' => 'required|string',
+            'icon' => 'nullable|string|max:100',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'urutan' => 'nullable|integer',
+            'status' => 'required|in:publish,draft',
         ]);
 
         $data = [
             'judul_layanan' => $request->judul_layanan,
-            'slug'          => Str::slug($request->judul_layanan),
-            'deskripsi'     => $request->deskripsi,
-            'icon'          => $request->icon,
-            'urutan'        => $request->urutan ?? $layanan->urutan,
-            'status'        => $request->status,
+            'slug' => Str::slug($request->judul_layanan),
+            'deskripsi' => preg_replace(['/&nbsp;(?=\s*<)/', '/(?:\s*<(\w+)>\s*<\/\1>\s*)+$/u'], ['', ''], $request->deskripsi),
+            'icon' => $request->icon,
+            'urutan' => $request->urutan ?? $layanan->urutan,
+            'status' => $request->status,
         ];
 
         if ($request->hasFile('gambar')) {

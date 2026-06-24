@@ -17,7 +17,7 @@
 
 {{-- Header --}}
 <div class="page-header">
-    <button class="btn-tambah" onclick="document.getElementById('modalTambah').style.display='flex'">
+    <button class="btn-tambah" onclick="bukaModalTambah()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
         </svg>
@@ -50,6 +50,20 @@
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.5">
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
                 <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-info">
+            <span class="stat-label">Unpublished</span>
+            <span class="stat-value">{{ $layananNonAktif }}</span>
+        </div>
+        <div class="stat-icon">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="1.5">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="9" y1="13" x2="15" y2="13"/>
+                <line x1="9" y1="17" x2="12" y2="17"/>
             </svg>
         </div>
     </div>
@@ -114,7 +128,7 @@
                     </div>
                 </td>
                 <td>
-                    {{ Str::limit($item->deskripsi, 60) }}
+                    {{ Str::limit(strip_tags($item->deskripsi), 60) }}
                 </td>
                 <td>{{ $item->urutan }}</td>
                 <td>
@@ -125,14 +139,14 @@
                 <td class="aksi-col">
                     <div class="aksi-wrapper">
                         {{-- Tombol Edit --}}
-                        <button class="btn-edit" onclick="bukaModalEdit(
-                            {{ $item->id_layanan }},
-                            '{{ addslashes($item->judul_layanan) }}',
-                            '{{ addslashes($item->deskripsi) }}',
-                            '{{ $item->icon }}',
-                            {{ $item->urutan }},
-                            '{{ $item->status }}'
-                        )">
+                        <button class="btn-edit"
+                            data-id="{{ $item->id_layanan }}"
+                            data-judul="{{ $item->judul_layanan }}"
+                            data-deskripsi="{{ preg_replace('/\s+/', ' ', $item->deskripsi) }}"
+                            data-icon="{{ $item->icon }}"
+                            data-urutan="{{ $item->urutan }}"
+                            data-status="{{ $item->status }}"
+                            onclick="bukaModalEdit(this)">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
@@ -173,17 +187,17 @@
 </div>
 
 {{-- ===================== MODAL TAMBAH ===================== --}}
-<div class="modal-overlay" id="modalTambah" onclick="if(event.target===this) this.style.display='none'">
+<div class="modal-overlay" id="modalTambah" onclick="if(event.target===this) tutupModalTambah()">
     <div class="modal-box">
         <div class="modal-header">
             <h3 class="modal-title">TAMBAH LAYANAN</h3>
-            <button class="modal-close" onclick="document.getElementById('modalTambah').style.display='none'">
+            <button class="modal-close" onclick="tutupModalTambah()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
                 </svg>
             </button>
         </div>
-        <form action="{{ route('admin.layanan.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.layanan.store') }}" method="POST" enctype="multipart/form-data" onsubmit="if(portoTambahEditor) portoTambahEditor.updateSourceElement();">
             @csrf
             <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px; max-height: calc(90vh - 120px);">
                 <div class="modal-field">
@@ -213,7 +227,7 @@
                 </div>
                 <div class="modal-field">
                     <label>Deskripsi <span style="color:red">*</span></label>
-                    <textarea name="deskripsi" id="tambah_deskripsi" class="modal-input modal-textarea" rows="4" required placeholder="Deskripsi layanan..."></textarea>
+                    <textarea name="deskripsi" id="tambah_deskripsi" class="modal-input modal-textarea" rows="4" placeholder="Deskripsi layanan..."></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -229,17 +243,17 @@
 </div>
 
 {{-- ===================== MODAL EDIT ===================== --}}
-<div class="modal-overlay" id="modalEdit" onclick="if(event.target===this) this.style.display='none'">
+<div class="modal-overlay" id="modalEdit" onclick="if(event.target===this) tutupModalEdit()">
     <div class="modal-box">
         <div class="modal-header">
             <h3 class="modal-title">EDIT LAYANAN</h3>
-            <button class="modal-close" onclick="document.getElementById('modalEdit').style.display='none'">
+            <button class="modal-close" onclick="tutupModalEdit()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
                 </svg>
             </button>
         </div>
-        <form id="formEdit" action="" method="POST" enctype="multipart/form-data">
+        <form id="formEdit" action="" method="POST" enctype="multipart/form-data" onsubmit="if(portoEditEditor) portoEditEditor.updateSourceElement();">
             @csrf
             @method('PUT')
             <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px; max-height: calc(90vh - 120px);">
@@ -270,7 +284,7 @@
                 </div>
                 <div class="modal-field">
                     <label>Deskripsi <span style="color:red">*</span></label>
-                    <textarea name="deskripsi" id="edit_deskripsi" class="modal-input modal-textarea" rows="4" required></textarea>
+                    <textarea name="deskripsi" id="edit_deskripsi" class="modal-input modal-textarea" rows="4"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -289,27 +303,55 @@
 @push('scripts')
 <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 <script>
-let portoTambahEditor, portoEditEditor;
+let layananTambahEditor, layananEditEditor;
 
-ClassicEditor
-    .create(document.querySelector('#tambah_deskripsi'))
-    .then(editor => { portoTambahEditor = editor; })
-    .catch(error => { console.error(error); });
+function destroyEditor(editorRef) {
+    if (editorRef && typeof editorRef.destroy === 'function') {
+        editorRef.destroy();
+    }
+    return null;
+}
 
-ClassicEditor
-    .create(document.querySelector('#edit_deskripsi'))
-    .then(editor => { portoEditEditor = editor; })
-    .catch(error => { console.error(error); });
+function initTambahEditor() {
+    const el = document.querySelector('#tambah_deskripsi');
+    if (!el) return;
+    if (layananTambahEditor) { layananTambahEditor = destroyEditor(layananTambahEditor); }
+    ClassicEditor.create(el)
+        .then(editor => { layananTambahEditor = editor; })
+        .catch(error => { console.error(error); });
+}
 
-// Buka modal edit dan isi field
-function bukaModalEdit(id, judul, deskripsi, icon, urutan, status) {
-    document.getElementById('formEdit').action = '/admin/layanan/' + id;
-    document.getElementById('edit_judul').value = judul;
-    document.getElementById('edit_deskripsi').value = deskripsi;
-    document.getElementById('edit_icon').value = icon;
-    document.getElementById('edit_urutan').value = urutan;
-    document.getElementById('edit_status').value = status;
+function bukaModalTambah() {
+    initTambahEditor();
+    document.getElementById('modalTambah').style.display = 'flex';
+}
+
+function tutupModalTambah() {
+    document.getElementById('modalTambah').style.display = 'none';
+    if (layananTambahEditor) { layananTambahEditor = destroyEditor(layananTambahEditor); }
+}
+
+function bukaModalEdit(button) {
+    const d = button.dataset;
+    document.getElementById('formEdit').action = '/admin/layanan/' + d.id;
+    document.getElementById('edit_judul').value = d.judul;
+    document.getElementById('edit_icon').value = d.icon;
+    document.getElementById('edit_urutan').value = d.urutan;
+    document.getElementById('edit_status').value = d.status;
+
+    const ta = document.getElementById('edit_deskripsi');
+    ta.value = d.deskripsi;
+    if (layananEditEditor) { layananEditEditor = destroyEditor(layananEditEditor); }
+    ClassicEditor.create(ta)
+        .then(editor => { layananEditEditor = editor; })
+        .catch(error => { console.error(error); });
+
     document.getElementById('modalEdit').style.display = 'flex';
+}
+
+function tutupModalEdit() {
+    document.getElementById('modalEdit').style.display = 'none';
+    if (layananEditEditor) { layananEditEditor = destroyEditor(layananEditEditor); }
 }
 
 // Filter tabel berdasarkan search & status
@@ -327,10 +369,7 @@ function filterTable() {
     });
 }
 
-// Auto remove toast setelah 3.5 detik
 const toast = document.getElementById('toastNotif');
-if (toast) {
-    setTimeout(() => toast.remove(), 3500);
-}
+if (toast) setTimeout(() => toast.remove(), 3500);
 </script>
 @endpush

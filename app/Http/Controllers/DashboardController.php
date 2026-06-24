@@ -8,9 +8,9 @@ class DashboardController extends Controller
     {
         $stats = [
             'pengunjung' => 5,
-            'proyek'     => 5,
-            'berita'     => 5,
-            'testimoni'  => 5,
+            'proyek' => 5,
+            'berita' => 5,
+            'testimoni' => 5,
         ];
 
         $aktivitas = [

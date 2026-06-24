@@ -107,7 +107,7 @@
                         <div class="service-card-body">
                             <div class="service-title" style="margin-bottom:6px;">{{ $item->judul_layanan }}</div>
                             <div class="service-code" style="margin-bottom:12px;">({{ $item->icon }})</div>
-                            <div class="service-desc">{{ $item->deskripsi }}</div>
+                            <div class="service-desc">{{ strip_tags($item->deskripsi) }}</div>
                         </div>
                     </div>
                     @empty
@@ -497,7 +497,7 @@
                 date:    "{{ \Carbon\Carbon::parse($b->tanggal_posting)->isoFormat('D MMMM YYYY') }}",
                 title:   "{{ addslashes($b->judul_berita) }}",
                 image:   "{{ asset('storage/' . $b->thumbnail) }}",
-                content: {!! json_encode('<p>' . nl2br(e($b->isi_berita)) . '</p>') !!}
+                content: {!! json_encode($b->isi_berita) !!}
             },
             @endforeach
         };

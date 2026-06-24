@@ -10,7 +10,7 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!Session::get('admin_logged_in')) {
+        if (! Session::get('admin_logged_in')) {
             return redirect()->route('home')->with('error', 'Silakan login terlebih dahulu.');
         }
 
