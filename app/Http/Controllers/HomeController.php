@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Berita;
 use App\Models\Layanan;
 use App\Models\ProfilPerusahaan;
+use App\Models\Portofolio;
 
 class HomeController extends Controller
 {
@@ -20,7 +21,11 @@ class HomeController extends Controller
             ->latest('tanggal_posting')
             ->get();
 
-        return view('home', compact('layanans', 'profil', 'publishedBerita'));
+        $semuaPortofolio = Portofolio::where('status', 'publish')
+                                                ->latest()
+                                                ->get();
+
+        return view('home', compact('layanans', 'profil', 'publishedBerita', 'semuaPortofolio'));
     }
 
     public function create()
