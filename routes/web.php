@@ -14,11 +14,22 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Middleware\TrackVisitorMiddleware;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\LayananController;
+use App\Http\Controllers\Admin\PengaturanController;
+use App\Http\Controllers\Admin\BeritaController;
+use App\Http\Controllers\Admin\PortofolioController;
+use App\Http\Controllers\Admin\TestimoniController;
+use App\Http\Controllers\Admin\TentangKamiController;
 
 // =========================
 // TRACK VISITOR (tanpa IP, pakai cookie visitor_id)
 // =========================
 Route::middleware([TrackVisitorMiddleware::class])->group(function () {
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
     // FRONTEND / USER
     Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -42,6 +53,8 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/berita', [BeritaController::class, 'index'])->name('berita');
     Route::get('/testimoni', [TestimoniController::class, 'index'])->name('testimoni');
 
+    // Dashboard Admin
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Pengaturan
     Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan');
@@ -71,5 +84,12 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::put('/testimoni/{id}', [TestimoniController::class, 'update'])->name('testimoni.update');
     Route::delete('/testimoni/{id}', [TestimoniController::class, 'destroy'])->name('testimoni.destroy');
 
+<<<<<<< HEAD
 });
 
+=======
+    // Tentang Kami
+    Route::get('/tentang', [TentangKamiController::class, 'index'])->name('tentang');
+    Route::put('/tentang', [TentangKamiController::class, 'update'])->name('tentang.update');
+});
+>>>>>>> 1d60e3691ed19e1e30f52b135551c27b6c414cd3

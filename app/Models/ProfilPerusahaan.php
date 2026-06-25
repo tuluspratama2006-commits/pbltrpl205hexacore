@@ -17,6 +17,7 @@ class ProfilPerusahaan extends Model
         'visi',
         'misi',
         'hero_image',
+        'foto_grid',
         'alamat',
         'alamat_2',
         'email',
@@ -28,5 +29,6 @@ class ProfilPerusahaan extends Model
         'linkedin',
         'maps_embed',
         'maps_embed_2',
+        'nomor_sertifikasi',
     ];
 }

@@ -60,8 +60,9 @@ class DashboardController extends Controller
 
 
         $profil = ProfilPerusahaan::first();
+        $totalPost = Berita::count();
 
-        return view('admin.dashboard', compact('stats', 'aktivitas', 'grafik', 'profil'));
+        return view('admin.dashboard', compact('stats', 'aktivitas', 'grafik', 'profil', 'totalPost'));
     }
 }
 

@@ -27,6 +27,18 @@
                     Dashboard
                 </a>
             </li>
+            <li class="{{ request()->routeIs('admin.tentang*') ? 'active' : '' }}">
+                <a href="{{ route('admin.tentang') }}">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                    </span>
+                    Tentang Kami
+                </a>
+            </li>
             <li class="{{ request()->routeIs('admin.portofolio*') ? 'active' : '' }}">
                 <a href="{{ route('admin.portofolio') }}">
                     <span class="nav-icon">
@@ -93,7 +105,6 @@
         </ul>
     </nav>
     <div class="sidebar-footer">
-        </a>
         <a href="{{ route('logout') }}" class="btn-logout"
            onclick="return confirm('Yakin ingin logout?')">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
