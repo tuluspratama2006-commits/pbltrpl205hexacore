@@ -268,13 +268,12 @@ section {
 .services-scroll-wrapper {
     overflow-x: auto;
     overflow-y: visible;
-    padding-bottom: 4px;
+    padding-bottom: 8px;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
-.services-scroll-wrapper::-webkit-scrollbar { height: 6px; }
-.services-scroll-wrapper::-webkit-scrollbar-track { background: #e0e0e0; border-radius: 10px; }
-.services-scroll-wrapper::-webkit-scrollbar-thumb { background: #162660; border-radius: 10px; }
+.services-scroll-wrapper::-webkit-scrollbar { display: none; }
 
 .services-track {
     display: flex;
