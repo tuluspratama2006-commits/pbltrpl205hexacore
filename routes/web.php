@@ -1,20 +1,20 @@
 <?php
 
-use App\Http\Controllers\Admin\BeritaController;
-use App\Http\Controllers\Admin\LayananController;
-use App\Http\Controllers\Admin\PengaturanController;
-use App\Http\Controllers\Admin\PortofolioController;
-use App\Http\Controllers\Admin\TestimoniController;
-use App\Http\Controllers\DashboardController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\LayananController;
+use App\Http\Controllers\Admin\PengaturanController;
+use App\Http\Controllers\Admin\BeritaController;
+use App\Http\Controllers\Admin\PortofolioController;
+use App\Http\Controllers\Admin\TestimoniController;
+use App\Http\Controllers\Admin\TentangKamiController;
 
 // =========================
 // FRONTEND / USER
 // =========================
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 // Login & Logout
 Route::post('/login', [LoginController::class, 'login'])->name('login');
@@ -24,14 +24,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 // ADMIN — dilindungi middleware
 // =========================
 Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
-
-    Route::get('/dashboard', fn () => view('admin.dashboard'))->name('dashboard');
-    Route::get('/portofolio', fn () => view('admin.portofolio'))->name('portofolio');
-    Route::get('/berita', fn () => view('admin.berita'))->name('berita');
-    Route::get('/testimoni', fn () => view('admin.testimoni'))->name('testimoni');
-
     // Dashboard Admin
-    Route::get('/dashboard', [BeritaController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Pengaturan
     Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan');
@@ -61,4 +55,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::put('/testimoni/{id}', [TestimoniController::class, 'update'])->name('testimoni.update');
     Route::delete('/testimoni/{id}', [TestimoniController::class, 'destroy'])->name('testimoni.destroy');
 
-}); // ← HANYA SATU KURUNG PENUTUP
+    // Tentang Kami
+    Route::get('/tentang', [TentangKamiController::class, 'index'])->name('tentang');
+    Route::put('/tentang', [TentangKamiController::class, 'update'])->name('tentang.update');
+});

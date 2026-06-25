@@ -44,37 +44,78 @@
         </div>
     </section>
 
-    <!-- TENTANG KAMI -->
-    <section id="tentang-kami">
-        <div class="inner-container">
-            <div class="about-header">
-                <h1 class="section-title">Tentang Kami</h1>
-                <div class="title-underline"></div>
-            </div>
-            <div class="about-content">
-                <div class="about-left">
-                    <img class="about-logo-bg" src="{{ asset('images/logo_pt_bat2.jpg') }}" alt="watermark">
-                    <div class="about-left-inner">
-                        <h2>PT Berkah Alam Tabantang</h2>
-                        <p>adalah perusahaan konstruksi terkemuka yang berbasis di Kota Batam. Dengan spesialisasi pada pembangunan infrastruktur dan proyek komersial skala besar, kami berkomitmen memberikan solusi konstruksi yang inovatif dan kolaboratif.</p>
-                        <p>Didukung oleh tim profesional berpengalaman dan teknologi terkini, kami memastikan setiap proyek berjalan dengan standar kualitas, keamanan, dan keberlanjutan lingkungan yang tertinggi.</p>
-                        <div class="sbu-label">Sertifikat Badan Usaha (SBU) Konstruksi</div>
-                        <div class="sbu-number">PB-UMKU : 022100092289300040001</div>
-                        <a href="#" class="btn-unduh"><i class="fas fa-chevron-right"></i> Unduh PDF</a>
+  <!-- TENTANG KAMI -->
+<section id="tentang-kami">
+    <div class="inner-container">
+        <div class="about-header">
+            <h1 class="section-title">Tentang Kami</h1>
+            <div class="title-underline"></div>
+        </div>
+        <div class="about-content">
+            <div class="about-left">
+                <img class="about-logo-bg" src="{{ $profil && $profil->hero_image ? asset('storage/' . $profil->hero_image) : asset('images/logo_pt_bat2.jpg') }}" alt="watermark">
+                <div class="about-left-inner">
+                    <h2>{{ $profil->nama_perusahaan ?? 'PT Berkah Alam Tabantang' }}</h2>
+                    <p>{{ $profil->deskripsi ?? 'adalah perusahaan konstruksi terkemuka yang berbasis di Kota Batam.' }}</p>
+
+                    {{-- Visi Misi --}}
+                    @if($profil && ($profil->visi || $profil->misi))
+                    <div class="visi-misi-block">
+                        @if($profil->visi)
+                        <div class="visi-misi-item">
+                            <div class="visi-misi-label">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <line x1="12" y1="8" x2="12" y2="12"/>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                                </svg>
+                                Visi
+                            </div>
+                            <p>{{ $profil->visi }}</p>
+                        </div>
+                        @endif
+                        @if($profil->misi)
+                        <div class="visi-misi-item">
+                            <div class="visi-misi-label">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="9 11 12 14 22 4"/>
+                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                                </svg>
+                                Misi
+                            </div>
+                            <p>{{ $profil->misi }}</p>
+                        </div>
+                        @endif
                     </div>
+                    @endif
+
+                    @if($profil && $profil->nomor_sertifikasi)
+                    <div class="sbu-label">Sertifikat Badan Usaha (SBU) Konstruksi</div>
+                    <div class="sbu-number">{{ $profil->nomor_sertifikasi }}</div>
+                    @else
+                    <div class="sbu-label">Sertifikat Badan Usaha (SBU) Konstruksi</div>
+                    <div class="sbu-number">PB-UMKU : 022100092289300040001</div>
+                    @endif
+                    <a href="#" class="btn-unduh"><i class="fas fa-chevron-right"></i> Unduh PDF</a>
                 </div>
-                <div class="about-right">
-                    <div class="photos-grid">
-                        <div class="photo-item"><img src="{{ asset('images/tentang_kami_1.jpg') }}" alt="Proyek 1"></div>
-                        <div class="photo-item"><img src="{{ asset('images/tentang_kami_2.jpg') }}" alt="Proyek 2"></div>
-                        <div class="photo-item"><img src="{{ asset('images/tentang_kami_3.jpg') }}" alt="Proyek 3"></div>
-                        <div class="photo-item"><img src="{{ asset('images/tentang_kami_4.jpg') }}" alt="Proyek 4"></div>
-                        <div class="photo-item"><img src="{{ asset('images/tentang_kami_5.jpg') }}" alt="Proyek 5"></div>
+            </div>
+            <div class="about-right">
+                @php $fotoGrid = json_decode($profil->foto_grid ?? '[]', true); @endphp
+                <div class="photos-grid">
+                    @for($i = 0; $i < 5; $i++)
+                    <div class="photo-item">
+                        @if(!empty($fotoGrid[$i]))
+                            <img src="{{ asset('storage/' . $fotoGrid[$i]) }}" alt="Foto {{ $i+1 }}">
+                        @else
+                            <img src="{{ asset('images/tentang_kami_' . ($i+1) . '.jpg') }}" alt="Foto {{ $i+1 }}">
+                        @endif
                     </div>
+                    @endfor
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
    <!-- LAYANAN -->
     <section id="layanan">
