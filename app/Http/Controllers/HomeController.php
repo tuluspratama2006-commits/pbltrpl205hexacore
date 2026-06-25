@@ -6,6 +6,7 @@ use App\Models\Berita;
 use App\Models\Layanan;
 use App\Models\Portofolio;
 use App\Models\ProfilPerusahaan;
+use App\Models\Testimoni;
 
 class HomeController extends Controller
 {
@@ -25,7 +26,12 @@ class HomeController extends Controller
             ->latest()
             ->get();
 
-        return view('home', compact('layanans', 'profil', 'publishedBerita', 'semuaPortofolio'));
+        $testimonis = Testimoni::where('status', 'publish')
+            ->latest()
+            ->limit(6)
+            ->get();
+
+        return view('home', compact('layanans', 'profil', 'publishedBerita', 'semuaPortofolio', 'testimonis'));
     }
 
     public function create()

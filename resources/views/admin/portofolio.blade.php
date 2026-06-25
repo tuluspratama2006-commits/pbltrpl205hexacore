@@ -208,14 +208,23 @@
             @csrf
             {{-- Body: fitur SCROLL --}}
             <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px; max-height: calc(90vh - 120px);">
+                @if($errors->any())
+                <div style="background:#fde8e8;color:#c53030;padding:10px 14px;border-radius:8px;margin-bottom:16px;font-size:13px;">
+                    <ul style="margin:0;padding-left:16px;">
+                        @foreach($errors->all() as $err)
+                        <li>{{ $err }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
                 <div class="modal-field">
                     <label>Nama Proyek <span style="color:red">*</span></label>
-                    <input type="text" name="judul_proyek" class="modal-input" placeholder="Nama proyek..." required>
+                    <input type="text" name="judul_proyek" class="modal-input" placeholder="Nama proyek..." value="{{ old('judul_proyek') }}" required>
                 </div>
                 <div class="modal-row" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
                     <div class="modal-field">
                         <label>Tanggal Proyek <span style="color:red">*</span></label>
-                        <input type="date" name="tanggal_proyek" class="modal-input" required>
+                        <input type="date" name="tanggal_proyek" class="modal-input" value="{{ old('tanggal_proyek') }}" required>
                     </div>
                     <div class="modal-field">
                         <label>Foto Portofolio <span style="color:red">*</span></label>
@@ -225,11 +234,11 @@
                 <div class="modal-row" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top: 8px;">
                     <div class="modal-field">
                         <label>Klien <span style="color:red">*</span></label>
-                        <input type="text" name="nama_klien" class="modal-input" placeholder="Nama klien..." required>
+                        <input type="text" name="nama_klien" class="modal-input" placeholder="Nama klien..." value="{{ old('nama_klien') }}" required>
                     </div>
                     <div class="modal-field">
                         <label>Lokasi <span style="color:red">*</span></label>
-                        <input type="text" name="lokasi" class="modal-input" placeholder="Lokasi proyek..." required>
+                        <input type="text" name="lokasi" class="modal-input" placeholder="Lokasi proyek..." value="{{ old('lokasi') }}" required>
                     </div>
                 </div>
                 <div class="modal-row" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top: 8px;">
@@ -240,14 +249,14 @@
                     <div class="modal-field">
                         <label>Status <span style="color:red">*</span></label>
                     <select name="status" class="modal-input" required>
-                        <option value="publish">Publish</option>
-                        <option value="draft">Unpublished</option>
+                        <option value="publish" {{ old('status') == 'publish' ? 'selected' : '' }}>Publish</option>
+                        <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Unpublished</option>
                     </select>
                     </div>
                 </div>
                 <div class="modal-field" style="margin-top: 8px;">
                     <label>Isi / Deskripsi<span style="color:red">*</span></label>
-                    <textarea name="deskripsi" id="tambah_deskripsi" class="modal-input modal-textarea" rows="4" placeholder="Tulis deskripsi lengkap proyek..."></textarea>
+                    <textarea name="deskripsi" id="tambah_deskripsi" class="modal-input modal-textarea" rows="4" placeholder="Tulis deskripsi lengkap proyek...">{{ old('deskripsi') }}</textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -280,6 +289,15 @@
             @method('PUT')
             {{-- Body: fitur SCROLL --}}
             <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px; max-height: calc(90vh - 120px);">
+                @if($errors->any())
+                <div style="background:#fde8e8;color:#c53030;padding:10px 14px;border-radius:8px;margin-bottom:16px;font-size:13px;">
+                    <ul style="margin:0;padding-left:16px;">
+                        @foreach($errors->all() as $err)
+                        <li>{{ $err }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
                 <div class="modal-field">
                     <label>Nama Proyek <span style="color:red">*</span></label>
                     <input type="text" name="judul_proyek" id="edit_judul_proyek" class="modal-input" required>
@@ -365,9 +383,13 @@ function initTambahEditor() {
     const el = document.querySelector('#tambah_deskripsi');
     if (!el) return;
     if (portoTambahEditor) { portoTambahEditor = destroyEditor(portoTambahEditor); }
-    ClassicEditor.create(el)
-        .then(editor => { portoTambahEditor = editor; })
-        .catch(error => { console.error(error); });
+    try {
+        ClassicEditor.create(el)
+            .then(editor => { portoTambahEditor = editor; })
+            .catch(error => { console.error(error); });
+    } catch (e) {
+        console.error('CKEditor tidak tersedia, menggunakan textarea biasa', e);
+    }
 }
 
 function bukaModalTambahPortofolio() {
@@ -387,9 +409,13 @@ function bukaModalEditPortofolio(button) {
     const ta = document.getElementById('edit_deskripsi');
     ta.value = d.deskripsi;
     if (portoEditEditor) { portoEditEditor = destroyEditor(portoEditEditor); }
-    ClassicEditor.create(ta)
-        .then(editor => { portoEditEditor = editor; })
-        .catch(error => { console.error(error); });
+    try {
+        ClassicEditor.create(ta)
+            .then(editor => { portoEditEditor = editor; })
+            .catch(error => { console.error(error); });
+    } catch (e) {
+        console.error('CKEditor tidak tersedia, menggunakan textarea biasa', e);
+    }
 
     const previewImg = document.getElementById('preview_thumbnail');
     if (previewImg && d.thumbnail) {
@@ -438,6 +464,12 @@ function tutupModalEditPortofolio() {
 
 const toast = document.getElementById('toastNotif');
 if (toast) setTimeout(() => toast.remove(), 3500);
+
+@if($errors->any())
+document.addEventListener('DOMContentLoaded', function () {
+    bukaModalTambahPortofolio();
+});
+@endif
 </script>
 @endpush
 

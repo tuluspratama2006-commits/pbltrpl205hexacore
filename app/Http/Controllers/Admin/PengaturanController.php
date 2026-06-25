@@ -23,6 +23,8 @@ class PengaturanController extends Controller
     {
         $request->validate([
             'nama_perusahaan' => 'nullable|string|max:150',
+            'tagline' => 'nullable|string',
+            'deskripsi' => 'nullable|string',
             'email' => 'nullable|email|max:100',
             'telepon' => 'nullable|string|max:30',
             'telepon_2' => 'nullable|string|max:30',
@@ -37,14 +39,21 @@ class PengaturanController extends Controller
         ]);
 
         // Update profil perusahaan
-        ProfilPerusahaan::updateOrCreate(
-            ['id_profil' => 1],
-            $request->only([
-                'nama_perusahaan', 'email', 'telepon', 'telepon_2',
-                'alamat', 'alamat_2', 'whatsapp', 'instagram',
-                'facebook', 'linkedin', 'maps_embed', 'maps_embed_2',
-            ])
-        );
+        $data = $request->only([
+            'nama_perusahaan', 'tagline', 'deskripsi', 'email', 'telepon', 'telepon_2',
+            'alamat', 'alamat_2', 'whatsapp', 'instagram',
+            'facebook', 'linkedin', 'maps_embed', 'maps_embed_2',
+        ]);
+
+        if ($request->hasFile('hero_image')) {
+            $profil = ProfilPerusahaan::first();
+            if ($profil && $profil->hero_image) {
+                Storage::disk('public')->delete($profil->hero_image);
+            }
+            $data['hero_image'] = $request->file('hero_image')->store('hero', 'public');
+        }
+
+        ProfilPerusahaan::updateOrCreate(['id_profil' => 1], $data);
 
         // Update akun admin
         $user = DB::table('admin')->first();
@@ -73,6 +82,6 @@ class PengaturanController extends Controller
 
         DB::table('admin')->where('id_admin', $user->id_admin)->update($updateData);
 
-        return redirect()->route('admin.pengaturan')->with('success', 'Pengaturan berhasil diperbarui!');
+        return redirect()->back()->with('success', 'Pengaturan berhasil diperbarui!');
     }
 }

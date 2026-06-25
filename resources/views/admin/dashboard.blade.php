@@ -4,6 +4,26 @@
 
 @section('content')
 
+{{-- Toast Notif --}}
+@if(session('success'))
+<div class="toast-notif" id="toastNotif">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="20 6 9 17 4 12"/>
+    </svg>
+    {{ session('success') }}
+    <button onclick="document.getElementById('toastNotif').remove()" style="background:none;border:none;cursor:pointer;color:inherit;margin-left:8px;font-size:16px;">×</button>
+</div>
+@endif
+@if(session('error'))
+<div class="toast-notif" style="background:#c53030;" id="toastError">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+    </svg>
+    {{ session('error') }}
+    <button onclick="document.getElementById('toastError').remove()" style="background:none;border:none;cursor:pointer;color:inherit;margin-left:8px;font-size:16px;">×</button>
+</div>
+@endif
+
 {{-- Header --}}
 <div class="page-header" style="margin-bottom: 28px;">
     <h1 class="page-heading" style="text-decoration: underline; text-underline-offset: 6px;"></h1>
@@ -110,23 +130,49 @@
 {{-- Landing Page Settings --}}
 <div class="settings-card">
     <h3>Landing Page</h3>
-    <div class="form-group">
-        <label>Judul :</label>
-        <textarea rows="3" placeholder="Masukkan judul landing page..."></textarea>
-    </div>
-    <div class="form-group">
-        <label>Background Foto :</label>
-        <div class="upload-area">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                <circle cx="8.5" cy="8.5" r="1.5"/>
-                <polyline points="21 15 16 10 5 21"/>
-            </svg>
-            <p>Klik atau drag foto ke sini</p>
-            <input type="file" accept="image/*">
+    <form action="{{ route('admin.pengaturan.update') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="form-group">
+            <label>Nama Perusahaan <span style="color:red">*</span> :</label>
+            <input type="text" name="nama_perusahaan" class="modal-input" placeholder="PT. Berkah Alam Tabantang" value="{{ old('nama_perusahaan', $profil->nama_perusahaan ?? '') }}">
         </div>
-    </div>
-    <button class="btn-simpan">Simpan Perubahan</button>
+        <div class="form-group">
+            <label>Tagline :</label>
+            <textarea name="tagline" rows="2" placeholder="Solusi Terpercaya untuk Konstruksi & Infrastruktur di Batam">{{ old('tagline', $profil->tagline ?? '') }}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Deskripsi :</label>
+            <textarea name="deskripsi" rows="3" placeholder="Deskripsi singkat perusahaan...">{{ old('deskripsi', $profil->deskripsi ?? '') }}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Background Foto :</label>
+            @if($profil && $profil->hero_image)
+            <div style="margin-bottom:8px;">
+                <img src="{{ asset('storage/' . $profil->hero_image) }}" style="width:100%;max-height:120px;object-fit:cover;border-radius:8px;">
+            </div>
+            @endif
+            <div class="upload-area" id="uploadArea">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21 15 16 10 5 21"/>
+                </svg>
+                <p id="uploadText">Klik atau drag foto ke sini</p>
+                <input type="file" name="hero_image" id="heroImageInput" accept="image/*">
+            </div>
+        </div>
+        <div style="display:flex;gap:10px;">
+            <button type="submit" class="btn-simpan">Simpan Perubahan</button>
+            <a href="{{ route('home') }}" target="_blank" class="btn-simpan" style="background:#162660;text-decoration:none;text-align:center;display:inline-flex;align-items:center;gap:6px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <polyline points="15 3 21 3 21 9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+                Lihat Landing Page
+            </a>
+        </div>
+    </form>
 </div>
 
 @endsection
@@ -159,6 +205,15 @@
                 x: { grid: { display: false } }
             }
         }
+    });
+    const toast = document.getElementById('toastNotif');
+    if (toast) setTimeout(() => toast.remove(), 3500);
+    const toastError = document.getElementById('toastError');
+    if (toastError) setTimeout(() => toastError.remove(), 3500);
+
+    document.getElementById('heroImageInput').addEventListener('change', function () {
+        const text = document.getElementById('uploadText');
+        text.textContent = this.files[0] ? 'Terpilih: ' + this.files[0].name : 'Klik atau drag foto ke sini';
     });
 </script>
 @endpush
