@@ -44,80 +44,80 @@
         </div>
     </section>
 
-  <!-- TENTANG KAMI -->
-<section id="tentang-kami">
-    <div class="inner-container">
-        <div class="about-header">
-            <h1 class="section-title">Tentang Kami</h1>
-            <div class="title-underline"></div>
-        </div>
-        <div class="about-content">
-            <div class="about-left">
-                <img class="about-logo-bg" src="{{ $profil && $profil->hero_image ? asset('storage/' . $profil->hero_image) : asset('images/logo_pt_bat2.jpg') }}" alt="watermark">
-                <div class="about-left-inner">
-                    <h2>{{ $profil->nama_perusahaan ?? 'PT Berkah Alam Tabantang' }}</h2>
-                    <p>{{ $profil->deskripsi ?? 'adalah perusahaan konstruksi terkemuka yang berbasis di Kota Batam.' }}</p>
-
-                    {{-- Visi Misi --}}
-                    @if($profil && ($profil->visi || $profil->misi))
-                    <div class="visi-misi-block">
-                        @if($profil->visi)
-                        <div class="visi-misi-item">
-                            <div class="visi-misi-label">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <line x1="12" y1="8" x2="12" y2="12"/>
-                                    <line x1="12" y1="16" x2="12.01" y2="16"/>
-                                </svg>
-                                Visi
-                            </div>
-                            <p>{{ $profil->visi }}</p>
-                        </div>
-                        @endif
-                        @if($profil->misi)
-                        <div class="visi-misi-item">
-                            <div class="visi-misi-label">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polyline points="9 11 12 14 22 4"/>
-                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-                                </svg>
-                                Misi
-                            </div>
-                            <p>{{ $profil->misi }}</p>
-                        </div>
-                        @endif
-                    </div>
-                    @endif
-
-                    @if($profil && $profil->nomor_sertifikasi)
-                    <div class="sbu-label">Sertifikat Badan Usaha (SBU) Konstruksi</div>
-                    <div class="sbu-number">{{ $profil->nomor_sertifikasi }}</div>
-                    @else
-                    <div class="sbu-label">Sertifikat Badan Usaha (SBU) Konstruksi</div>
-                    <div class="sbu-number">PB-UMKU : 022100092289300040001</div>
-                    @endif
-                    <a href="#" class="btn-unduh"><i class="fas fa-chevron-right"></i> Unduh PDF</a>
-                </div>
+    <!-- TENTANG KAMI -->
+    <section id="tentang-kami">
+        <div class="inner-container">
+            <div class="about-header">
+                <h1 class="section-title">Tentang Kami</h1>
+                <div class="title-underline"></div>
             </div>
-            <div class="about-right">
-                @php $fotoGrid = json_decode($profil->foto_grid ?? '[]', true); @endphp
-                <div class="photos-grid">
-                    @for($i = 0; $i < 5; $i++)
-                    <div class="photo-item">
-                        @if(!empty($fotoGrid[$i]))
-                            <img src="{{ asset('storage/' . $fotoGrid[$i]) }}" alt="Foto {{ $i+1 }}">
+            <div class="about-content">
+                <div class="about-left">
+                    <img class="about-logo-bg" src="{{ $profil && $profil->hero_image ? asset('storage/' . $profil->hero_image) : asset('images/logo_pt_bat2.jpg') }}" alt="watermark">
+                    <div class="about-left-inner">
+                        <h2>{{ $profil->nama_perusahaan ?? 'PT Berkah Alam Tabantang' }}</h2>
+                        <p>{{ $profil->deskripsi ?? 'adalah perusahaan konstruksi terkemuka yang berbasis di Kota Batam.' }}</p>
+
+                        {{-- Visi Misi --}}
+                        @if($profil && ($profil->visi || $profil->misi))
+                        <div class="visi-misi-block">
+                            @if($profil->visi)
+                            <div class="visi-misi-item">
+                                <div class="visi-misi-label">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="8" x2="12" y2="12"/>
+                                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                                    </svg>
+                                    Visi
+                                </div>
+                                <p>{{ $profil->visi }}</p>
+                            </div>
+                            @endif
+                            @if($profil->misi)
+                            <div class="visi-misi-item">
+                                <div class="visi-misi-label">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="9 11 12 14 22 4"/>
+                                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                                    </svg>
+                                    Misi
+                                </div>
+                                <p>{{ $profil->misi }}</p>
+                            </div>
+                            @endif
+                        </div>
+                        @endif
+
+                        @if($profil && $profil->nomor_sertifikasi)
+                        <div class="sbu-label">Sertifikat Badan Usaha (SBU) Konstruksi</div>
+                        <div class="sbu-number">{{ $profil->nomor_sertifikasi }}</div>
                         @else
-                            <img src="{{ asset('images/tentang_kami_' . ($i+1) . '.jpg') }}" alt="Foto {{ $i+1 }}">
+                        <div class="sbu-label">Sertifikat Badan Usaha (SBU) Konstruksi</div>
+                        <div class="sbu-number">PB-UMKU : 022100092289300040001</div>
                         @endif
+                        <a href="#" class="btn-unduh"><i class="fas fa-chevron-right"></i> Unduh PDF</a>
                     </div>
-                    @endfor
+                </div>
+                <div class="about-right">
+                    @php $fotoGrid = json_decode($profil->foto_grid ?? '[]', true); @endphp
+                    <div class="photos-grid">
+                        @for($i = 0; $i < 5; $i++)
+                        <div class="photo-item">
+                            @if(!empty($fotoGrid[$i]))
+                                <img src="{{ asset('storage/' . $fotoGrid[$i]) }}" alt="Foto {{ $i+1 }}">
+                            @else
+                                <img src="{{ asset('images/tentang_kami_' . ($i+1) . '.jpg') }}" alt="Foto {{ $i+1 }}">
+                            @endif
+                        </div>
+                        @endfor
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-   <!-- LAYANAN -->
+    <!-- LAYANAN -->
     <section id="layanan">
         <div class="layanan-header">
             <h1 class="section-title">L A Y A N A N</h1>
@@ -127,7 +127,6 @@
                 <div class="services-track">
                     @forelse($layanans as $index => $item)
                     <div class="service-card">
-                        {{-- Gambar --}}
                         @if($item->gambar)
                             <img src="{{ asset('storage/' . $item->gambar) }}"
                                  class="service-card-img"
@@ -138,13 +137,11 @@
                                  alt="{{ $item->judul_layanan }}">
                         @endif
 
-                        {{-- Preview atas --}}
                         <div class="service-card-top">
                             <div class="service-title">{{ $item->judul_layanan }}</div>
                             <div class="service-code">({{ $item->icon }})</div>
                         </div>
 
-                        {{-- Body hover --}}
                         <div class="service-card-body">
                             <div class="service-title" style="margin-bottom:6px;">{{ $item->judul_layanan }}</div>
                             <div class="service-code" style="margin-bottom:12px;">({{ $item->icon }})</div>
@@ -152,7 +149,6 @@
                         </div>
                     </div>
                     @empty
-                    {{-- Fallback jika belum ada data --}}
                     <div class="service-card">
                         <img src="{{ asset('images/layanan_1.jpg') }}" class="service-card-img" alt="Layanan">
                         <div class="service-card-top">
@@ -425,6 +421,20 @@
         </div>
     </div>
 
+    <!-- ========== WHATSAPP CHAT BUTTON ========== -->
+    <div class="whatsapp-button">
+        <a href="https://api.whatsapp.com/send?phone=6281363327109&text=Halo%20PT.%20Berkah%20Alam%20Tabantang%2C%20saya%20ingin%20bertanya%20mengenai%20layanan%20konstruksi%20Anda."
+           class="wa-link"
+           target="_blank"
+           rel="noopener noreferrer"
+           onclick="handleWhatsAppClick(event)">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+                 alt="WhatsApp Chat">
+            <span class="badge-wa">1</span>
+        </a>
+        <span class="wa-tooltip">💬 Chat via WhatsApp</span>
+    </div>
+
     <script>
         const NAVBAR_HEIGHT = 56;
 
@@ -488,17 +498,12 @@
             @endforeach
         };
 
-        /**
-         * Membuka modal portofolio berdasarkan ID data global
-         */
         function openPortfolioModal(id) {
             const item = portfolioData[id];
             if (!item) return;
 
-            // 1. Set Judul Proyek
             document.getElementById('portfolioModalTitle').innerHTML = item.title;
 
-            // 2. Set Konten Informasi Pendukung dan Deskripsi Utama
             let bodyContent = `
                 <div class="project-info-meta" style="margin-bottom: 15px; font-size: 0.9em; color: #666; line-height: 1.6;">
                     <p style="margin: 4px 0;"><i class="fas fa-user"></i> <strong>Klien:</strong> ${item.client || '-'}</p>
@@ -512,14 +517,12 @@
             `;
             document.getElementById('portfolioModalBody').innerHTML = bodyContent;
 
-            // 3. Set Foto Utama (Thumbnail) ke dalam Modal
             document.getElementById('portfolioModalPhotos').innerHTML = `
                 <div class="photo-main" style="width: 100%; height: 100%;">
                     <img src="${item.image}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
                 </div>
             `;
 
-            // 4. Set Link Tombol Unduh PDF
             const pdfButton = document.getElementById('portfolioModalPdf');
             if (pdfButton) {
                 if (item.pdfFile) {
@@ -530,19 +533,14 @@
                 }
             }
 
-            // 5. Tampilkan Modal & Kunci Scroll
             document.getElementById('portfolioModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
 
-        /**
-         * Menutup modal portofolio
-         */
         function closePortfolioModal() {
             document.getElementById('portfolioModal').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
-
 
         // BERITA MODAL
         const newsData = {
@@ -566,14 +564,22 @@
             document.getElementById('newsModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
+
         function closeNewsModal() {
             document.getElementById('newsModal').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
 
         // LOGIN MODAL
-        function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; document.body.style.overflow = 'hidden'; }
-        function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
+        function openLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
 
         function handleLogin() {
             const username = document.getElementById('username').value;
@@ -602,6 +608,44 @@
             })
             .catch(() => alert('Terjadi kesalahan. Coba lagi.'));
         }
+
+        // ========== WHATSAPP CHAT INTERACTION ==========
+        function handleWhatsAppClick(event) {
+            alert('Anda akan dialihkan ke WhatsApp untuk menghubungi PT. Berkah Alam Tabantang.');
+            console.log('WhatsApp button clicked: ' + new Date().toLocaleString());
+        }
+
+        // Auto-show tooltip untuk onboarding
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const tooltip = document.querySelector('.wa-tooltip');
+                if (tooltip) {
+                    tooltip.style.opacity = '1';
+                    tooltip.style.transform = 'translateY(0)';
+                    setTimeout(function() {
+                        tooltip.style.opacity = '0';
+                        tooltip.style.transform = 'translateY(10px)';
+                    }, 4000);
+                }
+            }, 2000);
+        });
+
+        // Scroll effect - sembunyikan tombol saat scroll ke bawah
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', function() {
+            const waButton = document.querySelector('.whatsapp-button');
+            if (!waButton) return;
+
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 200) {
+                waButton.style.opacity = '0.3';
+                waButton.style.transform = 'scale(0.9)';
+            } else {
+                waButton.style.opacity = '1';
+                waButton.style.transform = 'scale(1)';
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
 
         // Tutup modal jika klik di luar konten
         window.onclick = function(event) {

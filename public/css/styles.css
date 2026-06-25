@@ -788,3 +788,130 @@ footer {
     margin: 0;
     line-height: 1.6;
 }
+/* ========== WHATSAPP CHAT BUTTON ========== */
+.whatsapp-button {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.whatsapp-button .wa-link {
+    display: block;
+    position: relative;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.whatsapp-button .wa-link img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: block;
+    animation: pulse-wa 2s infinite;
+}
+
+.whatsapp-button .wa-link:hover img {
+    transform: scale(1.12) rotate(-5deg);
+    box-shadow: 0 8px 30px rgba(37, 211, 102, 0.55);
+    animation: none;
+}
+
+/* Badge notifikasi */
+.whatsapp-button .badge-wa {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #ff4444;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(255, 68, 68, 0.4);
+    animation: pulse-badge 1.5s infinite;
+}
+
+/* Tooltip */
+.whatsapp-button .wa-tooltip {
+    background: rgba(22, 38, 96, 0.92);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 20px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    pointer-events: none;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.whatsapp-button:hover .wa-tooltip {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Animations */
+@keyframes pulse-wa {
+    0% {
+        box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+    }
+    50% {
+        box-shadow: 0 4px 30px rgba(37, 211, 102, 0.65);
+    }
+    100% {
+        box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+    }
+}
+
+@keyframes pulse-badge {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .whatsapp-button {
+        bottom: 16px;
+        right: 16px;
+    }
+    .whatsapp-button .wa-link img {
+        width: 56px;
+        height: 56px;
+    }
+    .whatsapp-button .wa-tooltip {
+        display: none;
+    }
+    .whatsapp-button .badge-wa {
+        min-width: 20px;
+        height: 20px;
+        font-size: 10px;
+        top: -2px;
+        right: -2px;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .whatsapp-button .wa-tooltip {
+        background: rgba(0, 0, 0, 0.85);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+}
