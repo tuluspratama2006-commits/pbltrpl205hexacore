@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProfilPerusahaan;
+
 class DashboardController extends Controller
 {
     public function index()
@@ -28,6 +30,8 @@ class DashboardController extends Controller
             ['bulan' => 'Apr', 'nilai' => 80],
         ];
 
-        return view('admin.dashboard', compact('stats', 'aktivitas', 'grafik'));
+        $profil = ProfilPerusahaan::first();
+
+        return view('admin.dashboard', compact('stats', 'aktivitas', 'grafik', 'profil'));
     }
 }
