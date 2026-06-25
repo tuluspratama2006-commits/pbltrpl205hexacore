@@ -37,9 +37,9 @@ class TestimoniController extends Controller
 
             Testimoni::create($validated);
 
-            return redirect()->back()->with('success', 'Testimoni berhasil disimpan!');
+            return redirect()->route('admin.testimoni')->with('success', 'Testimoni berhasil disimpan!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menyimpan: '.$e->getMessage())->withInput();
+            return redirect()->route('admin.testimoni')->with('error', 'Gagal menyimpan: '.$e->getMessage())->withInput();
         }
     }
 
@@ -67,9 +67,9 @@ class TestimoniController extends Controller
 
             $testimoni->update($validated);
 
-            return redirect()->back()->with('success', 'Testimoni berhasil diupdate!');
+            return redirect()->route('admin.testimoni')->with('success', 'Testimoni berhasil diupdate!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal mengupdate: '.$e->getMessage())->withInput();
+            return redirect()->route('admin.testimoni')->with('error', 'Gagal mengupdate: '.$e->getMessage())->withInput();
         }
     }
 
@@ -84,9 +84,9 @@ class TestimoniController extends Controller
 
             $testimoni->delete();
 
-            return redirect()->back()->with('success', 'Testimoni berhasil dihapus!');
+            return redirect()->route('admin.testimoni')->with('success', 'Testimoni berhasil dihapus!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menghapus: '.$e->getMessage());
+            return redirect()->route('admin.testimoni')->with('error', 'Gagal menghapus: '.$e->getMessage());
         }
     }
 }

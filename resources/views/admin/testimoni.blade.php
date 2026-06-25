@@ -25,6 +25,15 @@
     <button onclick="document.getElementById('toastNotif').remove()" style="background:none;border:none;cursor:pointer;color:inherit;margin-left:8px;font-size:16px;">×</button>
 </div>
 @endif
+@if(session('error'))
+<div class="toast-notif" style="background:#c53030;" id="toastError">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+    </svg>
+    {{ session('error') }}
+    <button onclick="document.getElementById('toastError').remove()" style="background:none;border:none;cursor:pointer;color:inherit;margin-left:8px;font-size:16px;">×</button>
+</div>
+@endif
 
 {{-- Stats Cards --}}
 <div class="stats-grid">
@@ -82,32 +91,44 @@
     <table class="data-table">
         <thead>
             <tr>
-                <th>Layanan</th>
-                <th>Kategori</th>
-                <th>Status</th>
-                <th>Tindakan Administratif</th>
+                <th style="text-align:center;">Foto</th>
+                <th>Nama</th>
+                <th>Nama Perusahaan</th>
+                <th>Ulasan</th>
+                <th style="text-align:center;">Status</th>
+                <th style="text-align:center;">Tindakan</th>
             </tr>
         </thead>
         <tbody id="tableBody">
     @if(isset($testimonis) && $testimonis->count() > 0)
         @foreach($testimonis as $item)
-    <tr data-status="{{ $item->status }}" data-search="{{ strtolower($item->nama_client . ' ' . ($item->nama_perusahaan ?? '')) }}">
-        <td>
-            <div class="layanan-name">
-                @if($item->foto_client)
-                    <img src="{{ asset('storage/' . $item->foto_client) }}" style="width:40px;height:40px;border-radius:8px;object-fit:cover;margin-right:10px;">
-                @endif
-                {{ $item->nama_client }}
-            </div>
-            <div class="layanan-code">{{ $item->jabatan ?? '-' }}</div>
+    <tr data-status="{{ $item->status }}" data-search="{{ strtolower($item->nama_client . ' ' . ($item->nama_perusahaan ?? '') . ' ' . strip_tags($item->isi_testimoni)) }}">
+        <td style="text-align:center;vertical-align:middle;">
+            @if($item->foto_client)
+                <img src="{{ asset('storage/' . $item->foto_client) }}" style="width:40px;height:40px;border-radius:8px;object-fit:cover;">
+            @else
+                <div style="width:40px;height:40px;background:#e2e8f0;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </div>
+            @endif
         </td>
-        <td><span class="badge-kategori">{{ $item->nama_perusahaan ?? '-' }}</span></td>
         <td>
+            <div style="font-weight:600;color:#1e293b;">{{ $item->nama_client }}</div>
+            <div style="font-size:12px;color:#94a3b8;">{{ $item->jabatan ?? '-' }}</div>
+        </td>
+        <td>{{ $item->nama_perusahaan ?? '-' }}</td>
+        <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+            {{ Str::limit(strip_tags($item->isi_testimoni), 60) }}
+        </td>
+        <td style="text-align:center;">
             <span class="badge-status {{ $item->status }}">
                 {{ strtoupper($item->status) }}
             </span>
         </td>
-        <td class="aksi-col">
+        <td class="aksi-col" style="text-align:center;">
             <button class="btn-edit"
                 data-json='@json($item)'
                 onclick="openEditModal(this)">
@@ -133,7 +154,7 @@
 @endforeach
     @else
         <tr>
-            <td colspan="4" class="empty-state">
+            <td colspan="6" class="empty-state">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.5">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                     <circle cx="9" cy="7" r="4"/>
@@ -165,10 +186,20 @@
         </div>
 
         {{-- ⬇️ FORM YANG BENAR ⬇️ --}}
-        <form action="{{ route('admin.testimoni.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.testimoni.store') }}" method="POST" enctype="multipart/form-data" novalidate onsubmit="simpanUlasan()">
             @csrf
 
             <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px; max-height: calc(90vh - 120px);">
+
+                @if($errors->any())
+                <div style="background:#fde8e8;color:#c53030;padding:10px 14px;border-radius:8px;margin-bottom:16px;font-size:13px;">
+                    <ul style="margin:0;padding-left:16px;">
+                        @foreach($errors->all() as $err)
+                        <li>{{ $err }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
 
                 <div class="modal-field">
                     <label>Nama</label>
@@ -229,6 +260,7 @@
                     <label>Ulasan</label>
                     <textarea class="modal-input modal-textarea"
                               name="isi_testimoni"
+                              id="isi_testimoni"
                               rows="5"
                               placeholder="Masukkan ulasan"
                               required></textarea>
@@ -259,28 +291,74 @@
 
 </div>
 
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 <script>
 const toast = document.getElementById('toastNotif');
 if (toast) setTimeout(() => toast.remove(), 3500);
+const toastError = document.getElementById('toastError');
+if (toastError) setTimeout(() => toastError.remove(), 3500);
+
+function simpanUlasan() {
+    try {
+        const ta = document.querySelector('[name="isi_testimoni"]');
+        if (ta && ta._ckeditor) {
+            ta._ckeditor.updateSourceElement();
+        } else if (ta && ta._ckeditorEdit) {
+            ta._ckeditorEdit.updateSourceElement();
+        }
+    } catch (e) {
+        console.error('simpanUlasan error', e);
+    }
+    return true;
+}
+
+function destroyEditor(el) {
+    if (el && el._ckeditor) {
+        el._ckeditor.destroy();
+        delete el._ckeditor;
+    }
+    if (el && el._ckeditorEdit) {
+        el._ckeditorEdit.destroy();
+        delete el._ckeditorEdit;
+    }
+}
+
+function initTambahEditor() {
+    const ta = document.querySelector('[name="isi_testimoni"]');
+    if (!ta) return;
+    destroyEditor(ta);
+    try {
+        ClassicEditor.create(ta)
+            .then(editor => { ta._ckeditor = editor; })
+            .catch(error => { console.error(error); });
+    } catch (e) {
+        console.error('CKEditor tidak tersedia, menggunakan textarea biasa', e);
+    }
+}
 
 function resetForm() {
     const form = document.querySelector('#modalTambahTestimoni form');
     form.action = '{{ route("admin.testimoni.store") }}';
-    form.querySelector('[name="nama_client"]').value = '';
-    form.querySelector('[name="jabatan"]').value = '';
-    form.querySelector('[name="nama_perusahaan"]').value = '';
-    form.querySelector('[name="isi_testimoni"]').value = '';
-    form.querySelector('[name="status"]').value = 'publish';
+
+    form.querySelector('[name="nama_client"]').value = {!! json_encode(old('nama_client', '')) !!};
+    form.querySelector('[name="jabatan"]').value = {!! json_encode(old('jabatan', '')) !!};
+    form.querySelector('[name="nama_perusahaan"]').value = {!! json_encode(old('nama_perusahaan', '')) !!};
+
+    const ta = form.querySelector('[name="isi_testimoni"]');
+    ta.value = {!! json_encode(old('isi_testimoni', '')) !!};
+
+    form.querySelector('[name="status"]').value = '{{ old("status", "publish") }}';
 
     const methodField = document.getElementById('methodField');
     if (methodField) methodField.remove();
 
+    const oldRating = '{{ old("rating", "5") }}';
     const stars = document.querySelectorAll('.star');
     stars.forEach(s => {
-        s.classList.toggle('active', s.dataset.value <= 5);
+        s.classList.toggle('active', s.dataset.value <= oldRating);
     });
-    document.getElementById('ratingValue').value = 5;
-    document.getElementById('ratingText').textContent = '5 / 5 Bintang';
+    document.getElementById('ratingValue').value = oldRating;
+    document.getElementById('ratingText').textContent = oldRating + ' / 5 Bintang';
 
     const modalTitle = document.querySelector('#modalTambahTestimoni .modal-title');
     if (modalTitle) modalTitle.textContent = 'TESTIMONI';
@@ -290,11 +368,14 @@ function resetForm() {
 
 function bukaModalTambahTestimoni() {
     resetForm();
+    initTambahEditor();
     document.getElementById('modalTambahTestimoni').style.display = 'flex';
 }
 
 function tutupModalTestimoni() {
     document.getElementById('modalTambahTestimoni').style.display = 'none';
+    const ta = document.querySelector('[name="isi_testimoni"]');
+    destroyEditor(ta);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -314,6 +395,10 @@ document.addEventListener('DOMContentLoaded', function () {
             ratingText.textContent = value + ' / 5 Bintang';
         });
     });
+
+    @if($errors->any())
+        bukaModalTambahTestimoni();
+    @endif
 });
 
 function filterTable() {
@@ -350,7 +435,21 @@ function openEditModal(button) {
     form.querySelector('[name="nama_client"]').value = d.nama_client;
     form.querySelector('[name="jabatan"]').value = d.jabatan || '';
     form.querySelector('[name="nama_perusahaan"]').value = d.nama_perusahaan || '';
-    form.querySelector('[name="isi_testimoni"]').value = d.isi_testimoni;
+
+    const ta = form.querySelector('[name="isi_testimoni"]');
+    ta.value = d.isi_testimoni;
+    destroyEditor(ta);
+    try {
+        ClassicEditor.create(ta)
+            .then(editor => {
+                ta._ckeditorEdit = editor;
+                ta._ckeditorEdit.setData(d.isi_testimoni);
+            })
+            .catch(error => { console.error(error); });
+    } catch (e) {
+        console.error('CKEditor tidak tersedia, menggunakan textarea biasa', e);
+    }
+
     form.querySelector('[name="status"]').value = d.status;
     document.getElementById('ratingValue').value = d.rating;
 

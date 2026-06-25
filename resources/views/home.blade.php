@@ -221,24 +221,22 @@
                 <p class="sub-text">Kolaborasi yang solid melahirkan infrastruktur yang kokoh. Inilah testimoni dari mereka yang telah bermitra dengan PT BAT.</p>
             </div>
             <div class="testimoni-grid">
+                @forelse($testimonis as $tm)
                 <div class="testimoni-card">
-                    <div class="company-logo-circle"><span>STP</span></div>
-                    <div class="testimoni-rating">★★★★★</div>
-                    <p class="testimoni-text">"Profesional dan tepat waktu. Koordinasi tim di lapangan sangat solid, sehingga proyek selesai sesuai jadwal tanpa mengurangi detail kualitas teknis."</p>
-                    <p class="testimoni-author">— Site Supervisor</p>
+                    <div class="company-logo-circle">
+                        @if($tm->foto_client)
+                            <img src="{{ asset('storage/' . $tm->foto_client) }}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+                        @else
+                            <span>{{ strtoupper(substr($tm->nama_client, 0, 1)) }}{{ $tm->nama_perusahaan ? strtoupper(substr($tm->nama_perusahaan, 0, 1)) : '' }}</span>
+                        @endif
+                    </div>
+                    <div class="testimoni-rating">{{ str_repeat('★', $tm->rating) }}{{ str_repeat('☆', 5 - $tm->rating) }}</div>
+                    <div class="testimoni-text">{!! $tm->isi_testimoni !!}</div>
+                    <p class="testimoni-author">— {{ $tm->nama_client }}{{ $tm->jabatan ? ', ' . $tm->jabatan : '' }}</p>
                 </div>
-                <div class="testimoni-card">
-                    <div class="company-logo-circle"><span>GP</span></div>
-                    <div class="testimoni-rating">★★★★★</div>
-                    <p class="testimoni-text">"Hasil pengerjaan infrastrukturnya sangat rapi dan kokoh. PT BAT benar-benar menjaga standar kualitas sesuai spesifikasi yang diminta. Sangat puas!"</p>
-                    <p class="testimoni-author">— Project Manager, Kawasan Residensial</p>
-                </div>
-                <div class="testimoni-card">
-                    <div class="company-logo-circle"><span>P</span></div>
-                    <div class="testimoni-rating">★★★★★</div>
-                    <p class="testimoni-text">"Sangat disiplin dalam prosedur keselamatan kerja (K3). PT BAT membuktikan bahwa proyek skala besar bisa berjalan aman, bersih, dan tetap efisien."</p>
-                    <p class="testimoni-author">— Konsultan Konstruksi</p>
-                </div>
+                @empty
+                <p style="grid-column:1/-1;text-align:center;color:#94a3b8;">Belum ada testimoni</p>
+                @endforelse
             </div>
         </div>
     </section>
