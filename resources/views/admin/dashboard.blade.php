@@ -133,8 +133,16 @@
     <form action="{{ route('admin.pengaturan.update') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
-            <label>Judul :</label>
-            <textarea name="tagline" rows="3" placeholder="Masukkan judul landing page...">{{ old('tagline', $profil->tagline ?? '') }}</textarea>
+            <label>Nama Perusahaan <span style="color:red">*</span> :</label>
+            <input type="text" name="nama_perusahaan" class="modal-input" placeholder="PT. Berkah Alam Tabantang" value="{{ old('nama_perusahaan', $profil->nama_perusahaan ?? '') }}">
+        </div>
+        <div class="form-group">
+            <label>Tagline :</label>
+            <textarea name="tagline" rows="2" placeholder="Solusi Terpercaya untuk Konstruksi & Infrastruktur di Batam">{{ old('tagline', $profil->tagline ?? '') }}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Deskripsi :</label>
+            <textarea name="deskripsi" rows="3" placeholder="Deskripsi singkat perusahaan...">{{ old('deskripsi', $profil->deskripsi ?? '') }}</textarea>
         </div>
         <div class="form-group">
             <label>Background Foto :</label>
@@ -143,14 +151,14 @@
                 <img src="{{ asset('storage/' . $profil->hero_image) }}" style="width:100%;max-height:120px;object-fit:cover;border-radius:8px;">
             </div>
             @endif
-            <div class="upload-area">
+            <div class="upload-area" id="uploadArea">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                     <rect x="3" y="3" width="18" height="18" rx="2"/>
                     <circle cx="8.5" cy="8.5" r="1.5"/>
                     <polyline points="21 15 16 10 5 21"/>
                 </svg>
-                <p>Klik atau drag foto ke sini</p>
-                <input type="file" name="hero_image" accept="image/*">
+                <p id="uploadText">Klik atau drag foto ke sini</p>
+                <input type="file" name="hero_image" id="heroImageInput" accept="image/*">
             </div>
         </div>
         <div style="display:flex;gap:10px;">
@@ -202,5 +210,10 @@
     if (toast) setTimeout(() => toast.remove(), 3500);
     const toastError = document.getElementById('toastError');
     if (toastError) setTimeout(() => toastError.remove(), 3500);
+
+    document.getElementById('heroImageInput').addEventListener('change', function () {
+        const text = document.getElementById('uploadText');
+        text.textContent = this.files[0] ? 'Terpilih: ' + this.files[0].name : 'Klik atau drag foto ke sini';
+    });
 </script>
 @endpush

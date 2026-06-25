@@ -24,6 +24,7 @@ class PengaturanController extends Controller
         $request->validate([
             'nama_perusahaan' => 'nullable|string|max:150',
             'tagline' => 'nullable|string',
+            'deskripsi' => 'nullable|string',
             'email' => 'nullable|email|max:100',
             'telepon' => 'nullable|string|max:30',
             'telepon_2' => 'nullable|string|max:30',
@@ -39,7 +40,7 @@ class PengaturanController extends Controller
 
         // Update profil perusahaan
         $data = $request->only([
-            'nama_perusahaan', 'tagline', 'email', 'telepon', 'telepon_2',
+            'nama_perusahaan', 'tagline', 'deskripsi', 'email', 'telepon', 'telepon_2',
             'alamat', 'alamat_2', 'whatsapp', 'instagram',
             'facebook', 'linkedin', 'maps_embed', 'maps_embed_2',
         ]);

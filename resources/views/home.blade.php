@@ -35,12 +35,12 @@
 
     <!-- HERO -->
     <section id="home">
-        <img src="{{ asset('images/aspal.jpg') }}" class="hero-img" alt="Hero BAT">
+        <img src="{{ $profil && $profil->hero_image ? asset('storage/' . $profil->hero_image) : asset('images/aspal.jpg') }}" class="hero-img" alt="Hero BAT">
         <div class="overlay"></div>
         <div class="hero-content">
-            <h1>PT. Berkah Alam Tabantang</h1>
-            <div class="tagline">Solusi Terpercaya untuk Konstruksi & Infrastruktur di Batam</div>
-            <div class="description">Kami melayani pembangunan gedung, jalan raya, jembatan, hingga prasarana sumber daya air dengan mengutamakan integritas dan kepuasan pelanggan. Membangun dengan kualitas, beroperasi dengan keamanan.</div>
+            <h1>{{ $profil->nama_perusahaan ?? 'PT. Berkah Alam Tabantang' }}</h1>
+            <div class="tagline">{{ $profil->tagline ?? 'Solusi Terpercaya untuk Konstruksi & Infrastruktur di Batam' }}</div>
+            <div class="description">{{ $profil->deskripsi ?? 'Kami melayani pembangunan gedung, jalan raya, jembatan, hingga prasarana sumber daya air dengan mengutamakan integritas dan kepuasan pelanggan. Membangun dengan kualitas, beroperasi dengan keamanan.' }}</div>
         </div>
     </section>
 
