@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Berita;
 use App\Models\Layanan;
-use App\Models\ProfilPerusahaan;
 use App\Models\Portofolio;
+use App\Models\ProfilPerusahaan;
 
 class HomeController extends Controller
 {
@@ -22,8 +22,8 @@ class HomeController extends Controller
             ->get();
 
         $semuaPortofolio = Portofolio::where('status', 'publish')
-                                                ->latest()
-                                                ->get();
+            ->latest()
+            ->get();
 
         return view('home', compact('layanans', 'profil', 'publishedBerita', 'semuaPortofolio'));
     }
