@@ -360,12 +360,21 @@ section {
 .portfolio-header .section-title { font-size: 2rem; font-weight: 900; letter-spacing: 2px; }
 
 .portfolio-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
     gap: 22px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
+.portfolio-grid::-webkit-scrollbar { display: none; }
 
 .portfolio-card {
+    flex: 0 0 calc(33.333% - 15px);
+    min-width: 280px;
+    scroll-snap-align: start;
     background: #fff;
     border-radius: 18px;
     overflow: hidden;
@@ -730,7 +739,7 @@ footer {
 /* ========== RESPONSIVE ========== */
 @media (max-width: 1024px) {
     .about-content { flex-direction: column; }
-    .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+    .portfolio-card { flex: 0 0 calc(50% - 11px); }
     .berita-layout { grid-template-columns: 1fr; }
     .testimoni-card { flex: 0 0 calc(50% - 11px); }
     .lokasi-grid { grid-template-columns: 1fr; }
@@ -741,7 +750,7 @@ footer {
     .hero-content { left: 20px; right: 20px; }
     .hero h1 { font-size: 26px; }
     .service-card { width: 270px; }
-    .portfolio-grid { grid-template-columns: 1fr; }
+    .portfolio-card { flex: 0 0 85%; }
     .portfolio-modal-inner { flex-direction: column; }
     .portfolio-modal-photos { border-radius: 18px 18px 0 0; flex: 0 0 auto; padding: 25px 20px 15px; }
     .portfolio-modal-text { padding: 20px; }
