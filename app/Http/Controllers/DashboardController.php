@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Berita;
 use App\Models\ProfilPerusahaan;
 
 class DashboardController extends Controller
@@ -31,7 +32,8 @@ class DashboardController extends Controller
         ];
 
         $profil = ProfilPerusahaan::first();
+        $totalPost = Berita::count();
 
-        return view('admin.dashboard', compact('stats', 'aktivitas', 'grafik', 'profil'));
+        return view('admin.dashboard', compact('stats', 'aktivitas', 'grafik', 'profil', 'totalPost'));
     }
 }

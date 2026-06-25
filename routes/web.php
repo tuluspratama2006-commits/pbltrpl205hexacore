@@ -31,7 +31,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/testimoni', fn () => view('admin.testimoni'))->name('testimoni');
 
     // Dashboard Admin
-    Route::get('/dashboard', [BeritaController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Pengaturan
     Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan');
