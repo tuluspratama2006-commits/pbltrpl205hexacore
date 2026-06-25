@@ -166,7 +166,7 @@
         <form action="{{ route('admin.testimoni.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px; max-height: calc(90vh - 120px);">
 
                 <div class="modal-field">
                     <label>Nama</label>
@@ -232,7 +232,6 @@
                               required></textarea>
                 </div>
 
-                {{-- ⬇️ FIELD STATUS WAJIB ADA ⬇️ --}}
                 <div class="modal-field">
                     <label>Status</label>
                     <select name="status" class="modal-input" required>
@@ -240,7 +239,6 @@
                         <option value="draft">Draft</option>
                     </select>
                 </div>
-                {{-- ⬆️ ⬆️ ️ --}}
 
             </div>
 

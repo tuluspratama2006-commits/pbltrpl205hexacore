@@ -248,7 +248,7 @@
         <form id="formEditBerita" action="" method="POST" enctype="multipart/form-data" onsubmit="if(editEditor) editEditor.updateSourceElement();">
             @csrf
             @method('PUT')
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px; max-height: calc(90vh - 120px);">
                 <div class="modal-field">
                     <label>Judul Berita <span style="color:red">*</span></label>
                     <input type="text" name="judul_berita" id="edit_judul" class="modal-input" required>
