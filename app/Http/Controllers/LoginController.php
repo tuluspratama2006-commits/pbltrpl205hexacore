@@ -21,10 +21,17 @@ class LoginController extends Controller
             Session::put('admin_logged_in', true);
             Session::put('admin_username', $admin->nama_admin);
 
+            \App\Models\AdminActivity::create([
+                'admin_name' => $admin->nama_admin,
+                'aksi' => 'Login',
+                'target' => 'Admin',
+            ]);
+
             return response()->json([
                 'success' => true,
                 'redirect' => route('admin.dashboard'),
             ]);
+
         }
 
         return response()->json([
@@ -35,9 +42,19 @@ class LoginController extends Controller
 
     public function logout()
     {
+        // Ambil nama admin sebelum session dibersihkan (buat aktivitas logout)
+        $adminName = Session::get('admin_username');
+
         Session::forget('admin_logged_in');
         Session::forget('admin_username');
 
+        \App\Models\AdminActivity::create([
+            'admin_name' => $adminName ?? 'Admin',
+            'aksi' => 'Logout',
+            'target' => 'Admin',
+        ]);
+
         return redirect()->route('home');
+
     }
 }

@@ -35,15 +35,25 @@ class TestimoniController extends Controller
                 $validated['foto_client'] = $request->file('foto_client')->store('testimoni', 'public');
             }
 
+            $nama = $validated['nama_client'] ?? '';
+
             Testimoni::create($validated);
 
+            \App\Models\AdminActivity::create([
+                'admin_name' => session('admin_username') ?? 'Admin',
+                'aksi' => 'Tambah',
+                'target' => $nama,
+            ]);
+
             return redirect()->route('admin.testimoni')->with('success', 'Testimoni berhasil disimpan!');
+
         } catch (\Exception $e) {
             return redirect()->route('admin.testimoni')->with('error', 'Gagal menyimpan: '.$e->getMessage())->withInput();
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
+
     {
         $testimoni = Testimoni::findOrFail($id);
 
@@ -65,15 +75,25 @@ class TestimoniController extends Controller
                 $validated['foto_client'] = $request->file('foto_client')->store('testimoni', 'public');
             }
 
+            $namaBaru = $validated['nama_client'] ?? $testimoni->nama_client;
+
             $testimoni->update($validated);
 
+            \App\Models\AdminActivity::create([
+                'admin_name' => session('admin_username') ?? 'Admin',
+                'aksi' => 'Edit',
+                'target' => $namaBaru,
+            ]);
+
             return redirect()->route('admin.testimoni')->with('success', 'Testimoni berhasil diupdate!');
+
         } catch (\Exception $e) {
             return redirect()->route('admin.testimoni')->with('error', 'Gagal mengupdate: '.$e->getMessage())->withInput();
         }
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
+
     {
         try {
             $testimoni = Testimoni::findOrFail($id);
@@ -82,9 +102,18 @@ class TestimoniController extends Controller
                 Storage::disk('public')->delete($testimoni->foto_client);
             }
 
+            $nama = $testimoni->nama_client;
+
             $testimoni->delete();
 
+            \App\Models\AdminActivity::create([
+                'admin_name' => session('admin_username') ?? 'Admin',
+                'aksi' => 'Hapus',
+                'target' => $nama,
+            ]);
+
             return redirect()->route('admin.testimoni')->with('success', 'Testimoni berhasil dihapus!');
+
         } catch (\Exception $e) {
             return redirect()->route('admin.testimoni')->with('error', 'Gagal menghapus: '.$e->getMessage());
         }

@@ -51,9 +51,11 @@ class BeritaController extends Controller
         $pathFoto = $request->file('thumbnail')->store('thumbnails', 'public');
 
         // Eksekusi simpan data ke database phpMyAdmin
+        $judul = $request->judul_berita;
+
         Berita::create([
-            'judul_berita' => $request->judul_berita,
-            'slug' => Str::slug($request->judul_berita),
+            'judul_berita' => $judul,
+            'slug' => Str::slug($judul),
             'isi_berita' => preg_replace(['/&nbsp;(?=\s*<)/', '/(?:\s*<(\w+)>\s*<\/\1>\s*)+$/u'], ['', ''], $request->isi_berita),
             'thumbnail' => $pathFoto,
             'tanggal_posting' => $request->tanggal_posting,
@@ -61,7 +63,14 @@ class BeritaController extends Controller
             'id_admin' => Auth::id(),
         ]);
 
+        \App\Models\AdminActivity::create([
+            'admin_name' => Session('admin_username') ?? 'Admin',
+            'aksi' => 'Tambah',
+            'target' => $judul,
+        ]);
+
         return redirect()->route('admin.berita')->with('success', 'Berita baru berhasil diterbitkan!');
+
     }
 
     public function update(Request $request, string $id_berita)
@@ -91,16 +100,25 @@ class BeritaController extends Controller
         }
 
         // 4. Update data ke database
+        $judulBaru = $request->judul_berita;
+
         $berita->update([
-            'judul_berita' => $request->judul_berita,
-            'slug' => Str::slug($request->judul_berita),
+            'judul_berita' => $judulBaru,
+            'slug' => Str::slug($judulBaru),
             'isi_berita' => preg_replace(['/&nbsp;(?=\s*<)/', '/(?:\s*<(\w+)>\s*<\/\1>\s*)+$/u'], ['', ''], $request->isi_berita),
             'thumbnail' => $pathFoto,
             'tanggal_posting' => $request->tanggal_posting,
             'status' => $request->status,
         ]);
 
+        \App\Models\AdminActivity::create([
+            'admin_name' => Session('admin_username') ?? 'Admin',
+            'aksi' => 'Edit',
+            'target' => $judulBaru,
+        ]);
+
         return redirect()->route('admin.berita')->with('success', 'Data berita berhasil diperbarui!');
+
     }
 
     /**
@@ -115,9 +133,18 @@ class BeritaController extends Controller
             Storage::disk('public')->delete($berita->thumbnail);
         }
 
+        $judul = $berita->judul_berita;
+
         // 2. Hapus baris data dari tabel phpMyAdmin
         $berita->delete();
 
+        \App\Models\AdminActivity::create([
+            'admin_name' => Session('admin_username') ?? 'Admin',
+            'aksi' => 'Hapus',
+            'target' => $judul,
+        ]);
+
         return redirect()->route('admin.berita')->with('success', 'Berita berhasil dihapus permanen!');
+
     }
 }

@@ -49,12 +49,22 @@ class LayananController extends Controller
             $data['gambar'] = $request->file('gambar')->store('layanan', 'public');
         }
 
+        $judul = $request->judul_layanan;
+
         Layanan::create($data);
 
+        \App\Models\AdminActivity::create([
+            'admin_name' => session('admin_username') ?? 'Admin',
+            'aksi' => 'Tambah',
+            'target' => $judul,
+        ]);
+
         return redirect()->route('admin.layanan')->with('success', 'Layanan berhasil ditambahkan.');
+
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
+
     {
         $layanan = Layanan::findOrFail($id);
 
@@ -84,12 +94,22 @@ class LayananController extends Controller
             $data['gambar'] = $request->file('gambar')->store('layanan', 'public');
         }
 
+        $judulBaru = $request->judul_layanan;
+
         $layanan->update($data);
 
+        \App\Models\AdminActivity::create([
+            'admin_name' => session('admin_username') ?? 'Admin',
+            'aksi' => 'Edit',
+            'target' => $judulBaru,
+        ]);
+
         return redirect()->route('admin.layanan')->with('success', 'Layanan berhasil diperbarui.');
+
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
+
     {
         $layanan = Layanan::findOrFail($id);
 
@@ -97,8 +117,17 @@ class LayananController extends Controller
             Storage::disk('public')->delete($layanan->gambar);
         }
 
+        $judul = $layanan->judul_layanan;
+
         $layanan->delete();
 
+        \App\Models\AdminActivity::create([
+            'admin_name' => session('admin_username') ?? 'Admin',
+            'aksi' => 'Hapus',
+            'target' => $judul,
+        ]);
+
         return redirect()->route('admin.layanan')->with('success', 'Layanan berhasil dihapus.');
+
     }
 }

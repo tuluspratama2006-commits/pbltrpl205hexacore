@@ -54,9 +54,18 @@ class PortofolioController extends Controller
                 $validatedData['file_pdf'] = $request->file('file_pdf')->store('portofolio/pdfs', 'public');
             }
 
+            $judul = $validatedData['judul_proyek'] ?? '';
+
             Portofolio::create($validatedData);
 
+            \App\Models\AdminActivity::create([
+                'admin_name' => session('admin_username') ?? 'Admin',
+                'aksi' => 'Tambah',
+                'target' => $judul,
+            ]);
+
             return redirect()->route('admin.portofolio')->with('success', 'Proyek portofolio berhasil ditambahkan!');
+
         } catch (\Exception $e) {
             return redirect()->route('admin.portofolio')->with('error', 'Gagal menyimpan: '.$e->getMessage())->withInput();
         }
@@ -98,9 +107,18 @@ class PortofolioController extends Controller
                 $validatedData['file_pdf'] = $request->file('file_pdf')->store('portofolio/pdfs', 'public');
             }
 
+            $judulBaru = $validatedData['judul_proyek'] ?? $portofolio->judul_proyek;
+
             $portofolio->update($validatedData);
 
+            \App\Models\AdminActivity::create([
+                'admin_name' => session('admin_username') ?? 'Admin',
+                'aksi' => 'Edit',
+                'target' => $judulBaru,
+            ]);
+
             return redirect()->route('admin.portofolio')->with('success', 'Proyek portofolio berhasil diperbarui!');
+
         } catch (\Exception $e) {
             return redirect()->route('admin.portofolio')->with('error', 'Gagal mengupdate: '.$e->getMessage())->withInput();
         }
@@ -137,9 +155,18 @@ class PortofolioController extends Controller
             Storage::disk('public')->delete($portofolio->file_pdf);
         }
 
+        $judul = $portofolio->judul_proyek;
+
         // Hapus baris data dari database
         $portofolio->delete();
 
+        \App\Models\AdminActivity::create([
+            'admin_name' => session('admin_username') ?? 'Admin',
+            'aksi' => 'Hapus',
+            'target' => $judul,
+        ]);
+
         return redirect()->route('admin.portofolio')->with('success', 'Proyek portofolio berhasil dihapus!');
+
     }
 }

@@ -34,7 +34,7 @@
     <div class="stat-card">
         <div class="stat-info">
             <span class="stat-label">Total Pengunjung</span>
-            <span class="stat-value">5</span>
+            <span class="stat-value">{{ $stats['pengunjung'] ?? 0 }}</span>
         </div>
         <div class="stat-icon">
             {{-- Orang berwarna biru --}}
@@ -48,8 +48,8 @@
     </div>
     <div class="stat-card">
         <div class="stat-info">
-            <span class="stat-label">Total Projek</span>
-            <span class="stat-value">5</span>
+            <span class="stat-label">Total Portofolio</span>
+            <span class="stat-value">{{ $stats['proyek'] ?? 0 }}</span>
         </div>
         <div class="stat-icon">
             {{-- Briefcase berwarna kuning --}}
@@ -64,7 +64,7 @@
     <div class="stat-card">
         <div class="stat-info">
             <span class="stat-label">Total Berita</span>
-            <span class="stat-value">{{ $totalPost ?? 0 }}</span>
+            <span class="stat-value">{{ $stats['berita'] ?? 0 }}</span>
         </div>
         <div class="stat-icon">
             {{-- Dokumen berwarna oranye --}}
@@ -80,7 +80,7 @@
     <div class="stat-card">
         <div class="stat-info">
             <span class="stat-label">Total Testimoni</span>
-            <span class="stat-value">5</span>
+            <span class="stat-value">{{ $stats['testimoni'] ?? 0 }}</span>
         </div>
         <div class="stat-icon">
             {{-- Chat bubble berwarna ungu --}}
@@ -103,26 +103,16 @@
     <div class="activity-card">
         <h3>Aktivitas Terbaru</h3>
         <ul class="activity-list">
-            <li>
-                <span class="activity-dot"></span>
-                <span>admin nura <strong>login</strong></span>
-            </li>
-            <li>
-                <span class="activity-dot"></span>
-                <span>nura <strong>mengupdate</strong> berita skypool</span>
-            </li>
-            <li>
-                <span class="activity-dot"></span>
-                <span>nura <strong>mempublish</strong> layanan konstruksi jalan</span>
-            </li>
-            <li>
-                <span class="activity-dot"></span>
-                <span>nura <strong>mengupdate</strong> testimoni</span>
-            </li>
-            <li>
-                <span class="activity-dot"></span>
-                <span>nura <strong>mengupdate</strong> background landing page</span>
-            </li>
+            @foreach(($aktivitas ?? []) as $act)
+                <li>
+                    <span class="activity-dot"></span>
+                    <span>
+                        {{ $act['user'] ?? '' }} <strong>{{ $act['aksi'] ?? '' }}</strong>
+                        {{ !empty($act['target']) ? ' ' . ($act['target'] ?? '') : '' }}
+                    </span>
+
+                </li>
+            @endforeach
         </ul>
     </div>
 </div>
@@ -172,32 +162,44 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const ctx = document.getElementById('visitorChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr'],
-            datasets: [{
-                label: 'Pengunjung',
-                data: [30, 55, 40, 80],
-                borderColor: '#e63946',
-                backgroundColor: 'rgba(230, 57, 70, 0.08)',
-                borderWidth: 3,
-                pointBackgroundColor: '#e63946',
-                pointRadius: 5,
-                tension: 0.3,
-                fill: true,
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
-                x: { grid: { display: false } }
+    const canvas = document.getElementById('visitorChart');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [
+                    @foreach(($grafik ?? []) as $g)
+                        "{{ $g['bulan'] ?? '' }}"{{ $loop->last ? '' : ',' }}
+                    @endforeach
+                ],
+                datasets: [{
+                    label: 'Pengunjung',
+                    data: [
+                        @foreach(($grafik ?? []) as $g)
+                            {{ (int)($g['nilai'] ?? 0) }}{{ $loop->last ? '' : ',' }}
+                        @endforeach
+                    ],
+                    borderColor: '#e63946',
+                    backgroundColor: 'rgba(230, 57, 70, 0.08)',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#e63946',
+                    pointRadius: 5,
+                    tension: 0.3,
+                    fill: true,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+                    x: { grid: { display: false } }
+                }
             }
-        }
-    });
+        });
+    }
+
     const toast = document.getElementById('toastNotif');
     if (toast) setTimeout(() => toast.remove(), 3500);
     const toastError = document.getElementById('toastError');

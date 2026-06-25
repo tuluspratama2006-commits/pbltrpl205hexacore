@@ -81,6 +81,13 @@ class PengaturanController extends Controller
 
         DB::table('admin')->where('id_admin', $user->id_admin)->update($updateData);
 
+        \App\Models\AdminActivity::create([
+            'admin_name' => session('admin_username') ?? 'Admin',
+            'aksi' => 'Edit',
+            'target' => 'Pengaturan',
+        ]);
+
         return redirect()->back()->with('success', 'Pengaturan berhasil diperbarui!');
+
     }
 }

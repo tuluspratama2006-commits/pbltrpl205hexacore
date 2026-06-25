@@ -2,36 +2,66 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Berita;
+use App\Models\Portofolio;
+use App\Models\Testimoni;
 use App\Models\ProfilPerusahaan;
+use App\Models\VisitorLog;
+use App\Models\AdminActivity;
+use Illuminate\Support\Facades\DB;
+
 
 class DashboardController extends Controller
 {
     public function index()
     {
+        // Pakai data DB agar dashboard benar-benar terhubung
         $stats = [
-            'pengunjung' => 5,
-            'proyek' => 5,
-            'berita' => 5,
-            'testimoni' => 5,
+            // total pengunjung dihitung dari visitor_id cookie 9 (statistika dan pbo)
+            'pengunjung' => VisitorLog::query()
+                ->where('path', '!=', '')
+                ->distinct('visitor_id')
+                ->count('visitor_id'),
+            'proyek' => Portofolio::count(),
+            'berita' => Berita::count(),
+            'testimoni' => Testimoni::count(),
         ];
 
-        $aktivitas = [
-            ['user' => 'admin nura', 'aksi' => 'login', 'target' => ''],
-            ['user' => 'nura', 'aksi' => 'mengupdate', 'target' => 'berita skypool'],
-            ['user' => 'nura', 'aksi' => 'mempublish', 'target' => 'layanan konstruksi jalan'],
-            ['user' => 'nura', 'aksi' => 'mengupdate', 'target' => 'testimoni'],
-            ['user' => 'nura', 'aksi' => 'mengupdate', 'target' => 'background landing page'],
-        ];
+        // Aktivitas terbaru ADMIN
+        $aktivitas = AdminActivity::query()
+            ->latest('created_at')
+            ->limit(6)
+            ->get()
+            ->map(function ($row) {
+                return [
+                    'user' => $row->admin_name ?? 'Admin',
+                    'aksi' => $row->aksi ?? '',
+                    'target' => $row->target ?? '',
+                ];
+            })
+            ->all();
 
-        $grafik = [
-            ['bulan' => 'Jan', 'nilai' => 30],
-            ['bulan' => 'Feb', 'nilai' => 55],
-            ['bulan' => 'Mar', 'nilai' => 40],
-            ['bulan' => 'Apr', 'nilai' => 80],
-        ];
+        // Grafik pengunjung per bulan (12 bulan terakhir) - distinct visitor_id
+        $grafik = [];
+        $start = now()->subMonths(11)->startOfMonth();
+        for ($i = 0; $i < 12; $i++) {
+            $dt = $start->copy()->addMonths($i);
+            $count = VisitorLog::query()
+                ->whereYear('created_at', $dt->year)
+                ->whereMonth('created_at', $dt->month)
+                ->distinct('visitor_id')
+                ->count('visitor_id');
+
+            $grafik[] = [
+                'bulan' => $dt->format('M'),
+                'nilai' => $count,
+            ];
+        }
+
 
         $profil = ProfilPerusahaan::first();
 
         return view('admin.dashboard', compact('stats', 'aktivitas', 'grafik', 'profil'));
     }
 }
+
