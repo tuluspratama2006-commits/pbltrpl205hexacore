@@ -31,44 +31,41 @@ class PortofolioController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi input data
         $validatedData = $request->validate([
             'judul_proyek' => 'required|string|max:255',
             'deskripsi' => 'required',
             'lokasi' => 'required|string|max:255',
             'tanggal_proyek' => 'required|date',
             'nama_klien' => 'required|string|max:255',
-            'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Maks 2MB
-            'file_pdf' => 'nullable|mimes:pdf|max:10000', // Maks 10MB
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'file_pdf' => 'nullable|mimes:pdf|max:10000',
             'status' => 'required|in:publish,draft',
         ]);
 
-        // Gabungkan data hasil validasi dengan slug manual
-        $validatedData['slug'] = Str::slug($request->judul_proyek);
+        $validatedData['slug'] = $this->buatSlugUnik(Str::slug($request->judul_proyek));
         $validatedData['deskripsi'] = preg_replace(['/&nbsp;(?=\s*<)/', '/(?:\s*<(\w+)>\s*<\/\1>\s*)+$/u'], ['', ''], $validatedData['deskripsi']);
 
-        // Handle upload file Gambar (Thumbnail)
-        if ($request->hasFile('thumbnail')) {
-            $validatedData['thumbnail'] = $request->file('thumbnail')->store('portofolio/thumbnails', 'public');
+        try {
+            if ($request->hasFile('thumbnail')) {
+                $validatedData['thumbnail'] = $request->file('thumbnail')->store('portofolio/thumbnails', 'public');
+            }
+
+            if ($request->hasFile('file_pdf')) {
+                $validatedData['file_pdf'] = $request->file('file_pdf')->store('portofolio/pdfs', 'public');
+            }
+
+            Portofolio::create($validatedData);
+
+            return redirect()->route('admin.portofolio')->with('success', 'Proyek portofolio berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.portofolio')->with('error', 'Gagal menyimpan: '.$e->getMessage())->withInput();
         }
-
-        // Handle upload file PDF (jika ada)
-        if ($request->hasFile('file_pdf')) {
-            $validatedData['file_pdf'] = $request->file('file_pdf')->store('portofolio/pdfs', 'public');
-        }
-
-        // Simpan menggunakan data yang sudah aman ($validatedData)
-        Portofolio::create($validatedData);
-
-        return redirect()->route('admin.portofolio')->with('success', 'Proyek portofolio berhasil ditambahkan!');
     }
 
     public function update(Request $request, string $id_portofolio)
     {
-        // Cari data portofolio berdasarkan primary key Anda
         $portofolio = Portofolio::where('id_portofolio', $id_portofolio)->firstOrFail();
 
-        // Validasi input data
         $validatedData = $request->validate([
             'judul_proyek' => 'required|string|max:255',
             'deskripsi' => 'required',
@@ -80,39 +77,52 @@ class PortofolioController extends Controller
             'status' => 'required|in:publish,draft',
         ]);
 
-        // Update slug otomatis jika judul proyek berubah
-        $validatedData['slug'] = Str::slug($request->judul_proyek);
+        $slug = Str::slug($request->judul_proyek);
+        if ($slug !== $portofolio->slug) {
+            $validatedData['slug'] = $this->buatSlugUnik($slug, $id_portofolio);
+        }
         $validatedData['deskripsi'] = preg_replace(['/&nbsp;(?=\s*<)/', '/(?:\s*<(\w+)>\s*<\/\1>\s*)+$/u'], ['', ''], $validatedData['deskripsi']);
 
-        // Jika mengupload thumbnail baru
-        if ($request->hasFile('thumbnail')) {
-            // Hapus berkas thumbnail yang lama dari storage jika ada
-            if ($portofolio->thumbnail && Storage::disk('public')->exists($portofolio->thumbnail)) {
-                Storage::disk('public')->delete($portofolio->thumbnail);
+        try {
+            if ($request->hasFile('thumbnail')) {
+                if ($portofolio->thumbnail && Storage::disk('public')->exists($portofolio->thumbnail)) {
+                    Storage::disk('public')->delete($portofolio->thumbnail);
+                }
+                $validatedData['thumbnail'] = $request->file('thumbnail')->store('portofolio/thumbnails', 'public');
             }
-            // Simpan yang baru
-            $validatedData['thumbnail'] = $request->file('thumbnail')->store('portofolio/thumbnails', 'public');
-        }
 
-        // Jika mengupload berkas PDF baru
-        if ($request->hasFile('file_pdf')) {
-            // Hapus berkas PDF lama jika ada
-            if ($portofolio->file_pdf && Storage::disk('public')->exists($portofolio->file_pdf)) {
-                Storage::disk('public')->delete($portofolio->file_pdf);
+            if ($request->hasFile('file_pdf')) {
+                if ($portofolio->file_pdf && Storage::disk('public')->exists($portofolio->file_pdf)) {
+                    Storage::disk('public')->delete($portofolio->file_pdf);
+                }
+                $validatedData['file_pdf'] = $request->file('file_pdf')->store('portofolio/pdfs', 'public');
             }
-            // Simpan yang baru
-            $validatedData['file_pdf'] = $request->file('file_pdf')->store('portofolio/pdfs', 'public');
+
+            $portofolio->update($validatedData);
+
+            return redirect()->route('admin.portofolio')->with('success', 'Proyek portofolio berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.portofolio')->with('error', 'Gagal mengupdate: '.$e->getMessage())->withInput();
         }
-
-        // Eksekusi update data di database menggunakan data ter-validasi
-        $portofolio->update($validatedData);
-
-        return redirect()->route('admin.portofolio')->with('success', 'Proyek portofolio berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    private function buatSlugUnik(string $slug, ?string $ignoreId = null): string
+    {
+        $original = $slug;
+        $counter = 1;
+
+        while (true) {
+            $query = Portofolio::where('slug', $slug);
+            if ($ignoreId) {
+                $query->where('id_portofolio', '!=', $ignoreId);
+            }
+            if (! $query->exists()) {
+                return $slug;
+            }
+            $slug = $original.'-'.$counter++;
+        }
+    }
+
     public function destroy(string $id_portofolio)
     {
         $portofolio = Portofolio::where('id_portofolio', $id_portofolio)->firstOrFail();
