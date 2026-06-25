@@ -7,7 +7,7 @@
 <div class="page-header">
     <h1 class="page-heading" style="text-decoration: underline; text-underline-offset: 6px;"></h1>
     <button class="btn-tambah"
-        onclick="document.getElementById('modalTambahTestimoni').style.display='flex'">
+        onclick="bukaModalTambahTestimoni()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
         </svg>
@@ -108,7 +108,9 @@
             </span>
         </td>
         <td class="aksi-col">
-            <button class="btn-edit" onclick="openEditModal({{ $item->id_testimoni }}, '{{ $item->nama_client }}', '{{ $item->jabatan }}', '{{ $item->nama_perusahaan }}', {{ $item->rating }}, '{{ $item->isi_testimoni }}', '{{ $item->status }}')">
+            <button class="btn-edit"
+                data-json='@json($item)'
+                onclick="openEditModal(this)">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
@@ -147,14 +149,14 @@
 <!-- MODAL TAMBAH TESTIMONI -->
 <div class="modal-overlay"
      id="modalTambahTestimoni"
-     onclick="if(event.target===this) this.style.display='none'">
+     onclick="if(event.target===this) tutupModalTestimoni()">
 
     <div class="modal-box">
 
         <div class="modal-header">
             <h3 class="modal-title">TESTIMONI</h3>
             <button class="modal-close"
-                onclick="document.getElementById('modalTambahTestimoni').style.display='none'">
+                onclick="tutupModalTestimoni()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <line x1="18" y1="6" x2="6" y2="18"/>
                     <line x1="6" y1="6" x2="18" y2="18"/>
@@ -261,16 +263,46 @@
 const toast = document.getElementById('toastNotif');
 if (toast) setTimeout(() => toast.remove(), 3500);
 
-document.addEventListener('DOMContentLoaded', function () {
+function resetForm() {
+    const form = document.querySelector('#modalTambahTestimoni form');
+    form.action = '{{ route("admin.testimoni.store") }}';
+    form.querySelector('[name="nama_client"]').value = '';
+    form.querySelector('[name="jabatan"]').value = '';
+    form.querySelector('[name="nama_perusahaan"]').value = '';
+    form.querySelector('[name="isi_testimoni"]').value = '';
+    form.querySelector('[name="status"]').value = 'publish';
 
+    const methodField = document.getElementById('methodField');
+    if (methodField) methodField.remove();
+
+    const stars = document.querySelectorAll('.star');
+    stars.forEach(s => {
+        s.classList.toggle('active', s.dataset.value <= 5);
+    });
+    document.getElementById('ratingValue').value = 5;
+    document.getElementById('ratingText').textContent = '5 / 5 Bintang';
+
+    const modalTitle = document.querySelector('#modalTambahTestimoni .modal-title');
+    if (modalTitle) modalTitle.textContent = 'TESTIMONI';
+    const submitBtn = document.querySelector('#modalTambahTestimoni .btn-modal-simpan');
+    if (submitBtn) submitBtn.innerHTML = 'Simpan <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
+}
+
+function bukaModalTambahTestimoni() {
+    resetForm();
+    document.getElementById('modalTambahTestimoni').style.display = 'flex';
+}
+
+function tutupModalTestimoni() {
+    document.getElementById('modalTambahTestimoni').style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', function () {
     const stars = document.querySelectorAll('.star');
     const ratingValue = document.getElementById('ratingValue');
     const ratingText = document.getElementById('ratingText');
 
-    // Set default 5 bintang
-    stars.forEach(s => {
-        if (s.dataset.value <= 5) s.classList.add('active');
-    });
+    stars.forEach(s => s.classList.add('active'));
 
     stars.forEach(star => {
         star.addEventListener('click', function () {
@@ -282,7 +314,6 @@ document.addEventListener('DOMContentLoaded', function () {
             ratingText.textContent = value + ' / 5 Bintang';
         });
     });
-
 });
 
 function filterTable() {
@@ -299,12 +330,12 @@ function filterTable() {
     });
 }
 
-function openEditModal(id, nama, jabatan, perusahaan, rating, ulasan, status) {
-    // Untuk edit, arahkan form ke route update
+function openEditModal(button) {
+    const d = JSON.parse(button.getAttribute('data-json'));
+
     const form = document.querySelector('#modalTambahTestimoni form');
-    form.action = '/admin/testimoni/' + id;
-    
-    // Tambahkan method PUT
+    form.action = '{{ url("admin/testimoni") }}/' + d.id_testimoni;
+
     if (!document.getElementById('methodField')) {
         const methodInput = document.createElement('input');
         methodInput.type = 'hidden';
@@ -316,23 +347,25 @@ function openEditModal(id, nama, jabatan, perusahaan, rating, ulasan, status) {
         document.getElementById('methodField').value = 'PUT';
     }
 
-    // Isi form dengan data
-    form.querySelector('[name="nama_client"]').value = nama;
-    form.querySelector('[name="jabatan"]').value = jabatan || '';
-    form.querySelector('[name="nama_perusahaan"]').value = perusahaan || '';
-    form.querySelector('[name="isi_testimoni"]').value = ulasan;
-    form.querySelector('[name="status"]').value = status;
-    document.getElementById('ratingValue').value = rating;
+    form.querySelector('[name="nama_client"]').value = d.nama_client;
+    form.querySelector('[name="jabatan"]').value = d.jabatan || '';
+    form.querySelector('[name="nama_perusahaan"]').value = d.nama_perusahaan || '';
+    form.querySelector('[name="isi_testimoni"]').value = d.isi_testimoni;
+    form.querySelector('[name="status"]').value = d.status;
+    document.getElementById('ratingValue').value = d.rating;
 
-    // Update bintang
     const stars = document.querySelectorAll('.star');
     stars.forEach(s => {
-        s.classList.toggle('active', s.dataset.value <= rating);
+        s.classList.toggle('active', s.dataset.value <= d.rating);
     });
-    document.getElementById('ratingText').textContent = rating + ' / 5 Bintang';
+    document.getElementById('ratingText').textContent = d.rating + ' / 5 Bintang';
 
-    // Tampilkan modal
+    document.querySelector('#modalTambahTestimoni .modal-title').textContent = 'EDIT TESTIMONI';
+    const submitBtn = document.querySelector('#modalTambahTestimoni .btn-modal-simpan');
+    submitBtn.innerHTML = 'Update <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
+
     document.getElementById('modalTambahTestimoni').style.display = 'flex';
 }
+
 </script>
 @endsection
