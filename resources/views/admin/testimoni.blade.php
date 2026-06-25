@@ -5,7 +5,7 @@
 
 {{-- Header --}}
 <div class="page-header">
-    <h1 class="page-heading"></h1>
+    <h1 class="page-heading" style="text-decoration: underline; text-underline-offset: 6px;"></h1>
     <button class="btn-tambah"
         onclick="document.getElementById('modalTambahTestimoni').style.display='flex'">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -15,20 +15,19 @@
     </button>
 </div>
 
-{{-- Pesan Sukses/Error --}}
+{{-- Toast Notif --}}
 @if(session('success'))
-    <div style="background:#e6f9f0;color:#1a7a4a;padding:12px;border-radius:8px;margin-bottom:20px;">
-        {{ session('success') }}
-    </div>
-@endif
-@if(session('error'))
-    <div style="background:#fde8e8;color:#c53030;padding:12px;border-radius:8px;margin-bottom:20px;">
-        {{ session('error') }}
-    </div>
+<div class="toast-notif" id="toastNotif">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="20 6 9 17 4 12"/>
+    </svg>
+    {{ session('success') }}
+    <button onclick="document.getElementById('toastNotif').remove()" style="background:none;border:none;cursor:pointer;color:inherit;margin-left:8px;font-size:16px;">×</button>
+</div>
 @endif
 
 {{-- Stats Cards --}}
-<div class="stats-grid" style="grid-template-columns:repeat(2,1fr); max-width:700px;">
+<div class="stats-grid">
     <div class="stat-card">
         <div class="stat-info">
             <span class="stat-label">Total Ulasan</span>
@@ -261,6 +260,9 @@
 </div>
 
 <script>
+const toast = document.getElementById('toastNotif');
+if (toast) setTimeout(() => toast.remove(), 3500);
+
 document.addEventListener('DOMContentLoaded', function () {
 
     const stars = document.querySelectorAll('.star');

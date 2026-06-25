@@ -4,6 +4,11 @@
 
 @section('content')
 
+{{-- Header --}}
+<div class="page-header" style="margin-bottom: 28px;">
+    <h1 class="page-heading" style="text-decoration: underline; text-underline-offset: 6px;"></h1>
+</div>
+
 {{-- Stats Cards --}}
 <div class="stats-grid">
     <div class="stat-card">

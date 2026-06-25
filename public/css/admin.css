@@ -425,11 +425,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 24px;
+    margin-bottom: 28px;
 }
 
 .page-heading {
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 800;
     color: var(--text-dark);
     letter-spacing: -0.5px;
@@ -560,7 +560,7 @@ body {
     overflow-y: hidden;
 }
 
-.table-card table { min-width: max-content; }
+.table-card table { width: 100%; }
 
 .data-table {
     width: 100%;
@@ -573,16 +573,17 @@ body {
 }
 
 .data-table th {
-    padding: 14px 16px;
-    font-size: 13px;
+    padding: 10px 12px;
+    font-size: 12px;
     font-weight: 700;
     color: var(--text-dark);
     text-align: left;
+    white-space: nowrap;
 }
 
 .data-table td {
-    padding: 14px 16px;
-    font-size: 13px;
+    padding: 10px 12px;
+    font-size: 12px;
     color: var(--text-dark);
     border-bottom: 1px solid var(--border);
     vertical-align: middle;
@@ -593,10 +594,10 @@ body {
 .data-table tbody tr:hover { background: #f9fbff; }
 
 .table-img {
-    width: 70px;
-    height: 50px;
+    width: 50px;
+    height: 36px;
     object-fit: cover;
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
 .badge-kategori {
@@ -773,283 +774,7 @@ body {
 .judul-link:hover { color: var(--sidebar-active); }
 /* ============================================================
    TESTIMONI PAGE STYLES
-   Tambahkan bagian ini ke dalam file: public/css/admin.css
    ============================================================ */
-
-/* ===== PAGE ===== */
-.testimoni-page {
-    padding: 30px 20px;
-}
-
-.page-title {
-    font-size: 2rem;
-    font-weight: 800;
-    color: #ffffff;
-    letter-spacing: 1px;
-    margin: 0;
-}
-
-/* ===== BUTTON TAMBAH ===== */
-.btn-tambah {
-    background-color: #1a2d5a;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 22px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    transition: background 0.2s;
-}
-.btn-tambah:hover {
-    background-color: #243e7a;
-    color: #fff;
-}
-
-/* ===== STAT CARDS ===== */
-.stat-card {
-    background: #fff;
-    border-radius: 14px;
-    padding: 20px 24px;
-    box-shadow: 0 2px 12px rgba(26, 45, 90, 0.08);
-    border: 1px solid #e8edf5;
-    height: 100%;
-}
-.stat-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.stat-label {
-    font-size: 0.85rem;
-    color: #6b7a99;
-    font-weight: 600;
-    margin-bottom: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-.stat-value {
-    font-size: 2.4rem;
-    font-weight: 800;
-    color: #1a2d5a;
-    margin: 0;
-}
-.stat-icon {
-    font-size: 2.2rem;
-    color: #c8d3e8;
-}
-.stat-icon.star {
-    color: #f5c842;
-}
-
-/* ===== TABLE SECTION ===== */
-.table-section {
-    background: #f0f4fb;
-    border-radius: 14px;
-    padding: 20px;
-}
-
-/* ===== SEARCH ===== */
-.search-wrapper {
-    position: relative;
-}
-.search-icon {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #8a97b5;
-    font-size: 0.85rem;
-}
-.search-input {
-    padding: 8px 14px 8px 34px;
-    border: 1px solid #c8d3e8;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    background: #fff;
-    width: 220px;
-    outline: none;
-    transition: border 0.2s;
-}
-.search-input:focus {
-    border-color: #1a2d5a;
-}
-
-/* ===== TABLE ===== */
-.testi-table {
-    background: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    margin: 0;
-}
-.testi-table thead tr {
-    background: #fff;
-    border-bottom: 2px solid #e8edf5;
-}
-.testi-table thead th {
-    font-weight: 700;
-    font-size: 0.85rem;
-    color: #4a5778;
-    padding: 14px 16px;
-    text-align: center;
-    border: none;
-    letter-spacing: 0.3px;
-}
-.testi-table tbody tr {
-    border-bottom: 1px solid #f0f4fb;
-    transition: background 0.15s;
-}
-.testi-table tbody tr:hover {
-    background: #f7f9fd;
-}
-.testi-table tbody td {
-    padding: 14px 16px;
-    vertical-ang: middle;
-    text-align: center;
-    font-size: 0.88rem;
-    color: #2d3a5a;
-    border: none;
-}
-
-/* ===== FOTO ===== */
-.foto-thumb {
-    width: 46px;
-    height: 46px;
-    object-fit: contain;
-    border-radius: 6px;
-}
-
-/* ===== NAMA ===== */
-.nama-col {
-    font-weight: 600;
-    font-size: 0.82rem;
-    color: #1a2d5a;
-}
-
-/* ===== RATING STARS ===== */
-.star-rating .star-filled {
-    color: #f5c842;
-    font-size: 1.1rem;
-}
-.star-rating .star-empty {
-    color: #d4daea;
-    font-size: 1.1rem;
-}
-
-/* ===== ULASAN ===== */
-.ulasan-col {
-    text-align: left;
-    max-width: 260px;
-}
-.ulasan-text {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    font-size: 0.85rem;
-    color: #4a5778;
-    line-height: 1.5;
-}
-
-/* ===== AKSI BUTTONS ===== */
-.aksi-buttons {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-}
-.btn-aksi {
-    width: 34px;
-    height: 34px;
-    border: none;
-    border-radius: 7px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.85rem;
-    transition: opacity 0.2s, transform 0.15s;
-}
-.btn-aksi:hover {
-    opacity: 0.85;
-    transform: scale(1.08);
-}
-.btn-edit {
-    background: #e8edf5;
-    color: #1a2d5a;
-}
-.btn-delete {
-    background: #fde8e8;
-    color: #d94040;
-}
-
-/* ===== MODAL ===== */
-.testi-modal {
-    border-radius: 14px;
-    overflow: hidden;
-    border: none;
-}
-.testi-modal .modal-header {
-    background: #1a2d5a;
-    color: #fff;
-    border: none;
-    padding: 16px 24px;
-}
-.testi-modal .modal-title {
-    font-weight: 700;
-    font-size: 1.05rem;
-}
-.testi-modal .modal-body {
-    padding: 24px;
-}
-.testi-modal .form-label {
-    font-weight: 600;
-    font-size: 0.88rem;
-    color: #2d3a5a;
-}
-.testi-modal .form-control {
-    border-radius: 8px;
-    border: 1px solid #c8d3e8;
-    font-size: 0.9rem;
-    padding: 9px 13px;
-}
-.testi-modal .form-control:focus {
-    border-color: #1a2d5a;
-    box-shadow: 0 0 0 3px rgba(26, 45, 90, 0.1);
-}
-.testi-modal .modal-footer {
-    border-top: 1px solid #e8edf5;
-    padding: 14px 24px;
-}
-.btn-tambah-modal {
-    background: #1a2d5a;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 9px 24px;
-    font-weight: 600;
-    font-size: 0.9rem;
-}
-.btn-tambah-modal:hover {
-    background: #243e7a;
-    color: #fff;
-}
-
-/* ===== STAR INPUT IN MODAL ===== */
-.star-input {
-    display: flex;
-    gap: 6px;
-    margin-top: 4px;
-}
-.star-select {
-    font-size: 1.5rem;
-    color: #d4daea;
-    cursor: pointer;
-    transition: color 0.15s, transform 0.1s;
-}
-.star-select:hover,
-.star-select.active {
-    color: #f5c842;
-    transform: scale(1.15);
-}
 
 
 /* ===========================
