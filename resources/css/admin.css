@@ -486,7 +486,6 @@ body:has(.sidebar.collapsed) {
 
 /* ===========================
    PORTOFOLIO PAGE
-   Tambahkan ini ke admin.css
 =========================== */
 
 /* Page Header */
@@ -695,29 +694,50 @@ body:has(.sidebar.collapsed) {
     color: #b36200;
 }
 
-.aksi-col { white-space: nowrap; }
+/* ========================================= */
+/* TOMBOL AKSI - EDIT & DELETE (HORIZONTAL) */
+/* ========================================= */
+.aksi-col {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
 
-.aksi-wrapper { display: flex; gap: 8px; align-items: center; }
+.aksi-col form {
+    display: inline;
+    margin: 0;
+}
+
+.aksi-wrapper {
+    display: flex;
+    gap: 8px;
+}
 
 .btn-edit {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 34px; height: 34px;
+    width: 34px;
+    height: 34px;
     background: #e8f0fe;
     color: var(--sidebar-bg);
     border-radius: 8px;
     text-decoration: none;
     transition: background 0.2s;
+    border: none;
+    cursor: pointer;
 }
 
-.btn-edit:hover { background: #c5d8ff; }
+.btn-edit:hover {
+    background: #c5d8ff;
+}
 
 .btn-delete {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 34px; height: 34px;
+    width: 34px;
+    height: 34px;
     background: #fde8e8;
     color: var(--accent);
     border: none;
@@ -726,7 +746,9 @@ body:has(.sidebar.collapsed) {
     transition: background 0.2s;
 }
 
-.btn-delete:hover { background: #fcc5c5; }
+.btn-delete:hover {
+    background: #fcc5c5;
+}
 
 /* Empty State */
 .empty-state {
@@ -738,6 +760,7 @@ body:has(.sidebar.collapsed) {
 .empty-state svg { margin-bottom: 12px; opacity: 0.4; }
 
 .empty-state p { font-size: 14px; }
+
 /* ===========================
    LAYANAN PAGE
 =========================== */
@@ -876,3 +899,64 @@ body:has(.sidebar.collapsed) {
 }
 
 .judul-link:hover { color: var(--sidebar-active); }
+
+/* ===========================
+   MODAL FORM - ROW LAYOUT
+=========================== */
+.modal-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.modal-field label {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-dark);
+}
+
+.modal-input {
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    width: 100%;
+    background: #f1f5f9;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.modal-input:focus {
+    border-color: var(--sidebar-active);
+}
+
+.modal-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.rating-input {
+    display: flex;
+    gap: 4px;
+    font-size: 24px;
+    color: #e2e8f0;
+    cursor: pointer;
+}
+
+.rating-input .star {
+    transition: color 0.2s;
+}
+
+.rating-input .star.active {
+    color: #fbbf24;
+}
+
+.rating-input .star:hover {
+    color: #fbbf24;
+}

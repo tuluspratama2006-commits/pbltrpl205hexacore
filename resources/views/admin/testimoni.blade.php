@@ -53,7 +53,7 @@
     <div class="stat-card">
         <div class="stat-info">
             <span class="stat-label">Rata-rata Rating</span>
-            <span class="stat-value">{{ number_format($rataRating ?? 0, 4) }}</span>
+            <span class="stat-value">{{ number_format($rataRating ?? 0, 1) }}</span>
         </div>
         <div class="stat-icon">
             <svg width="44" height="44" viewBox="0 0 24 24"
@@ -129,28 +129,31 @@
             </span>
         </td>
         <td class="aksi-col" style="text-align:center;">
-            <button class="btn-edit"
-                data-json='@json($item)'
-                onclick="openEditModal(this)">
+    <div style="display:flex; gap:8px; align-items:center; justify-content:center;">
+        <button class="btn-edit"
+            data-json='@json($item)'
+            onclick="openEditModal(this)"
+            style="display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; background:#e8f0fe; color:#1e2a4a; border:none; border-radius:8px; cursor:pointer;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+        </button>
+        <form action="{{ route('admin.testimoni.destroy', $item->id_testimoni) }}" method="POST" style="display:inline;" onsubmit="return confirm('Yakin hapus?')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn-delete"
+                style="display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; background:#fde8e8; color:#e63946; border:none; border-radius:8px; cursor:pointer;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                    <path d="M10 11v6"/><path d="M14 11v6"/>
+                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
                 </svg>
             </button>
-            <form action="{{ route('admin.testimoni.destroy', $item->id_testimoni) }}" method="POST" style="display:inline;" onsubmit="return confirm('Yakin hapus?')">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn-delete">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="3 6 5 6 21 6"/>
-                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                        <path d="M10 11v6"/><path d="M14 11v6"/>
-                        <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
-                    </svg>
-                </button>
-            </form>
-        </td>
-    </tr>
+        </form>
+    </div>
+</td>
 @endforeach
     @else
         <tr>
@@ -201,80 +204,81 @@
                 </div>
                 @endif
 
-                <div class="modal-field">
-                    <label>Nama</label>
-                    <input type="text"
-                           name="nama_client"
-                           class="modal-input"
-                           placeholder="Masukkan nama"
-                           required>
-                </div>
+                <div class="modal-row">
+        <div class="modal-field">
+            <label>Nama</label>
+            <input type="text"
+                   name="nama_client"
+                   class="modal-input"
+                   placeholder="Masukkan nama"
+                   required>
+        </div>
+        <div class="modal-field">
+            <label>Nama Perusahaan</label>
+            <input type="text"
+                   name="nama_perusahaan"
+                   class="modal-input"
+                   placeholder="Masukkan nama perusahaan">
+        </div>
+    </div>
+                
 
                 <div class="modal-row">
-                    <div class="modal-field">
-                        <label>Jabatan</label>
-                        <input type="text"
-                               name="jabatan"
-                               class="modal-input"
-                               placeholder="Masukkan jabatan">
-                    </div>
-                    <div class="modal-field">
-                        <label>Nama Perusahaan</label>
-                        <input type="text"
-                               name="nama_perusahaan"
-                               class="modal-input"
-                               placeholder="Masukkan nama perusahaan">
-                    </div>
-                </div>
+        <div class="modal-field">
+            <label>Jabatan</label>
+            <input type="text"
+                   name="jabatan"
+                   class="modal-input"
+                   placeholder="Masukkan jabatan">
+        </div>
+        <div class="modal-field">
+            <label>Foto</label>
+            <input type="file"
+                   name="foto_client"
+                   class="modal-input"
+                   accept="image/*">
+        </div>
+    </div>
 
                 <div class="modal-row">
-                    <div class="modal-field">
-                        <label>Foto</label>
-                        <input type="file"
-                               name="foto_client"
-                               class="modal-input"
-                               accept="image/*">
-                    </div>
+        <div class="modal-field">
+            <label>Rating</label>
+            <input type="hidden"
+                   name="rating"
+                   id="ratingValue"
+                   value="5"
+                   required>
 
-                    <div class="modal-field">
-                        <label>Rating</label>
-                        <input type="hidden"
-                               name="rating"
-                               id="ratingValue"
-                               value="5"
-                               required>
-
-                        <div class="rating-input">
-                            <span class="star" data-value="1">★</span>
-                            <span class="star" data-value="2">★</span>
-                            <span class="star" data-value="3">★</span>
-                            <span class="star" data-value="4">★</span>
-                            <span class="star" data-value="5">★</span>
-                        </div>
-
-                        <small id="ratingText">5 / 5 Bintang</small>
-                    </div>
-                </div>
-
-                <div class="modal-field">
-                    <label>Ulasan</label>
-                    <textarea class="modal-input modal-textarea"
-                              name="isi_testimoni"
-                              id="isi_testimoni"
-                              rows="5"
-                              placeholder="Masukkan ulasan"
-                              required></textarea>
-                </div>
-
-                <div class="modal-field">
-                    <label>Status</label>
-                    <select name="status" class="modal-input" required>
-                        <option value="publish">Publish</option>
-                        <option value="draft">Draft</option>
-                    </select>
-                </div>
-
+            <div class="rating-input">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
             </div>
+
+            <small id="ratingText">5 / 5 Bintang</small>
+        </div>
+
+        <div class="modal-field">
+            <label>Status</label>
+            <select name="status" class="modal-input" required>
+                <option value="publish">Publish</option>
+                <option value="draft">Draft</option>
+            </select>
+        </div>
+    </div>
+
+                <div class="modal-field">
+        <label>Ulasan</label>
+        <textarea class="modal-input modal-textarea"
+                  name="isi_testimoni"
+                  rows="5"
+                  placeholder="Masukkan ulasan"
+                  required></textarea>
+    </div>
+
+</div>
 
             <div class="modal-footer">
                 <button type="submit" class="btn-modal-simpan">
