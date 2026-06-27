@@ -1,43 +1,16 @@
 @extends('layouts.admin')
-
 @section('title', 'Dashboard')
 
 @section('content')
-
-{{-- Toast Notif --}}
-@if(session('success'))
-<div class="toast-notif" id="toastNotif">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <polyline points="20 6 9 17 4 12"/>
-    </svg>
-    {{ session('success') }}
-    <button onclick="document.getElementById('toastNotif').remove()" style="background:none;border:none;cursor:pointer;color:inherit;margin-left:8px;font-size:16px;">×</button>
-</div>
-@endif
-@if(session('error'))
-<div class="toast-notif" style="background:#c53030;" id="toastError">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
-    </svg>
-    {{ session('error') }}
-    <button onclick="document.getElementById('toastError').remove()" style="background:none;border:none;cursor:pointer;color:inherit;margin-left:8px;font-size:16px;">×</button>
-</div>
-@endif
-
-{{-- Header --}}
-<div class="page-header" style="margin-bottom: 28px;">
-    <h1 class="page-heading" style="text-decoration: underline; text-underline-offset: 6px;"></h1>
-</div>
 
 {{-- Stats Cards --}}
 <div class="stats-grid">
     <div class="stat-card">
         <div class="stat-info">
             <span class="stat-label">Total Pengunjung</span>
-            <span class="stat-value">{{ $stats['pengunjung'] ?? 0 }}</span>
+            <span class="stat-value">{{ $totalPengunjung ?? 0 }}</span>
         </div>
         <div class="stat-icon">
-            {{-- Orang berwarna biru --}}
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.5">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                 <circle cx="9" cy="7" r="4"/>
@@ -49,10 +22,9 @@
     <div class="stat-card">
         <div class="stat-info">
             <span class="stat-label">Total Portofolio</span>
-            <span class="stat-value">{{ $stats['proyek'] ?? 0 }}</span>
+            <span class="stat-value">{{ $totalProjek ?? 0 }}</span>
         </div>
         <div class="stat-icon">
-            {{-- Briefcase berwarna kuning --}}
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.5">
                 <rect x="2" y="7" width="20" height="14" rx="2"/>
                 <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
@@ -64,10 +36,9 @@
     <div class="stat-card">
         <div class="stat-info">
             <span class="stat-label">Total Berita</span>
-            <span class="stat-value">{{ $stats['berita'] ?? 0 }}</span>
+            <span class="stat-value">{{ $totalBerita ?? 0 }}</span>
         </div>
         <div class="stat-icon">
-            {{-- Dokumen berwarna oranye --}}
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="1.5">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                 <polyline points="14 2 14 8 20 8"/>
@@ -80,10 +51,9 @@
     <div class="stat-card">
         <div class="stat-info">
             <span class="stat-label">Total Testimoni</span>
-            <span class="stat-value">{{ $stats['testimoni'] ?? 0 }}</span>
+            <span class="stat-value">{{ $totalTestimoni ?? 0 }}</span>
         </div>
         <div class="stat-icon">
-            {{-- Chat bubble berwarna ungu --}}
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.5">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                 <line x1="9" y1="10" x2="15" y2="10"/>
@@ -101,68 +71,43 @@
     </div>
 
     <div class="activity-card">
-        <h3>Aktivitas Terbaru</h3>
-        <ul class="activity-list">
-            @foreach(($aktivitas ?? []) as $act)
-                <li>
-                    <span class="activity-dot"></span>
-                    <span>
-                        {{ $act['user'] ?? '' }} <strong>{{ $act['aksi'] ?? '' }}</strong>
-                        {{ !empty($act['target']) ? ' ' . ($act['target'] ?? '') : '' }}
-                    </span>
-
-                </li>
-            @endforeach
-        </ul>
-    </div>
+    <h3>Aktivitas Terbaru</h3>
+    <ul class="activity-list">
+        @forelse($aktivitasTerbaru ?? [] as $aktivitas)
+            <li>
+                <span class="activity-dot"></span>
+                <span>
+                    {{ $aktivitas->admin_name ?? 'admin' }} 
+                    <strong>{{ $aktivitas->aksi ?? 'aktivitas' }}</strong>
+                    {{ $aktivitas->target ?? '' }}
+                </span>
+            </li>
+        @empty
+            <li><span>Belum ada aktivitas</span></li>
+        @endforelse
+    </ul>
 </div>
 
 {{-- Landing Page Settings --}}
 <div class="settings-card">
     <h3>Landing Page</h3>
-    <form action="{{ route('admin.pengaturan.update') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div class="form-group">
-            <label>Nama Perusahaan <span style="color:red">*</span> :</label>
-            <input type="text" name="nama_perusahaan" class="modal-input" placeholder="PT. Berkah Alam Tabantang" value="{{ old('nama_perusahaan', $profil->nama_perusahaan ?? '') }}">
+    <div class="form-group">
+        <label>Judul :</label>
+        <textarea rows="3" placeholder="Masukkan judul landing page...">{{ old('judul', $profil->judul ?? '') }}</textarea>
+    </div>
+    <div class="form-group">
+        <label>Background Foto :</label>
+        <div class="upload-area">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <p>Klik atau drag foto ke sini</p>
+            <input type="file" accept="image/*">
         </div>
-        <div class="form-group">
-            <label>Tagline :</label>
-            <textarea name="tagline" rows="2" placeholder="Solusi Terpercaya untuk Konstruksi & Infrastruktur di Batam">{{ old('tagline', $profil->tagline ?? '') }}</textarea>
-        </div>
-        <div class="form-group">
-            <label>Deskripsi :</label>
-            <textarea name="deskripsi" rows="3" placeholder="Deskripsi singkat perusahaan...">{{ old('deskripsi', $profil->deskripsi ?? '') }}</textarea>
-        </div>
-        <div class="form-group">
-            <label>Background Foto :</label>
-            @if($profil && $profil->hero_image)
-            <div style="margin-bottom:8px;">
-                <img src="{{ asset('storage/' . $profil->hero_image) }}" style="width:100%;max-height:120px;object-fit:cover;border-radius:8px;">
-            </div>
-            @endif
-            <div class="upload-area" id="uploadArea">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <rect x="3" y="3" width="18" height="18" rx="2"/>
-                    <circle cx="8.5" cy="8.5" r="1.5"/>
-                    <polyline points="21 15 16 10 5 21"/>
-                </svg>
-                <p id="uploadText">Klik atau drag foto ke sini</p>
-                <input type="file" name="hero_image" id="heroImageInput" accept="image/*">
-            </div>
-        </div>
-        <div style="display:flex;gap:10px;">
-            <button type="submit" class="btn-simpan">Simpan Perubahan</button>
-            <a href="{{ route('home') }}" target="_blank" class="btn-simpan" style="background:#162660;text-decoration:none;text-align:center;display:inline-flex;align-items:center;gap:6px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                    <polyline points="15 3 21 3 21 9"/>
-                    <line x1="10" y1="14" x2="21" y2="3"/>
-                </svg>
-                Lihat Landing Page
-            </a>
-        </div>
-    </form>
+    </div>
+    <button class="btn-simpan">Simpan Perubahan</button>
 </div>
 
 @endsection
@@ -170,24 +115,27 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const canvas = document.getElementById('visitorChart');
-    if (canvas) {
-        const ctx = canvas.getContext('2d');
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('visitorChart');
+        
+        if (!ctx) {
+            console.error('Canvas tidak ditemukan!');
+            return;
+        }
+        
+        const labels = {!! json_encode($labels ?? ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']) !!};
+        const dataValues = {!! json_encode($grafikData ?? [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) !!};
+        
+        console.log('Labels:', labels);
+        console.log('Data:', dataValues);
+        
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: [
-                    @foreach(($grafik ?? []) as $g)
-                        "{{ $g['bulan'] ?? '' }}"{{ $loop->last ? '' : ',' }}
-                    @endforeach
-                ],
+                labels: labels,
                 datasets: [{
                     label: 'Pengunjung',
-                    data: [
-                        @foreach(($grafik ?? []) as $g)
-                            {{ (int)($g['nilai'] ?? 0) }}{{ $loop->last ? '' : ',' }}
-                        @endforeach
-                    ],
+                    data: dataValues,
                     borderColor: '#e63946',
                     backgroundColor: 'rgba(230, 57, 70, 0.08)',
                     borderWidth: 3,
@@ -201,21 +149,14 @@
                 responsive: true,
                 plugins: { legend: { display: false } },
                 scales: {
-                    y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+                    y: { 
+                        beginAtZero: true, 
+                        grid: { color: 'rgba(0,0,0,0.05)' } 
+                    },
                     x: { grid: { display: false } }
                 }
             }
         });
-    }
-
-    const toast = document.getElementById('toastNotif');
-    if (toast) setTimeout(() => toast.remove(), 3500);
-    const toastError = document.getElementById('toastError');
-    if (toastError) setTimeout(() => toastError.remove(), 3500);
-
-    document.getElementById('heroImageInput').addEventListener('change', function () {
-        const text = document.getElementById('uploadText');
-        text.textContent = this.files[0] ? 'Terpilih: ' + this.files[0].name : 'Klik atau drag foto ke sini';
     });
 </script>
 @endpush

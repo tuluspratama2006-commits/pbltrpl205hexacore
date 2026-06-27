@@ -4,13 +4,14 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LayananController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\PortofolioController;
 use App\Http\Controllers\Admin\TestimoniController;
 use App\Http\Controllers\Admin\TentangKamiController;
+use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Middleware\TrackVisitorMiddleware;
 
 // =========================
@@ -20,7 +21,6 @@ Route::middleware([TrackVisitorMiddleware::class])->group(function () {
 
     // Frontend
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Login & Logout
     Route::post('/login', [LoginController::class, 'login'])->name('login');
@@ -34,6 +34,12 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
 
     // Dashboard Admin
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Notification routes
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+    Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
 
     // Pengaturan
     Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan');
