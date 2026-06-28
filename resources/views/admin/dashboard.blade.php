@@ -128,12 +128,20 @@
         </div>
         <div class="form-group">
             <label>Background Foto :</label>
-            @if($profil && $profil->hero_image)
-            <div style="margin-bottom:8px;">
-                <img src="{{ asset('storage/' . $profil->hero_image) }}" style="width:100%;max-height:120px;object-fit:cover;border-radius:8px;">
+            
+            {{-- Preview dengan tombol delete --}}
+            <div id="previewContainer" style="position: relative; display: {{ $profil && $profil->hero_image ? 'block' : 'none' }}; margin-bottom: 10px;">
+                @if($profil && $profil->hero_image)
+                    <img id="previewImage" src="{{ asset('storage/' . $profil->hero_image) }}" style="width:100%;max-height:200px;object-fit:cover;border-radius:8px;">
+                    <button type="button" onclick="deleteBackground()" style="position: absolute; top: 10px; right: 10px; background: #e63946; color: white; border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-size: 18px; font-weight: bold; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.3); transition: all 0.2s;">
+                        ×
+                    </button>
+                @endif
+                <input type="hidden" name="delete_background" id="deleteBackgroundInput" value="0">
             </div>
-            @endif
-            <div class="upload-area" id="uploadArea">
+            
+            {{-- Upload area --}}
+            <div class="upload-area" id="uploadArea" style="{{ $profil && $profil->hero_image ? 'display: none;' : '' }}">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                     <rect x="3" y="3" width="18" height="18" rx="2"/>
                     <circle cx="8.5" cy="8.5" r="1.5"/>
@@ -211,9 +219,57 @@
     const toastError = document.getElementById('toastError');
     if (toastError) setTimeout(() => toastError.remove(), 3500);
 
+    // Preview image saat upload
     document.getElementById('heroImageInput').addEventListener('change', function () {
+        const file = this.files[0];
         const text = document.getElementById('uploadText');
-        text.textContent = this.files[0] ? 'Terpilih: ' + this.files[0].name : 'Klik atau drag foto ke sini';
+        const previewContainer = document.getElementById('previewContainer');
+        const uploadArea = document.getElementById('uploadArea');
+        const deleteBackgroundInput = document.getElementById('deleteBackgroundInput');
+        
+        if (file) {
+            text.textContent = 'Terpilih: ' + file.name;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Update atau buat preview
+                let previewImage = document.getElementById('previewImage');
+                if (!previewImage) {
+                    previewContainer.innerHTML = `
+                        <img id="previewImage" src="${e.target.result}" style="width:100%;max-height:200px;object-fit:cover;border-radius:8px;">
+                        <button type="button" onclick="deleteBackground()" style="position: absolute; top: 10px; right: 10px; background: #e63946; color: white; border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-size: 18px; font-weight: bold; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.3); transition: all 0.2s;">
+                            ×
+                        </button>
+                    `;
+                } else {
+                    previewImage.src = e.target.result;
+                }
+                
+                previewContainer.style.display = 'block';
+                uploadArea.style.display = 'none';
+                deleteBackgroundInput.value = '0';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            text.textContent = 'Klik atau drag foto ke sini';
+        }
     });
+
+    // Delete background
+    function deleteBackground() {
+        if (confirm('Yakin ingin menghapus background foto ini?')) {
+            const previewContainer = document.getElementById('previewContainer');
+            const uploadArea = document.getElementById('uploadArea');
+            const heroImageInput = document.getElementById('heroImageInput');
+            const deleteBackgroundInput = document.getElementById('deleteBackgroundInput');
+            const uploadText = document.getElementById('uploadText');
+            
+            previewContainer.style.display = 'none';
+            uploadArea.style.display = 'block';
+            heroImageInput.value = '';
+            uploadText.textContent = 'Klik atau drag foto ke sini';
+            deleteBackgroundInput.value = '1';
+        }
+    }
 </script>
 @endpush
