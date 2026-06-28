@@ -50,13 +50,21 @@ class TentangKamiController extends Controller
         // Hapus foto tertentu jika ada request hapus
         if ($request->has('hapus_foto')) {
             $idx = (int) $request->input('hapus_foto');
+
             if (isset($fotoGrid[$idx])) {
                 Storage::disk('public')->delete($fotoGrid[$idx]);
                 array_splice($fotoGrid, $idx, 1);
             }
+
             $data['foto_grid'] = json_encode(array_values($fotoGrid));
             $profil->fill($data);
             $profil->save();
+
+            \App\Http\Controllers\Admin\NotificationController::logActivity(
+                session('admin_username') ?? 'Admin',
+                'Hapus',
+                'Tentang Kami (foto #' . $idx . ')'
+            );
 
             return redirect()->route('admin.tentang')->with('success', 'Foto berhasil dihapus.');
         }
@@ -75,6 +83,12 @@ class TentangKamiController extends Controller
 
         $profil->fill($data);
         $profil->save();
+
+        \App\Http\Controllers\Admin\NotificationController::logActivity(
+            session('admin_username') ?? 'Admin',
+            'Edit',
+            'Tentang Kami'
+        );
 
         return redirect()->route('admin.tentang')->with('success', 'Tentang Kami berhasil diperbarui.');
     }

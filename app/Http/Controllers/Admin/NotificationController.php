@@ -45,6 +45,14 @@ class NotificationController extends Controller
         return response()->json(['success' => true]);
     }
 
+    // Delete all notifications
+    public function destroyAll()
+    {
+        AdminActivity::query()->delete();
+
+        return response()->json(['success' => true]);
+    }
+
     // Helper untuk mencatat aktivitas
     public static function logActivity($adminName, $aksi, $target = null)
     {
@@ -56,3 +64,4 @@ class NotificationController extends Controller
         ]);
     }
 }
+
