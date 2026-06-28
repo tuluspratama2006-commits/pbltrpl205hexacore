@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminActivity;
 use App\Models\Portofolio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -58,12 +59,10 @@ class PortofolioController extends Controller
 
             Portofolio::create($validatedData);
 
-            \App\Models\AdminActivity::create([
-                'admin_id' => session('admin_id'),
+            AdminActivity::create([
                 'admin_name' => session('admin_username') ?? 'Admin',
                 'aksi' => 'Tambah',
                 'target' => $judul,
-                'is_read' => false,
             ]);
 
             return redirect()->route('admin.portofolio')->with('success', 'Proyek portofolio berhasil ditambahkan!');
@@ -113,12 +112,10 @@ class PortofolioController extends Controller
 
             $portofolio->update($validatedData);
 
-            \App\Models\AdminActivity::create([
-                'admin_id' => session('admin_id'),
+            AdminActivity::create([
                 'admin_name' => session('admin_username') ?? 'Admin',
                 'aksi' => 'Edit',
                 'target' => $judulBaru,
-                'is_read' => false,
             ]);
 
             return redirect()->route('admin.portofolio')->with('success', 'Proyek portofolio berhasil diperbarui!');
@@ -164,12 +161,10 @@ class PortofolioController extends Controller
         // Hapus baris data dari database
         $portofolio->delete();
 
-        \App\Models\AdminActivity::create([
-            'admin_id' => session('admin_id'),
+        AdminActivity::create([
             'admin_name' => session('admin_username') ?? 'Admin',
             'aksi' => 'Hapus',
             'target' => $judul,
-            'is_read' => false,
         ]);
 
         return redirect()->route('admin.portofolio')->with('success', 'Proyek portofolio berhasil dihapus!');

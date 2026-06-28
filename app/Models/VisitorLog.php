@@ -11,4 +11,3 @@ class VisitorLog extends Model
         'path',
     ];
 }
-

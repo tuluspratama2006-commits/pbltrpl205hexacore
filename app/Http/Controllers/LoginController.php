@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -19,11 +20,9 @@ class LoginController extends Controller
         if ($admin && $admin->password === $password) {
             // Password plain text — cocok langsung
             Session::put('admin_logged_in', true);
-            Session::put('admin_id', $admin->id_admin);
             Session::put('admin_username', $admin->nama_admin);
 
-
-            \App\Models\AdminActivity::create([
+            AdminActivity::create([
                 'admin_name' => $admin->nama_admin,
                 'aksi' => 'Login',
                 'target' => 'Admin',
@@ -50,7 +49,7 @@ class LoginController extends Controller
         Session::forget('admin_logged_in');
         Session::forget('admin_username');
 
-        \App\Models\AdminActivity::create([
+        AdminActivity::create([
             'admin_name' => $adminName ?? 'Admin',
             'aksi' => 'Logout',
             'target' => 'Admin',

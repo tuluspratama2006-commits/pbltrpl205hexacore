@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminActivity;
 use App\Models\Layanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -53,12 +54,10 @@ class LayananController extends Controller
 
         Layanan::create($data);
 
-        \App\Models\AdminActivity::create([
-            'admin_id' => session('admin_id'),
+        AdminActivity::create([
             'admin_name' => session('admin_username') ?? 'Admin',
             'aksi' => 'Tambah',
             'target' => $judul,
-            'is_read' => false,
         ]);
 
         return redirect()->route('admin.layanan')->with('success', 'Layanan berhasil ditambahkan.');
@@ -66,7 +65,6 @@ class LayananController extends Controller
     }
 
     public function update(Request $request, int $id)
-
     {
         $layanan = Layanan::findOrFail($id);
 
@@ -100,12 +98,10 @@ class LayananController extends Controller
 
         $layanan->update($data);
 
-        \App\Models\AdminActivity::create([
-            'admin_id' => session('admin_id'),
+        AdminActivity::create([
             'admin_name' => session('admin_username') ?? 'Admin',
             'aksi' => 'Edit',
             'target' => $judulBaru,
-            'is_read' => false,
         ]);
 
         return redirect()->route('admin.layanan')->with('success', 'Layanan berhasil diperbarui.');
@@ -113,7 +109,6 @@ class LayananController extends Controller
     }
 
     public function destroy(int $id)
-
     {
         $layanan = Layanan::findOrFail($id);
 
@@ -125,12 +120,10 @@ class LayananController extends Controller
 
         $layanan->delete();
 
-        \App\Models\AdminActivity::create([
-            'admin_id' => session('admin_id'),
+        AdminActivity::create([
             'admin_name' => session('admin_username') ?? 'Admin',
             'aksi' => 'Hapus',
             'target' => $judul,
-            'is_read' => false,
         ]);
 
         return redirect()->route('admin.layanan')->with('success', 'Layanan berhasil dihapus.');

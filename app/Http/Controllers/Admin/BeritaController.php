@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminActivity;
 use App\Models\Berita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -63,12 +64,10 @@ class BeritaController extends Controller
             'id_admin' => Auth::id(),
         ]);
 
-        \App\Models\AdminActivity::create([
-            'admin_id' => Session('admin_id'),
+        AdminActivity::create([
             'admin_name' => Session('admin_username') ?? 'Admin',
             'aksi' => 'Tambah',
             'target' => $judul,
-            'is_read' => false,
         ]);
 
         return redirect()->route('admin.berita')->with('success', 'Berita baru berhasil diterbitkan!');
@@ -113,12 +112,10 @@ class BeritaController extends Controller
             'status' => $request->status,
         ]);
 
-        \App\Models\AdminActivity::create([
-            'admin_id' => Session('admin_id'),
+        AdminActivity::create([
             'admin_name' => Session('admin_username') ?? 'Admin',
             'aksi' => 'Edit',
             'target' => $judulBaru,
-            'is_read' => false,
         ]);
 
         return redirect()->route('admin.berita')->with('success', 'Data berita berhasil diperbarui!');
@@ -142,12 +139,10 @@ class BeritaController extends Controller
         // 2. Hapus baris data dari tabel phpMyAdmin
         $berita->delete();
 
-        \App\Models\AdminActivity::create([
-            'admin_id' => Session('admin_id'),
+        AdminActivity::create([
             'admin_name' => Session('admin_username') ?? 'Admin',
             'aksi' => 'Hapus',
             'target' => $judul,
-            'is_read' => false,
         ]);
 
         return redirect()->route('admin.berita')->with('success', 'Berita berhasil dihapus permanen!');

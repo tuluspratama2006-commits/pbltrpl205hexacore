@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminActivity;
 use App\Models\ProfilPerusahaan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +27,6 @@ class PengaturanController extends Controller
             'tagline' => 'nullable|string',
             'deskripsi' => 'nullable|string',
             'email' => 'nullable|email|max:100',
-
             'telepon' => 'nullable|string|max:30',
             'telepon_2' => 'nullable|string|max:30',
             'alamat' => 'nullable|string',
@@ -39,27 +39,20 @@ class PengaturanController extends Controller
             'maps_embed_2' => 'nullable|string',
         ]);
 
-
         // Update profil perusahaan
         $data = $request->only([
-            'nama_perusahaan', 'tagline', 'deskripsi',
-            'email', 'telepon', 'telepon_2',
+            'nama_perusahaan', 'tagline', 'deskripsi', 'email', 'telepon', 'telepon_2',
             'alamat', 'alamat_2', 'whatsapp', 'instagram',
             'facebook', 'linkedin', 'maps_embed', 'maps_embed_2',
         ]);
 
-        // Landing Page hero (khusus dashboard)
-        if ($request->hasFile('dashboard_hero_image')) {
+        if ($request->hasFile('hero_image')) {
             $profil = ProfilPerusahaan::first();
-            if ($profil && $profil->dashboard_hero_image) {
-                Storage::disk('public')->delete($profil->dashboard_hero_image);
+            if ($profil && $profil->hero_image) {
+                Storage::disk('public')->delete($profil->hero_image);
             }
-            $data['dashboard_hero_image'] = $request->file('dashboard_hero_image')->store('dashboard-hero', 'public');
+            $data['hero_image'] = $request->file('hero_image')->store('hero', 'public');
         }
-
-        // NOTE:
-        // Upload hero untuk Tentang Kami ditangani oleh TentangKamiController dan disimpan ke `tentang_hero_image`.
-        // Jadi form di PengaturanController hanya menangani dashboard_hero_image untuk menghindari bentrok.
 
         ProfilPerusahaan::updateOrCreate(['id_profil' => 1], $data);
 
@@ -90,18 +83,13 @@ class PengaturanController extends Controller
 
         DB::table('admin')->where('id_admin', $user->id_admin)->update($updateData);
 
-        \App\Models\AdminActivity::create([
-            'admin_id' => session('admin_id') ?? DB::table('admin')->where('nama_admin', session('admin_username'))->value('id_admin'),
+        AdminActivity::create([
             'admin_name' => session('admin_username') ?? 'Admin',
-
             'aksi' => 'Edit',
             'target' => 'Pengaturan',
-            'is_read' => false,
         ]);
 
-
-
-        return redirect()->back()->with('success', 'Landing page berhasil diperbarui!');
+        return redirect()->back()->with('success', 'Pengaturan berhasil diperbarui!');
 
     }
 }

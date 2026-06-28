@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminActivity;
 use App\Models\Berita;
 use App\Models\Portofolio;
-use App\Models\Testimoni;
 use App\Models\ProfilPerusahaan;
+use App\Models\Testimoni;
 use App\Models\VisitorLog;
-use App\Models\AdminActivity;
 use Illuminate\Support\Facades\DB;
-
 
 class DashboardController extends Controller
 {
@@ -58,11 +57,9 @@ class DashboardController extends Controller
             ];
         }
 
-
         $profil = ProfilPerusahaan::first();
         $totalPost = Berita::count();
 
         return view('admin.dashboard', compact('stats', 'aktivitas', 'grafik', 'profil', 'totalPost'));
     }
 }
-

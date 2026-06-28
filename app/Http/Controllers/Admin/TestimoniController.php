@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminActivity;
 use App\Models\Testimoni;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -39,12 +40,10 @@ class TestimoniController extends Controller
 
             Testimoni::create($validated);
 
-            \App\Models\AdminActivity::create([
-                'admin_id' => session('admin_id'),
+            AdminActivity::create([
                 'admin_name' => session('admin_username') ?? 'Admin',
                 'aksi' => 'Tambah',
                 'target' => $nama,
-                'is_read' => false,
             ]);
 
             return redirect()->route('admin.testimoni')->with('success', 'Testimoni berhasil disimpan!');
@@ -55,7 +54,6 @@ class TestimoniController extends Controller
     }
 
     public function update(Request $request, int $id)
-
     {
         $testimoni = Testimoni::findOrFail($id);
 
@@ -81,12 +79,10 @@ class TestimoniController extends Controller
 
             $testimoni->update($validated);
 
-            \App\Models\AdminActivity::create([
-                'admin_id' => session('admin_id'),
+            AdminActivity::create([
                 'admin_name' => session('admin_username') ?? 'Admin',
                 'aksi' => 'Edit',
                 'target' => $namaBaru,
-                'is_read' => false,
             ]);
 
             return redirect()->route('admin.testimoni')->with('success', 'Testimoni berhasil diupdate!');
@@ -97,7 +93,6 @@ class TestimoniController extends Controller
     }
 
     public function destroy(int $id)
-
     {
         try {
             $testimoni = Testimoni::findOrFail($id);
@@ -110,7 +105,7 @@ class TestimoniController extends Controller
 
             $testimoni->delete();
 
-            \App\Models\AdminActivity::create([
+            AdminActivity::create([
                 'admin_name' => session('admin_username') ?? 'Admin',
                 'aksi' => 'Hapus',
                 'target' => $nama,

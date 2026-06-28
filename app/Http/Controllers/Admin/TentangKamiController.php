@@ -12,20 +12,21 @@ class TentangKamiController extends Controller
     public function index()
     {
         $profil = ProfilPerusahaan::first();
+
         return view('admin.tentang-kami', compact('profil'));
     }
 
     public function update(Request $request)
     {
         $request->validate([
-            'nama_perusahaan'   => 'nullable|string|max:150',
-            'tagline'           => 'nullable|string|max:255',
-            'deskripsi'         => 'nullable|string',
-            'visi'              => 'nullable|string',
-            'misi'              => 'nullable|string',
+            'nama_perusahaan' => 'nullable|string|max:150',
+            'tagline' => 'nullable|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'visi' => 'nullable|string',
+            'misi' => 'nullable|string',
             'nomor_sertifikasi' => 'nullable|string|max:255',
-            'hero_image'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
-            'foto_baru.*'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'hero_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
+            'foto_baru.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         $profil = ProfilPerusahaan::firstOrNew(['id_profil' => 1]);
@@ -37,7 +38,9 @@ class TentangKamiController extends Controller
 
         // Upload hero image
         if ($request->hasFile('hero_image')) {
-            if ($profil->hero_image) Storage::disk('public')->delete($profil->hero_image);
+            if ($profil->hero_image) {
+                Storage::disk('public')->delete($profil->hero_image);
+            }
             $data['hero_image'] = $request->file('hero_image')->store('tentang', 'public');
         }
 
@@ -54,6 +57,7 @@ class TentangKamiController extends Controller
             $data['foto_grid'] = json_encode(array_values($fotoGrid));
             $profil->fill($data);
             $profil->save();
+
             return redirect()->route('admin.tentang')->with('success', 'Foto berhasil dihapus.');
         }
 

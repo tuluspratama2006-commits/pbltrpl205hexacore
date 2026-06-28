@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Testimoni;
 use App\Models\Berita;
 use App\Models\Portofolio;
-use Illuminate\Support\Facades\DB;
+use App\Models\ProfilPerusahaan;
+use App\Models\Testimoni;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -22,13 +23,7 @@ class DashboardController extends Controller
         $totalTestimoni = Testimoni::count();
 
         // Ambil data profil perusahaan
-        $profil = \App\Models\ProfilPerusahaan::first();
-
-        // Pastikan hero image untuk dashboard membaca kolom yang benar
-        if ($profil && empty($profil->hero_image) && !empty($profil->dashboard_hero_image)) {
-            $profil->hero_image = $profil->dashboard_hero_image;
-        }
-
+        $profil = ProfilPerusahaan::first();
 
         // Data grafik pengunjung - 12 bulan terakhir dari visitor_logs
         $labels = [];
@@ -39,18 +34,18 @@ class DashboardController extends Controller
             $labels[] = $bulan->format('M');
 
             $jumlah = DB::table('visitor_logs')
-                       ->whereYear('created_at', $bulan->year)
-                       ->whereMonth('created_at', $bulan->month)
-                       ->count();
+                ->whereYear('created_at', $bulan->year)
+                ->whereMonth('created_at', $bulan->month)
+                ->count();
 
             $grafikData[] = $jumlah;
         }
 
         // Aktivitas terbaru - dari tabel admin_activities
         $aktivitasTerbaru = DB::table('admin_activities')
-                             ->orderBy('created_at', 'desc')
-                             ->limit(5)
-                             ->get();
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
 
         return view('admin.dashboard', compact(
             'totalPengunjung',
