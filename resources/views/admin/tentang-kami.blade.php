@@ -35,7 +35,7 @@
             <input type="text" name="nama_perusahaan" class="setting-input"
                    value="{{ old('nama_perusahaan', $profil->nama_perusahaan ?? '') }}">
         </div>
-      
+
         <div class="setting-field">
             <label class="setting-label">Deskripsi :</label>
             <textarea name="deskripsi" class="setting-input setting-textarea" rows="4"

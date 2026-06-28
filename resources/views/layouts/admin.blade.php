@@ -18,6 +18,7 @@
         @include('partials.admin-topbar')
 
         <div class="content">
+            @include('partials.admin-toast')
             @yield('content')
         </div>
 

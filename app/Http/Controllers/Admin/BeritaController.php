@@ -64,9 +64,11 @@ class BeritaController extends Controller
         ]);
 
         \App\Models\AdminActivity::create([
+            'admin_id' => Session('admin_id'),
             'admin_name' => Session('admin_username') ?? 'Admin',
             'aksi' => 'Tambah',
             'target' => $judul,
+            'is_read' => false,
         ]);
 
         return redirect()->route('admin.berita')->with('success', 'Berita baru berhasil diterbitkan!');
@@ -112,9 +114,11 @@ class BeritaController extends Controller
         ]);
 
         \App\Models\AdminActivity::create([
+            'admin_id' => Session('admin_id'),
             'admin_name' => Session('admin_username') ?? 'Admin',
             'aksi' => 'Edit',
             'target' => $judulBaru,
+            'is_read' => false,
         ]);
 
         return redirect()->route('admin.berita')->with('success', 'Data berita berhasil diperbarui!');
@@ -139,9 +143,11 @@ class BeritaController extends Controller
         $berita->delete();
 
         \App\Models\AdminActivity::create([
+            'admin_id' => Session('admin_id'),
             'admin_name' => Session('admin_username') ?? 'Admin',
             'aksi' => 'Hapus',
             'target' => $judul,
+            'is_read' => false,
         ]);
 
         return redirect()->route('admin.berita')->with('success', 'Berita berhasil dihapus permanen!');

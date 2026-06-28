@@ -35,7 +35,7 @@
 
     <!-- HERO -->
     <section id="home">
-        <img src="{{ $profil && $profil->hero_image ? asset('storage/' . $profil->hero_image) : asset('images/aspal.jpg') }}" class="hero-img" alt="Hero BAT">
+        <img src="{{ $profil && $profil->dashboard_hero_image ? asset('storage/' . $profil->dashboard_hero_image) : ($profil && $profil->hero_image ? asset('storage/' . $profil->hero_image) : asset('images/aspal.jpg')) }}" class="hero-img" alt="Hero BAT">
         <div class="overlay"></div>
         <div class="hero-content">
             <h1>{{ $profil->nama_perusahaan ?? 'PT. Berkah Alam Tabantang' }}</h1>

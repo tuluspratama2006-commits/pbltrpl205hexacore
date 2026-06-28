@@ -19,7 +19,9 @@ class LoginController extends Controller
         if ($admin && $admin->password === $password) {
             // Password plain text — cocok langsung
             Session::put('admin_logged_in', true);
+            Session::put('admin_id', $admin->id_admin);
             Session::put('admin_username', $admin->nama_admin);
+
 
             \App\Models\AdminActivity::create([
                 'admin_name' => $admin->nama_admin,

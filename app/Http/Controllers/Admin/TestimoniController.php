@@ -40,9 +40,11 @@ class TestimoniController extends Controller
             Testimoni::create($validated);
 
             \App\Models\AdminActivity::create([
+                'admin_id' => session('admin_id'),
                 'admin_name' => session('admin_username') ?? 'Admin',
                 'aksi' => 'Tambah',
                 'target' => $nama,
+                'is_read' => false,
             ]);
 
             return redirect()->route('admin.testimoni')->with('success', 'Testimoni berhasil disimpan!');
@@ -80,9 +82,11 @@ class TestimoniController extends Controller
             $testimoni->update($validated);
 
             \App\Models\AdminActivity::create([
+                'admin_id' => session('admin_id'),
                 'admin_name' => session('admin_username') ?? 'Admin',
                 'aksi' => 'Edit',
                 'target' => $namaBaru,
+                'is_read' => false,
             ]);
 
             return redirect()->route('admin.testimoni')->with('success', 'Testimoni berhasil diupdate!');

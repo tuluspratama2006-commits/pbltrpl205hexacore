@@ -15,7 +15,7 @@ class DashboardController extends Controller
     {
         // Total pengunjung - dari tabel visitor_logs
         $totalPengunjung = DB::table('visitor_logs')->count();
-        
+
         // Total dari database lainnya
         $totalProjek = Portofolio::count();
         $totalBerita = Berita::count();
@@ -24,19 +24,25 @@ class DashboardController extends Controller
         // Ambil data profil perusahaan
         $profil = \App\Models\ProfilPerusahaan::first();
 
+        // Pastikan hero image untuk dashboard membaca kolom yang benar
+        if ($profil && empty($profil->hero_image) && !empty($profil->dashboard_hero_image)) {
+            $profil->hero_image = $profil->dashboard_hero_image;
+        }
+
+
         // Data grafik pengunjung - 12 bulan terakhir dari visitor_logs
         $labels = [];
         $grafikData = [];
-        
+
         for ($i = 11; $i >= 0; $i--) {
             $bulan = Carbon::now()->subMonths($i);
             $labels[] = $bulan->format('M');
-            
+
             $jumlah = DB::table('visitor_logs')
                        ->whereYear('created_at', $bulan->year)
                        ->whereMonth('created_at', $bulan->month)
                        ->count();
-            
+
             $grafikData[] = $jumlah;
         }
 

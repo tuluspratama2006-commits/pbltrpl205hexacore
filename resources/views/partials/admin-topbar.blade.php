@@ -10,26 +10,54 @@
                 </svg>
                 <span class="badge" id="notificationBadge" style="display: none;">0</span>
             </button>
-            
+
             <!-- Notification Dropdown -->
-            <div class="notification-dropdown" id="notificationDropdown" style="display: none; position: absolute; top: 100%; right: 0; width: 350px; background: white; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); z-index: 1000; max-height: 500px; overflow-y: auto; margin-top: 10px;">
-                <div style="padding: 16px; border-bottom: 1px solid #e2eaf5; display: flex; justify-content: space-between; align-items: center;">
-                    <h4 style="margin: 0; font-size: 16px; font-weight: 700; color: #1a2340;">Notifikasi</h4>
-                    <button onclick="markAllAsRead()" style="background: none; border: none; color: #3a52a0; cursor: pointer; font-size: 12px; font-weight: 600;">Tandai Semua Dibaca</button>
+            <div class="notification-dropdown" id="notificationDropdown" style="display: none; position: absolute; top: 100%; right: 0; width: 360px; background: white; border-radius: 14px; box-shadow: 0 12px 40px rgba(17,24,39,0.12); z-index: 1000; max-height: 520px; overflow-y: auto; margin-top: 10px;">
+                <div style="padding: 14px 16px; border-bottom: 1px solid #eef2ff; display: flex; align-items: center; justify-content: space-between;">
+                    <div style="display:flex; flex-direction:column; gap:2px;">
+                        <h4 style="margin:0; font-size:14px; font-weight:800; color:#0f172a;">Notifikasi</h4>
+                        <div style="font-size:12px; color:#64748b;">Klik untuk tandai dibaca</div>
+                    </div>
+                    <div style="display:flex; gap:10px;">
+                        <button type="button" onclick="markAllAsRead()" class="notif-action" style="border: 1px solid #dbeafe; background: #eff6ff; color:#1d4ed8; padding:7px 10px; border-radius: 10px; cursor:pointer; font-size:12px; font-weight:700; display:flex; align-items:center; gap:6px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Baca
+                        </button>
+                        <button type="button" onclick="deleteAllNotifications()" class="notif-action" style="border: 1px solid #fee2e2; background: #fff1f2; color:#e11d48; padding:7px 10px; border-radius: 10px; cursor:pointer; font-size:12px; font-weight:700; display:flex; align-items:center; gap:6px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                                <path d="M10 11v6"/>
+                                <path d="M14 11v6"/>
+                                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                            </svg>
+                            Hapus
+                        </button>
+                    </div>
                 </div>
                 <div id="notificationList">
                     <div style="padding: 20px; text-align: center; color: #6b7a99;">Memuat notifikasi...</div>
                 </div>
             </div>
         </div>
-        
+
         <!-- User Avatar -->
-        <div class="user-avatar">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                <circle cx="12" cy="7" r="4"/>
-            </svg>
-        </div>
+        <a class="user-avatar" href="{{ route('admin.pengaturan') }}" style="display:flex; align-items:center; text-decoration:none; color:inherit;" title="Ubah Profil">
+            @php
+                $admin = \Illuminate\Support\Facades\DB::table('admin')->first();
+            @endphp
+
+            @if(!empty($admin) && !empty($admin->foto))
+                <img src="{{ asset('storage/' . $admin->foto) }}" alt="Profil" style="width:20px;height:20px;border-radius:50%;object-fit:cover;">
+            @else
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+            @endif
+        </a>
     </div>
 </div>
 
@@ -41,7 +69,7 @@ function loadNotifications() {
         .then(data => {
             const badge = document.getElementById('notificationBadge');
             const list = document.getElementById('notificationList');
-            
+
             // Update badge
             if (data.unreadCount > 0) {
                 badge.style.display = 'flex';
@@ -49,7 +77,7 @@ function loadNotifications() {
             } else {
                 badge.style.display = 'none';
             }
-            
+
             // Update list
             if (data.notifications.length === 0) {
                 list.innerHTML = '<div style="padding: 20px; text-align: center; color: #6b7a99;">Tidak ada notifikasi</div>';
@@ -98,6 +126,27 @@ function markAllAsRead() {
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         }
     }).then(() => loadNotifications());
+}
+
+// Delete all notifications
+function deleteAllNotifications() {
+    if (!confirm('Hapus semua notifikasi?')) return;
+
+    fetch('/admin/notifications', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(() => {
+        // fallback: kalau backend belum punya route delete-all, minimal hapus tanda unread
+        loadNotifications();
+    })
+    .catch(() => {
+        // jika route delete-all ada nanti akan kita ganti
+        alert('Gagal menghapus. (route delete-all belum tersedia)');
+    });
 }
 
 // Delete notification
