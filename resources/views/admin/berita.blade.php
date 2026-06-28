@@ -98,7 +98,6 @@
             <tr>
                 <th>Foto</th>
                 <th>Judul</th>
-                <th>Penulis</th>
                 <th>Tanggal Terbit</th>
                 <th>Status</th>
                 <th>Aksi</th>
@@ -121,7 +120,6 @@
                     @endif
                 </td>
                 <td><a href="#" class="judul-link">{{ $item->judul_berita }}</a></td>
-                <td>{{ $item->admin->name ?? '-' }}</td>
                 <td>{{ $item->tanggal_posting ? \Carbon\Carbon::parse($item->tanggal_posting)->format('d/m/y') : '-' }}</td>
                 <td>
                     <span class="badge-status {{ $item->status == 'publish' ? 'publish' : 'draft' }}">
@@ -180,7 +178,7 @@
 <div class="modal-overlay" id="modalTambahBerita" onclick="if(event.target===this) tutupModalTambahBerita()">
     <div class="modal-box">
         <div class="modal-header">
-            <h3 class="modal-title">TAMBAH BERITA</h3>
+            <h3 class="modal-title">BERITA</h3>
             <button class="modal-close" onclick="tutupModalTambahBerita()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
@@ -190,14 +188,10 @@
         <form action="{{ route('admin.berita.store') }}" method="POST" enctype="multipart/form-data" onsubmit="if(tambahEditor) tambahEditor.updateSourceElement();">
             @csrf
             <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px; max-height: calc(90vh - 120px);">
-                <div class="modal-field">
-                    <label>Judul <span style="color:red">*</span></label>
-                    <input type="text" name="judul_berita" class="modal-input" placeholder="Judul berita..." required>
-                </div>
                 <div class="modal-row">
                     <div class="modal-field">
-                        <label>Tanggal Terbit <span style="color:red">*</span></label>
-                        <input type="date" name="tanggal_posting" class="modal-input" required>
+                        <label>Judul <span style="color:red">*</span></label>
+                        <input type="text" name="judul_berita" class="modal-input" placeholder="Judul berita..." required>
                     </div>
                     <div class="modal-field">
                         <label>Foto <span style="color:red">*</span></label>
@@ -206,8 +200,8 @@
                 </div>
                 <div class="modal-row">
                     <div class="modal-field">
-                        <label>Penulis</label>
-                        <input type="text" class="modal-input" value="{{ Auth::user()->name ?? 'Admin' }}" readonly>
+                        <label>Tanggal Terbit <span style="color:red">*</span></label>
+                        <input type="date" name="tanggal_posting" class="modal-input" required>
                     </div>
                     <div class="modal-field">
                         <label>Status <span style="color:red">*</span></label>
