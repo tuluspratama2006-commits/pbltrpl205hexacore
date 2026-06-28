@@ -432,7 +432,7 @@
                  alt="WhatsApp Chat">
             <span class="badge-wa">1</span>
         </a>
-        <span class="wa-tooltip">💬 Chat via WhatsApp</span>
+        <span class="wa-tooltip">Chat via WhatsApp</span>
     </div>
 
     <script>
