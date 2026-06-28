@@ -21,75 +21,84 @@ class PengaturanController extends Controller
     }
 
     public function update(Request $request)
-    {
-        $request->validate([
-            'nama_perusahaan' => 'nullable|string|max:150',
-            'tagline' => 'nullable|string',
-            'deskripsi' => 'nullable|string',
-            'email' => 'nullable|email|max:100',
-            'telepon' => 'nullable|string|max:30',
-            'telepon_2' => 'nullable|string|max:30',
-            'alamat' => 'nullable|string',
-            'alamat_2' => 'nullable|string',
-            'whatsapp' => 'nullable|string|max:30',
-            'instagram' => 'nullable|string|max:255',
-            'facebook' => 'nullable|string|max:255',
-            'linkedin' => 'nullable|string|max:255',
-            'maps_embed' => 'nullable|string',
-            'maps_embed_2' => 'nullable|string',
-        ]);
+{
+    $request->validate([
+        'nama_perusahaan' => 'nullable|string|max:150',
+        'tagline' => 'nullable|string',
+        'deskripsi' => 'nullable|string',
+        'email' => 'nullable|email|max:100',
+        'telepon' => 'nullable|string|max:30',
+        'telepon_2' => 'nullable|string|max:30',
+        'alamat' => 'nullable|string',
+        'alamat_2' => 'nullable|string',
+        'whatsapp' => 'nullable|string|max:30',
+        'instagram' => 'nullable|string|max:255',
+        'facebook' => 'nullable|string|max:255',
+        'linkedin' => 'nullable|string|max:255',
+        'maps_embed' => 'nullable|string',
+        'maps_embed_2' => 'nullable|string',
+        'hero_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+        'delete_background' => 'nullable|boolean',
+    ]);
 
-        // Update profil perusahaan
-        $data = $request->only([
-            'nama_perusahaan', 'tagline', 'deskripsi', 'email', 'telepon', 'telepon_2',
-            'alamat', 'alamat_2', 'whatsapp', 'instagram',
-            'facebook', 'linkedin', 'maps_embed', 'maps_embed_2',
-        ]);
+    $profil = ProfilPerusahaan::first();
 
-        if ($request->hasFile('hero_image')) {
-            $profil = ProfilPerusahaan::first();
-            if ($profil && $profil->hero_image) {
-                Storage::disk('public')->delete($profil->hero_image);
-            }
-            $data['hero_image'] = $request->file('hero_image')->store('hero', 'public');
+    $data = $request->only([
+        'nama_perusahaan', 'tagline', 'deskripsi', 'email', 'telepon', 'telepon_2',
+        'alamat', 'alamat_2', 'whatsapp', 'instagram',
+        'facebook', 'linkedin', 'maps_embed', 'maps_embed_2',
+    ]);
+
+    // Handle delete background
+    if ($request->delete_background == '1') {
+        if ($profil && $profil->hero_image) {
+            Storage::disk('public')->delete($profil->hero_image);
         }
-
-        ProfilPerusahaan::updateOrCreate(['id_profil' => 1], $data);
-
-        // Update akun admin
-        $user = DB::table('admin')->first();
-        $updateData = [
-            'nama_admin' => $request->akun_nama ?? $user->nama_admin,
-            'email' => $request->akun_email ?? $user->email,
-            'updated_at' => now(),
-        ];
-
-        // Upload foto
-        if ($request->hasFile('foto')) {
-            // Hapus foto lama kalau ada
-            if ($user->foto) {
-                Storage::disk('public')->delete($user->foto);
-            }
-            $updateData['foto'] = $request->file('foto')->store('admin', 'public');
-        }
-
-        if ($request->filled('password_baru')) {
-            $request->validate([
-                'password_baru' => 'min:6',
-                'konfirmasi_password' => 'same:password_baru',
-            ]);
-            $updateData['password'] = Hash::make($request->password_baru);
-        }
-
-        DB::table('admin')->where('id_admin', $user->id_admin)->update($updateData);
-
-        AdminActivity::create([
-            'admin_name' => session('admin_username') ?? 'Admin',
-            'aksi' => 'Edit',
-            'target' => 'Pengaturan',
-        ]);
-
-        return redirect()->back()->with('success', 'Pengaturan berhasil diperbarui!');
-
+        $data['hero_image'] = null;
     }
+    // Handle upload background baru
+    elseif ($request->hasFile('hero_image')) {
+        if ($profil && $profil->hero_image) {
+            Storage::disk('public')->delete($profil->hero_image);
+        }
+        $data['hero_image'] = $request->file('hero_image')->store('landing', 'public');
+    }
+    // TIDAK ada upload DAN TIDAK ada delete → pertahankan nilai lama
+    // (tidak perlu set hero_image)
+
+    ProfilPerusahaan::updateOrCreate(['id_profil' => 1], $data);
+
+    // Update akun admin
+    $user = DB::table('admin')->first();
+    $updateData = [
+        'nama_admin' => $request->akun_nama ?? $user->nama_admin,
+        'email' => $request->akun_email ?? $user->email,
+        'updated_at' => now(),
+    ];
+
+    if ($request->hasFile('foto')) {
+        if ($user->foto) {
+            Storage::disk('public')->delete($user->foto);
+        }
+        $updateData['foto'] = $request->file('foto')->store('admin', 'public');
+    }
+
+    if ($request->filled('password_baru')) {
+        $request->validate([
+            'password_baru' => 'min:6',
+            'konfirmasi_password' => 'same:password_baru',
+        ]);
+        $updateData['password'] = Hash::make($request->password_baru);
+    }
+
+    DB::table('admin')->where('id_admin', $user->id_admin)->update($updateData);
+
+    AdminActivity::create([
+        'admin_name' => session('admin_username') ?? 'Admin',
+        'aksi' => 'Edit',
+        'target' => 'Pengaturan',
+    ]);
+
+    return redirect()->back()->with('success', 'Pengaturan berhasil diperbarui!');
+}
 }

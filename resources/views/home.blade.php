@@ -33,16 +33,33 @@
         </div>
     </nav>
 
-    <!-- HERO -->
-    <section id="home">
-        <img src="{{ $profil && $profil->dashboard_hero_image ? asset('storage/' . $profil->dashboard_hero_image) : ($profil && $profil->hero_image ? asset('storage/' . $profil->hero_image) : asset('images/aspal.jpg')) }}" class="hero-img" alt="Hero BAT">
-        <div class="overlay"></div>
-        <div class="hero-content">
-            <h1>{{ $profil->nama_perusahaan ?? 'PT. Berkah Alam Tabantang' }}</h1>
-            <div class="tagline">{{ $profil->tagline ?? 'Solusi Terpercaya untuk Konstruksi & Infrastruktur di Batam' }}</div>
-            <div class="description">{{ $profil->deskripsi ?? 'Kami melayani pembangunan gedung, jalan raya, jembatan, hingga prasarana sumber daya air dengan mengutamakan integritas dan kepuasan pelanggan. Membangun dengan kualitas, beroperasi dengan keamanan.' }}</div>
-        </div>
-    </section>
+    @php
+    // Tentukan URL background image dengan prioritas:
+    // 1. dashboard_hero_image (jika ada)
+    // 2. hero_image (dari landing page settings)
+    // 3. default image (aspal.jpg)
+    $heroImageUrl = asset('');
+    
+    if ($profil) {
+        if (!empty($profil->dashboard_hero_image)) {
+            $heroImageUrl = asset('storage/' . $profil->dashboard_hero_image);
+        } elseif (!empty($profil->hero_image)) {
+            $heroImageUrl = asset('storage/' . $profil->hero_image);
+        }
+    }
+@endphp
+
+<!-- HERO -->
+<section id="home">
+    <img src="{{ $heroImageUrl }}" class="hero-img" alt="Hero BAT" onerror="this.src='{{ asset('') }}'">
+    <div class="overlay"></div>
+    <div class="hero-content">
+        <h1>{{ $profil->nama_perusahaan ?? 'PT. Berkah Alam Tabantang' }}</h1>
+        <div class="tagline">{{ $profil->tagline ?? 'Solusi Terpercaya untuk Konstruksi & Infrastruktur di Batam' }}</div>
+        <div class="description">{{ $profil->deskripsi ?? 'Kami melayani pembangunan gedung, jalan raya, jembatan, hingga prasarana sumber daya air dengan mengutamakan integritas dan kepuasan pelanggan. Membangun dengan kualitas, beroperasi dengan keamanan.' }}</div>
+    </div>
+    </div>
+</section>
 
     <!-- TENTANG KAMI -->
     <section id="tentang-kami">
