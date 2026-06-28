@@ -3,7 +3,6 @@
 use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LayananController;
-use App\Http\Controllers\Admin\ManualController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\PortofolioController;
@@ -73,7 +72,4 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     // Tentang Kami
     Route::get('/tentang', [TentangKamiController::class, 'index'])->name('tentang');
     Route::put('/tentang', [TentangKamiController::class, 'update'])->name('tentang.update');
-
-    // Manual Book
-    Route::get('/manual', ManualController::class)->name('manual');
 });
