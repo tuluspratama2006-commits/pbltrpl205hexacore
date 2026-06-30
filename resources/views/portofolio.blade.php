@@ -53,7 +53,7 @@
             </div>
             <div class="about-content">
                 <div class="about-left">
-                    <img class="about-logo-bg" src="{{ $profil && $profil->hero_image ? asset('storage/' . $profil->hero_image) : asset('images/logo_pt_bat2.jpg') }}" alt="watermark">
+                    <img class="about-logo-bg" src="{{ asset('images/logo_pt_bat2.jpg') }}" alt="watermark">
                     <div class="about-left-inner">
                         <h2>{{ $profil->nama_perusahaan ?? 'PT Berkah Alam Tabantang' }}</h2>
                         <p>{{ $profil->deskripsi ?? 'adalah perusahaan konstruksi terkemuka yang berbasis di Kota Batam.' }}</p>
@@ -83,7 +83,13 @@
                                     </svg>
                                     Misi
                                 </div>
-                                <p>{{ $profil->misi }}</p>
+                                <ul class="misi-list">
+                                    @foreach(explode("\n", $profil->misi) as $item)
+                                        @if(trim($item))
+                                            <li>{{ trim($item) }}</li>
+                                        @endif
+                                    @endforeach
+                                </ul>
                             </div>
                             @endif
                         </div>

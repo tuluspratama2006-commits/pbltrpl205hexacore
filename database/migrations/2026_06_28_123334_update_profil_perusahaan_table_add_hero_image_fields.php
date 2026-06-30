@@ -13,20 +13,20 @@ return new class extends Migration
     {
         Schema::table('profil_perusahaan', function (Blueprint $table) {
             // Pastikan kolom hero_image ada
-            if (!Schema::hasColumn('profil_perusahaan', 'hero_image')) {
+            if (! Schema::hasColumn('profil_perusahaan', 'hero_image')) {
                 $table->string('hero_image', 255)->nullable()->after('deskripsi');
             }
-            
+
             // Tambah kolom untuk foto-foto tambahan jika perlu
-            if (!Schema::hasColumn('profil_perusahaan', 'hero_image_2')) {
+            if (! Schema::hasColumn('profil_perusahaan', 'hero_image_2')) {
                 $table->string('hero_image_2', 255)->nullable()->after('hero_image');
             }
-            
-            if (!Schema::hasColumn('profil_perusahaan', 'hero_title')) {
+
+            if (! Schema::hasColumn('profil_perusahaan', 'hero_title')) {
                 $table->string('hero_title', 255)->nullable()->after('hero_image_2');
             }
-            
-            if (!Schema::hasColumn('profil_perusahaan', 'hero_subtitle')) {
+
+            if (! Schema::hasColumn('profil_perusahaan', 'hero_subtitle')) {
                 $table->string('hero_subtitle', 255)->nullable()->after('hero_title');
             }
         });

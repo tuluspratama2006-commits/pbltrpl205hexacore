@@ -60,10 +60,10 @@ class TentangKamiController extends Controller
             $profil->fill($data);
             $profil->save();
 
-            \App\Http\Controllers\Admin\NotificationController::logActivity(
+            NotificationController::logActivity(
                 session('admin_username') ?? 'Admin',
                 'Hapus',
-                'Tentang Kami (foto #' . $idx . ')'
+                'Tentang Kami (foto #'.$idx.')'
             );
 
             return redirect()->route('admin.tentang')->with('success', 'Foto berhasil dihapus.');
@@ -84,7 +84,7 @@ class TentangKamiController extends Controller
         $profil->fill($data);
         $profil->save();
 
-        \App\Http\Controllers\Admin\NotificationController::logActivity(
+        NotificationController::logActivity(
             session('admin_username') ?? 'Admin',
             'Edit',
             'Tentang Kami'

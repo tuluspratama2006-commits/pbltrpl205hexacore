@@ -34,18 +34,12 @@
     </nav>
 
     @php
-    // Tentukan URL background image dengan prioritas:
-    // 1. dashboard_hero_image (jika ada)
-    // 2. hero_image (dari landing page settings)
-    // 3. default image (aspal.jpg)
     $heroImageUrl = asset('');
-    
-    if ($profil) {
-        if (!empty($profil->dashboard_hero_image)) {
-            $heroImageUrl = asset('storage/' . $profil->dashboard_hero_image);
-        } elseif (!empty($profil->hero_image)) {
-            $heroImageUrl = asset('storage/' . $profil->hero_image);
-        }
+
+    if ($profil && !empty($profil->hero_image)) {
+        $heroImageUrl = asset('storage/' . $profil->hero_image);
+    } elseif ($profil && !empty($profil->dashboard_hero_image)) {
+        $heroImageUrl = asset('storage/' . $profil->dashboard_hero_image);
     }
 @endphp
 
@@ -70,7 +64,7 @@
             </div>
             <div class="about-content">
                 <div class="about-left">
-                    <img class="about-logo-bg" src="{{ $profil && $profil->hero_image ? asset('storage/' . $profil->hero_image) : asset('images/logo_pt_bat2.jpg') }}" alt="watermark">
+                    <img class="about-logo-bg" src="{{ asset('images/logo_pt_bat2.jpg') }}" alt="watermark">
                     <div class="about-left-inner">
                         <h2>{{ $profil->nama_perusahaan ?? 'PT Berkah Alam Tabantang' }}</h2>
                         <p>{{ $profil->deskripsi ?? 'adalah perusahaan konstruksi terkemuka yang berbasis di Kota Batam.' }}</p>
@@ -100,7 +94,13 @@
                                     </svg>
                                     Misi
                                 </div>
-                                <p>{{ $profil->misi }}</p>
+                                <ul class="misi-list">
+                                    @foreach(explode("\n", $profil->misi) as $item)
+                                        @if(trim($item))
+                                            <li>{{ trim($item) }}</li>
+                                        @endif
+                                    @endforeach
+                                </ul>
                             </div>
                             @endif
                         </div>

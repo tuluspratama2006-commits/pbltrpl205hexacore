@@ -788,6 +788,19 @@ footer {
     margin: 0;
     line-height: 1.6;
 }
+
+.misi-list {
+    margin: 4px 0 0 0;
+    padding: 0 0 0 18px;
+    list-style: disc;
+}
+
+.misi-list li {
+    font-size: 13px;
+    color: #4a5778;
+    line-height: 1.8;
+    margin-bottom: 2px;
+}
 /* ========== WHATSAPP CHAT BUTTON - DIPERKECIL ========== */
 .whatsapp-button {
     position: fixed;

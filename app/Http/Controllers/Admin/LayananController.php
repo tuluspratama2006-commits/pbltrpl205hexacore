@@ -37,9 +37,16 @@ class LayananController extends Controller
             'status' => 'required|in:publish,draft',
         ]);
 
+        $slug = Str::slug($request->judul_layanan);
+        $baseSlug = $slug;
+        $counter = 1;
+        while (Layanan::where('slug', $slug)->exists()) {
+            $slug = $baseSlug.'-'.$counter++;
+        }
+
         $data = [
             'judul_layanan' => $request->judul_layanan,
-            'slug' => Str::slug($request->judul_layanan),
+            'slug' => $slug,
             'deskripsi' => preg_replace(['/&nbsp;(?=\s*<)/', '/(?:\s*<(\w+)>\s*<\/\1>\s*)+$/u'], ['', ''], $request->deskripsi),
             'icon' => $request->icon,
             'urutan' => $request->urutan ?? 0,
@@ -77,9 +84,16 @@ class LayananController extends Controller
             'status' => 'required|in:publish,draft',
         ]);
 
+        $slug = Str::slug($request->judul_layanan);
+        $baseSlug = $slug;
+        $counter = 1;
+        while (Layanan::where('slug', $slug)->where('id_layanan', '!=', $id)->exists()) {
+            $slug = $baseSlug.'-'.$counter++;
+        }
+
         $data = [
             'judul_layanan' => $request->judul_layanan,
-            'slug' => Str::slug($request->judul_layanan),
+            'slug' => $slug,
             'deskripsi' => preg_replace(['/&nbsp;(?=\s*<)/', '/(?:\s*<(\w+)>\s*<\/\1>\s*)+$/u'], ['', ''], $request->deskripsi),
             'icon' => $request->icon,
             'urutan' => $request->urutan ?? $layanan->urutan,
