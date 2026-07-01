@@ -93,11 +93,21 @@ class PengaturanController extends Controller
 
         DB::table('admin')->where('id_admin', $user->id_admin)->update($updateData);
 
-        AdminActivity::create([
-            'admin_name' => session('admin_username') ?? 'Admin',
-            'aksi' => 'Edit',
-            'target' => 'Pengaturan',
-        ]);
+        // Catat aktivitas notifikasi (lebih spesifik untuk penghapusan background)
+        if ($request->delete_background == '1') {
+            AdminActivity::create([
+                'admin_name' => session('admin_username') ?? 'Admin',
+                'aksi' => 'Hapus Background',
+                'target' => 'Landing Page',
+            ]);
+        } else {
+            AdminActivity::create([
+                'admin_name' => session('admin_username') ?? 'Admin',
+                'aksi' => 'Edit',
+                'target' => 'Pengaturan',
+            ]);
+        }
+
 
         return redirect()->back()->with('success', 'Pengaturan berhasil diperbarui!');
     }
