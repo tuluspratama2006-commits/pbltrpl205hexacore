@@ -40,6 +40,20 @@
         </div>
     </div>
     <div class="stat-card">
+    <div class="stat-info">
+        <span class="stat-label">Total Layanan</span>
+        <span class="stat-value">{{ $totalLayanan ?? 0 }}</span>
+    </div>
+    <div class="stat-icon">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.5">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+    </div>
+</div>
+    <div class="stat-card">
         <div class="stat-info">
             <span class="stat-label">Total Portofolio</span>
             <span class="stat-value">{{ $totalProjek ?? 0 }}</span>
