@@ -64,8 +64,8 @@
         <h5 class="setting-card-title">HERO IMAGE</h5>
         <p style="font-size:12px; color:#94a3b8; margin-bottom:12px;">Gambar watermark di belakang teks kiri</p>
 
-        @if($profil && $profil->hero_image)
-            <img src="{{ asset('storage/' . $profil->hero_image) }}"
+        @if($profil && $profil->tentang_hero_image)
+            <img src="{{ asset('storage/' . $profil->tentang_hero_image) }}"
                  style="width:100%; height:120px; object-fit:cover; border-radius:10px; margin-bottom:12px; opacity:0.7;">
         @else
             <div style="width:100%; height:120px; background:#e2e8f0; border-radius:10px; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
@@ -79,7 +79,7 @@
 
         <div class="setting-field">
             <label class="setting-label">Upload Hero Image :</label>
-            <input type="file" name="hero_image" class="setting-input" accept="image/*">
+            <input type="file" name="tentang_hero_image" class="setting-input" accept="image/*">
             <small style="color:#94a3b8; font-size:11px;">Kosongkan jika tidak diganti</small>
         </div>
 

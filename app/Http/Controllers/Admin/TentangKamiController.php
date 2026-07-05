@@ -19,29 +19,28 @@ class TentangKamiController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'nama_perusahaan' => 'nullable|string|max:150',
-            'tagline' => 'nullable|string|max:255',
-            'deskripsi' => 'nullable|string',
-            'visi' => 'nullable|string',
-            'misi' => 'nullable|string',
-            'nomor_sertifikasi' => 'nullable|string|max:255',
-            'hero_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
-            'foto_baru.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'nama_perusahaan'    => 'nullable|string|max:150',
+            'deskripsi'          => 'nullable|string',
+            'visi'               => 'nullable|string',
+            'misi'               => 'nullable|string',
+            'nomor_sertifikasi'  => 'nullable|string|max:255',
+            'tentang_hero_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
+            'foto_baru.*'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         $profil = ProfilPerusahaan::firstOrNew(['id_profil' => 1]);
 
         $data = $request->only([
-            'nama_perusahaan', 'tagline', 'deskripsi',
+            'nama_perusahaan', 'deskripsi',
             'visi', 'misi', 'nomor_sertifikasi',
         ]);
 
-        // Upload hero image
-        if ($request->hasFile('hero_image')) {
-            if ($profil->hero_image) {
-                Storage::disk('public')->delete($profil->hero_image);
+        // Upload tentang hero image (watermark di halaman tentang kami)
+        if ($request->hasFile('tentang_hero_image')) {
+            if ($profil->tentang_hero_image) {
+                Storage::disk('public')->delete($profil->tentang_hero_image);
             }
-            $data['hero_image'] = $request->file('hero_image')->store('tentang', 'public');
+            $data['tentang_hero_image'] = $request->file('tentang_hero_image')->store('tentang', 'public');
         }
 
         // Ambil foto grid yang ada

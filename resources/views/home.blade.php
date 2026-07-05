@@ -34,26 +34,24 @@
     </nav>
 
     @php
-    $heroImageUrl = asset('');
+        $heroImageUrl = asset('images/aspal.jpg');
+        if ($profil && !empty($profil->hero_image)) {
+            $heroImageUrl = asset('storage/' . $profil->hero_image);
+        } elseif ($profil && !empty($profil->dashboard_hero_image)) {
+            $heroImageUrl = asset('storage/' . $profil->dashboard_hero_image);
+        }
+    @endphp
 
-    if ($profil && !empty($profil->hero_image)) {
-        $heroImageUrl = asset('storage/' . $profil->hero_image);
-    } elseif ($profil && !empty($profil->dashboard_hero_image)) {
-        $heroImageUrl = asset('storage/' . $profil->dashboard_hero_image);
-    }
-@endphp
-
-<!-- HERO -->
-<section id="home">
-    <img src="{{ $heroImageUrl }}" class="hero-img" alt="Hero BAT" onerror="this.src='{{ asset('') }}'">
-    <div class="overlay"></div>
-    <div class="hero-content">
-        <h1>{{ $profil->nama_perusahaan ?? 'PT. Berkah Alam Tabantang' }}</h1>
-        <div class="tagline">{{ $profil->tagline ?? 'Solusi Terpercaya untuk Konstruksi & Infrastruktur di Batam' }}</div>
-        <div class="description">{{ $profil->deskripsi ?? 'Kami melayani pembangunan gedung, jalan raya, jembatan, hingga prasarana sumber daya air dengan mengutamakan integritas dan kepuasan pelanggan. Membangun dengan kualitas, beroperasi dengan keamanan.' }}</div>
-    </div>
-    </div>
-</section>
+    <!-- HERO -->
+    <section id="home">
+        <img src="{{ $heroImageUrl }}" class="hero-img" alt="Hero BAT" onerror="this.src='{{ asset('images/aspal.jpg') }}'">
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1>{{ $profil->nama_perusahaan ?? 'PT. Berkah Alam Tabantang' }}</h1>
+            <div class="tagline">{{ $profil->tagline ?? 'Solusi Terpercaya untuk Konstruksi & Infrastruktur di Batam' }}</div>
+            <div class="description">{{ $profil->deskripsi ?? 'Kami melayani pembangunan gedung, jalan raya, jembatan, hingga prasarana sumber daya air dengan mengutamakan integritas dan kepuasan pelanggan. Membangun dengan kualitas, beroperasi dengan keamanan.' }}</div>
+        </div>
+    </section>
 
     <!-- TENTANG KAMI -->
     <section id="tentang-kami">
@@ -64,7 +62,10 @@
             </div>
             <div class="about-content">
                 <div class="about-left">
-                    <img class="about-logo-bg" src="{{ asset('images/logo_pt_bat2.jpg') }}" alt="watermark">
+                    {{-- Watermark pakai tentang_hero_image, fallback ke logo --}}
+                    <img class="about-logo-bg"
+                         src="{{ $profil && $profil->tentang_hero_image ? asset('storage/' . $profil->tentang_hero_image) : asset('images/logo_pt_bat2.jpg') }}"
+                         alt="watermark">
                     <div class="about-left-inner">
                         <h2>{{ $profil->nama_perusahaan ?? 'PT Berkah Alam Tabantang' }}</h2>
                         <p>{{ $profil->deskripsi ?? 'adalah perusahaan konstruksi terkemuka yang berbasis di Kota Batam.' }}</p>
@@ -195,8 +196,7 @@
                                 </div>
                             </div>
                             <div class="portfolio-bottom">
-                                <button class="portfolio-btn" onclick="openPortfolioModal({{ $item->id_portofolio }})">Selengkapnya &rsaquo;
-                                </button>
+                                <button class="portfolio-btn" onclick="openPortfolioModal({{ $item->id_portofolio }})">Selengkapnya &rsaquo;</button>
                             </div>
                         </div>
                     @endif
@@ -216,8 +216,6 @@
                 $listBerita = $publishedBerita->skip(1)->take(3);
             @endphp
             <div class="berita-layout">
-
-                {{-- FEATURED / BERITA UTAMA --}}
                 @if($featured)
                 <div class="featured-card">
                     <div class="featured-img-wrap">
@@ -236,7 +234,6 @@
                 </div>
                 @endif
 
-                {{-- LIST BERITA KANAN --}}
                 <div class="news-list">
                     @forelse($listBerita as $berita)
                     <div class="news-item" onclick="openNewsModal({{ $berita->id_berita }})">
@@ -310,6 +307,10 @@
                     @endif
                     <div class="lokasi-card-content">
                         <p><strong>Alamat :</strong> {{ $profil->alamat ?? 'Perum Griya Batu Aji Asri THP. 6 Blok V2 No.6, Kel. Sei Langkai, Kec.Sagulung, Batam' }}</p>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination={{ urlencode($profil->alamat ?? 'Perum Griya Batu Aji Asri THP. 6 Blok V2 No.6 Sei Langkai Sagulung Batam') }}"
+                           target="_blank" class="btn-rute">
+                            <i class="fas fa-route"></i> Dapatkan Rute
+                        </a>
                     </div>
                 </div>
                 <div class="lokasi-card">
@@ -320,6 +321,10 @@
                     @endif
                     <div class="lokasi-card-content">
                         <p><strong>Kantor Operasional :</strong> {{ $profil->alamat_2 ?? 'Ruko Marbella 2 Blok D6 No.7, Batam Center – Batam' }}</p>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination={{ urlencode($profil->alamat_2 ?? 'Ruko Marbella 2 Blok D6 No.7 Batam Center Batam') }}"
+                           target="_blank" class="btn-rute">
+                            <i class="fas fa-route"></i> Dapatkan Rute
+                        </a>
                     </div>
                 </div>
             </div>
@@ -438,15 +443,14 @@
         </div>
     </div>
 
-    <!-- ========== WHATSAPP CHAT BUTTON ========== -->
+    <!-- WHATSAPP CHAT BUTTON -->
     <div class="whatsapp-button">
         <a href="https://api.whatsapp.com/send?phone=6281363327109&text=Halo%20PT.%20Berkah%20Alam%20Tabantang%2C%20saya%20ingin%20bertanya%20mengenai%20layanan%20konstruksi%20Anda."
            class="wa-link"
            target="_blank"
            rel="noopener noreferrer"
            onclick="handleWhatsAppClick(event)">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
-                 alt="WhatsApp Chat">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Chat">
             <span class="badge-wa">1</span>
         </a>
         <span class="wa-tooltip">Chat via WhatsApp</span>
@@ -500,7 +504,6 @@
         updateActiveNav();
 
         // PORTFOLIO MODAL
-
         const portfolioData = {
             @foreach($semuaPortofolio as $item)
             {{ $item->id_portofolio }}: {
@@ -626,13 +629,11 @@
             .catch(() => alert('Terjadi kesalahan. Coba lagi.'));
         }
 
-        // ========== WHATSAPP CHAT INTERACTION ==========
+        // WHATSAPP
         function handleWhatsAppClick(event) {
-            alert('Anda akan dialihkan ke WhatsApp untuk menghubungi PT. Berkah Alam Tabantang.');
             console.log('WhatsApp button clicked: ' + new Date().toLocaleString());
         }
 
-        // Auto-show tooltip untuk onboarding
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(function() {
                 const tooltip = document.querySelector('.wa-tooltip');
@@ -647,12 +648,10 @@
             }, 2000);
         });
 
-        // Scroll effect - sembunyikan tombol saat scroll ke bawah
         let lastScrollTop = 0;
         window.addEventListener('scroll', function() {
             const waButton = document.querySelector('.whatsapp-button');
             if (!waButton) return;
-
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             if (scrollTop > lastScrollTop && scrollTop > 200) {
                 waButton.style.opacity = '0.3';
@@ -664,7 +663,6 @@
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         });
 
-        // Tutup modal jika klik di luar konten
         window.onclick = function(event) {
             if (event.target == document.getElementById('portfolioModal')) closePortfolioModal();
             if (event.target == document.getElementById('newsModal')) closeNewsModal();
