@@ -648,12 +648,27 @@ footer {
 }
 .modal-close:hover { color: #162660; }
 
-.portfolio-modal-inner { display: flex; min-height: 420px; }
+.portfolio-modal-inner {
+    display: grid;
+    grid-template-columns: 42% 1fr;
+    min-height: 420px;
+    flex: 1;
+}
 
 .portfolio-modal-photos {
-    flex: 0 0 42%; background: #eef4fb;
-    border-radius: 18px 0 0 0; padding: 40px 20px 30px 30px;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    grid-column: 1;
+    grid-row: 1;
+    background: #eef4fb;
+    border-radius: 18px 0 0 0;
+    padding: 40px 20px 30px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    align-self: start;
+    max-height: 90vh;
 }
 
 .photo-main {
@@ -670,7 +685,14 @@ footer {
 }
 .photo-secondary img { width: 100%; height: 100%; object-fit: cover; }
 
-.portfolio-modal-text { flex: 1; padding: 35px 35px 20px 28px; display: flex; flex-direction: column; }
+.portfolio-modal-text {
+    grid-column: 2;
+    grid-row: 1;
+    padding: 35px 35px 20px 28px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
 .portfolio-modal-title { font-size: 1.35rem; font-weight: 800; color: #162660; margin-bottom: 18px; line-height: 1.35; }
 .portfolio-modal-body { font-size: 0.9rem; color: #333; line-height: 1.75; flex: 1; }
 .portfolio-modal-body p { margin-bottom: 10px; }
