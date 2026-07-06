@@ -24,7 +24,7 @@
 @csrf
 @method('PUT')
 
-<div style="display:grid; grid-template-columns:1.2fr 1fr; gap:20px; margin-bottom:20px;">
+<div class="info-grid">
 
     {{-- CARD INFORMASI PERUSAHAAN --}}
     <div class="setting-card">
@@ -91,7 +91,7 @@
 
         {{-- Foto yang sudah ada --}}
         @if(!empty($fotoGrid))
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px;">
+        <div class="foto-grid">
             @foreach($fotoGrid as $idx => $foto)
             <div style="position:relative;">
                 <img src="{{ asset('storage/' . $foto) }}"

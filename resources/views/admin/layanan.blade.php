@@ -213,7 +213,7 @@
                     <label>Gambar</label>
                     <input type="file" name="gambar" class="modal-input" accept="image/*">
                 </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="modal-row" style="gap: 12px;">
                     <div class="modal-field">
                         <label>Urutan</label>
                         <input type="number" name="urutan" class="modal-input" value="0" min="0">
@@ -270,7 +270,7 @@
                     <label>Gambar Baru (kosongkan jika tidak diganti)</label>
                     <input type="file" name="gambar" class="modal-input" accept="image/*">
                 </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="modal-row" style="gap: 12px;">
                     <div class="modal-field">
                         <label>Urutan</label>
                         <input type="number" name="urutan" id="edit_urutan" class="modal-input" min="0">
