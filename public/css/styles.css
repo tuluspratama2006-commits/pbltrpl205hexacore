@@ -560,6 +560,8 @@ section {
     box-shadow: 0 4px 14px rgba(22,38,96,0.08);
     transition: transform 0.3s;
     scroll-snap-align: start;
+    max-height: 320px;
+    overflow-y: auto;
 }
 .testimoni-card:hover { transform: translateY(-5px); }
 .company-logo-circle {
