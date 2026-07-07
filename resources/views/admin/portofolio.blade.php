@@ -221,7 +221,7 @@
                     <label>Nama Proyek <span style="color:red">*</span></label>
                     <input type="text" name="judul_proyek" class="modal-input" placeholder="Nama proyek..." value="{{ old('judul_proyek') }}" required>
                 </div>
-                <div class="modal-row" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="modal-row">
                     <div class="modal-field">
                         <label>Tanggal Proyek <span style="color:red">*</span></label>
                         <input type="date" name="tanggal_proyek" class="modal-input" value="{{ old('tanggal_proyek') }}" required>
@@ -231,7 +231,7 @@
                         <input type="file" name="thumbnail" class="modal-input" accept="image/jpeg,image/png,image/jpg" required>
                     </div>
                 </div>
-                <div class="modal-row" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top: 8px;">
+                <div class="modal-row" style="margin-top: 8px;">
                     <div class="modal-field">
                         <label>Klien <span style="color:red">*</span></label>
                         <input type="text" name="nama_klien" class="modal-input" placeholder="Nama klien..." value="{{ old('nama_klien') }}" required>
@@ -241,7 +241,7 @@
                         <input type="text" name="lokasi" class="modal-input" placeholder="Lokasi proyek..." value="{{ old('lokasi') }}" required>
                     </div>
                 </div>
-                <div class="modal-row" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top: 8px;">
+                <div class="modal-row" style="margin-top: 8px;">
                     <div class="modal-field">
                         <label>Dokumen</label>
                         <input type="file" name="file_pdf" class="modal-input" accept="application/pdf">
@@ -302,7 +302,7 @@
                     <label>Nama Proyek <span style="color:red">*</span></label>
                     <input type="text" name="judul_proyek" id="edit_judul_proyek" class="modal-input" required>
                 </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="modal-row">
                     <div class="modal-field">
                         <label>Tanggal Proyek <span style="color:red">*</span></label>
                         <input type="date" name="tanggal_proyek" id="edit_tanggal_proyek" class="modal-input" required>
@@ -319,7 +319,7 @@
                         </div>
                     </div>
                 </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top: 8px;">
+                <div class="modal-row" style="margin-top: 8px;">
                     <div class="modal-field">
                         <label>Klien <span style="color:red">*</span></label>
                         <input type="text" name="nama_klien" id="edit_nama_klien" class="modal-input" required>
@@ -329,7 +329,7 @@
                         <input type="text" name="lokasi" id="edit_lokasi" class="modal-input" required>
                     </div>
                 </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top: 8px;">
+                <div class="modal-row" style="margin-top: 8px;">
                     <div class="modal-field">
                         <label>Dokumen Baru</label>
                         <input type="file" name="file_pdf" class="modal-input" accept="application/pdf">

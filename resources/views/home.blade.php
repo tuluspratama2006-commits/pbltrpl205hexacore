@@ -26,6 +26,11 @@
                 <li><a href="#lokasi">Kontak</a></li>
             </ul>
             <div class="nav-right">
+                <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
                 <a href="javascript:void(0)" onclick="openLoginModal()">
                     <i class="fa-solid fa-user login-icon"></i>
                 </a>
@@ -141,40 +146,44 @@
             <h1 class="section-title">L A Y A N A N</h1>
         </div>
         <div class="layanan-scroll-area">
-            <div class="services-scroll-wrapper">
-                <div class="services-track">
-                    @forelse($layanans as $index => $item)
-                    <div class="service-card">
-                        @if($item->gambar)
-                            <img src="{{ asset('storage/' . $item->gambar) }}"
-                                 class="service-card-img"
-                                 alt="{{ $item->judul_layanan }}">
-                        @else
-                            <img src="{{ asset('images/layanan_' . (($index % 4) + 1) . '.jpg') }}"
-                                 class="service-card-img"
-                                 alt="{{ $item->judul_layanan }}">
-                        @endif
+            <div class="scroll-arrow-wrap">
+                <button class="scroll-arrow scroll-arrow-left" onclick="scrollHorizontally(this, -1)" aria-label="Scroll left">&#8249;</button>
+                <div class="services-scroll-wrapper scrollable-content">
+                    <div class="services-track">
+                        @forelse($layanans as $index => $item)
+                        <div class="service-card">
+                            @if($item->gambar)
+                                <img src="{{ asset('storage/' . $item->gambar) }}"
+                                     class="service-card-img"
+                                     alt="{{ $item->judul_layanan }}">
+                            @else
+                                <img src="{{ asset('images/layanan_' . (($index % 4) + 1) . '.jpg') }}"
+                                     class="service-card-img"
+                                     alt="{{ $item->judul_layanan }}">
+                            @endif
 
-                        <div class="service-card-top">
-                            <div class="service-title">{{ $item->judul_layanan }}</div>
-                            <div class="service-code">({{ $item->icon }})</div>
-                        </div>
+                            <div class="service-card-top">
+                                <div class="service-title">{{ $item->judul_layanan }}</div>
+                                <div class="service-code">({{ $item->icon }})</div>
+                            </div>
 
-                        <div class="service-card-body">
-                            <div class="service-title" style="margin-bottom:6px;">{{ $item->judul_layanan }}</div>
-                            <div class="service-code" style="margin-bottom:12px;">({{ $item->icon }})</div>
-                            <div class="service-desc">{{ strip_tags($item->deskripsi) }}</div>
+                            <div class="service-card-body">
+                                <div class="service-title" style="margin-bottom:6px;">{{ $item->judul_layanan }}</div>
+                                <div class="service-code" style="margin-bottom:12px;">({{ $item->icon }})</div>
+                                <div class="service-desc">{{ strip_tags($item->deskripsi) }}</div>
+                            </div>
                         </div>
-                    </div>
-                    @empty
-                    <div class="service-card">
-                        <img src="{{ asset('images/layanan_1.jpg') }}" class="service-card-img" alt="Layanan">
-                        <div class="service-card-top">
-                            <div class="service-title">Belum ada layanan</div>
+                        @empty
+                        <div class="service-card">
+                            <img src="{{ asset('images/layanan_1.jpg') }}" class="service-card-img" alt="Layanan">
+                            <div class="service-card-top">
+                                <div class="service-title">Belum ada layanan</div>
+                            </div>
                         </div>
+                        @endforelse
                     </div>
-                    @endforelse
                 </div>
+                <button class="scroll-arrow scroll-arrow-right" onclick="scrollHorizontally(this, 1)" aria-label="Scroll right">&#8250;</button>
             </div>
         </div>
     </section>
@@ -185,22 +194,26 @@
             <div class="portfolio-header">
                 <h1 class="section-title">PORTOFOLIO</h1>
             </div>
-            <div class="portfolio-grid">
-                @foreach($semuaPortofolio as $item)
-                    @if($item->status == 'publish')
-                        <div class="portfolio-card">
-                            <div class="portfolio-image">
-                                <img src="{{ asset('storage/' . $item->thumbnail) }}" alt="{{ $item->judul_proyek }}">
-                                <div class="portfolio-img-overlay">
-                                    <h3 class="portfolio-title">{{ $item->judul_proyek }}</h3>
+            <div class="scroll-arrow-wrap">
+                <button class="scroll-arrow scroll-arrow-left" onclick="scrollHorizontally(this, -1)" aria-label="Scroll left">&#8249;</button>
+                <div class="portfolio-grid scrollable-content">
+                    @foreach($semuaPortofolio as $item)
+                        @if($item->status == 'publish')
+                            <div class="portfolio-card">
+                                <div class="portfolio-image">
+                                    <img src="{{ asset('storage/' . $item->thumbnail) }}" alt="{{ $item->judul_proyek }}">
+                                    <div class="portfolio-img-overlay">
+                                        <h3 class="portfolio-title">{{ $item->judul_proyek }}</h3>
+                                    </div>
+                                </div>
+                                <div class="portfolio-bottom">
+                                    <button class="portfolio-btn" onclick="openPortfolioModal({{ $item->id_portofolio }})">Selengkapnya &rsaquo;</button>
                                 </div>
                             </div>
-                            <div class="portfolio-bottom">
-                                <button class="portfolio-btn" onclick="openPortfolioModal({{ $item->id_portofolio }})">Selengkapnya &rsaquo;</button>
-                            </div>
-                        </div>
-                    @endif
-                @endforeach
+                        @endif
+                    @endforeach
+                </div>
+                <button class="scroll-arrow scroll-arrow-right" onclick="scrollHorizontally(this, 1)" aria-label="Scroll right">&#8250;</button>
             </div>
         </div>
     </section>
@@ -271,23 +284,27 @@
                 <span class="sub-bold">Bukti Nyata Kualitas Konstruksi Kami</span>
                 <p class="sub-text">Kolaborasi yang solid melahirkan infrastruktur yang kokoh. Inilah testimoni dari mereka yang telah bermitra dengan PT BAT.</p>
             </div>
-            <div class="testimoni-grid">
-                @forelse($testimonis as $tm)
-                <div class="testimoni-card">
-                    <div class="company-logo-circle">
-                        @if($tm->foto_client)
-                            <img src="{{ asset('storage/' . $tm->foto_client) }}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
-                        @else
-                            <span>{{ strtoupper(substr($tm->nama_client, 0, 1)) }}{{ $tm->nama_perusahaan ? strtoupper(substr($tm->nama_perusahaan, 0, 1)) : '' }}</span>
-                        @endif
+            <div class="scroll-arrow-wrap">
+                <button class="scroll-arrow scroll-arrow-left" onclick="scrollHorizontally(this, -1)" aria-label="Scroll left">&#8249;</button>
+                <div class="testimoni-grid scrollable-content">
+                    @forelse($testimonis as $tm)
+                    <div class="testimoni-card">
+                        <div class="company-logo-circle">
+                            @if($tm->foto_client)
+                                <img src="{{ asset('storage/' . $tm->foto_client) }}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+                            @else
+                                <span>{{ strtoupper(substr($tm->nama_client, 0, 1)) }}{{ $tm->nama_perusahaan ? strtoupper(substr($tm->nama_perusahaan, 0, 1)) : '' }}</span>
+                            @endif
+                        </div>
+                        <div class="testimoni-rating">{{ str_repeat('★', $tm->rating) }}{{ str_repeat('☆', 5 - $tm->rating) }}</div>
+                        <div class="testimoni-text">{!! $tm->isi_testimoni !!}</div>
+                        <p class="testimoni-author">— {{ $tm->nama_client }}{{ $tm->jabatan ? ', ' . $tm->jabatan : '' }}</p>
                     </div>
-                    <div class="testimoni-rating">{{ str_repeat('★', $tm->rating) }}{{ str_repeat('☆', 5 - $tm->rating) }}</div>
-                    <div class="testimoni-text">{!! $tm->isi_testimoni !!}</div>
-                    <p class="testimoni-author">— {{ $tm->nama_client }}{{ $tm->jabatan ? ', ' . $tm->jabatan : '' }}</p>
+                    @empty
+                    <p style="grid-column:1/-1;text-align:center;color:#94a3b8;">Belum ada testimoni</p>
+                    @endforelse
                 </div>
-                @empty
-                <p style="grid-column:1/-1;text-align:center;color:#94a3b8;">Belum ada testimoni</p>
-                @endforelse
+                <button class="scroll-arrow scroll-arrow-right" onclick="scrollHorizontally(this, 1)" aria-label="Scroll right">&#8250;</button>
             </div>
         </div>
     </section>
@@ -459,9 +476,24 @@
     <script>
         const NAVBAR_HEIGHT = 56;
 
+        // --- HAMBURGER TOGGLE ---
+        function toggleMenu() {
+            const menu = document.querySelector('.nav-menu');
+            const hamburger = document.querySelector('.hamburger');
+            menu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
         function scrollToSection(targetId) {
             const target = document.getElementById(targetId);
             if (!target) return;
+
+            // Close mobile menu
+            const menu = document.querySelector('.nav-menu');
+            const hamburger = document.querySelector('.hamburger');
+            menu.classList.remove('active');
+            hamburger.classList.remove('active');
+
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
@@ -469,8 +501,7 @@
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                scrollToSection(targetId);
+                scrollToSection(this.getAttribute('href').substring(1));
             });
         });
 
@@ -668,6 +699,36 @@
             if (event.target == document.getElementById('newsModal')) closeNewsModal();
             if (event.target == document.getElementById('loginModal')) closeLoginModal();
         }
+
+        // --- SCROLL ARROW BUTTONS ---
+        function scrollHorizontally(btn, direction) {
+            const wrap = btn.closest('.scroll-arrow-wrap');
+            const container = wrap.querySelector('.scrollable-content');
+            const firstCard = container.querySelector('.service-card, .portfolio-card, .testimoni-card');
+            const cardWidth = firstCard ? firstCard.offsetWidth : 300;
+            const gap = 24;
+            container.scrollBy({ left: direction * (cardWidth + gap), behavior: 'smooth' });
+        }
+
+        function updateScrollArrows() {
+            document.querySelectorAll('.scroll-arrow-wrap').forEach(function(wrap) {
+                const container = wrap.querySelector('.scrollable-content');
+                const leftBtn = wrap.querySelector('.scroll-arrow-left');
+                const rightBtn = wrap.querySelector('.scroll-arrow-right');
+                if (!container || !leftBtn || !rightBtn) return;
+                const atStart = container.scrollLeft <= 2;
+                const atEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 2;
+                leftBtn.classList.toggle('disabled', atStart);
+                rightBtn.classList.toggle('disabled', atEnd);
+            });
+        }
+
+        document.querySelectorAll('.scrollable-content').forEach(function(el) {
+            el.addEventListener('scroll', updateScrollArrows);
+        });
+
+        window.addEventListener('resize', updateScrollArrows);
+        document.addEventListener('DOMContentLoaded', updateScrollArrows);
     </script>
 </body>
 </html>

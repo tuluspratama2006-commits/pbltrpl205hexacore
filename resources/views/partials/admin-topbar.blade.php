@@ -1,5 +1,12 @@
 <div class="topbar">
-    <div class="page-title">@yield('title', 'DASHBOARD')</div>
+    <div class="topbar-left">
+        <button class="hamburger-admin" onclick="toggleAdminSidebar()" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="page-title">@yield('title', 'DASHBOARD')</div>
+    </div>
     <div class="topbar-right">
         <!-- Notification Bell -->
         <div class="notification-wrapper" style="position: relative;">

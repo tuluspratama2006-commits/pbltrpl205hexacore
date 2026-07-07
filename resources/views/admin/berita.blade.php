@@ -256,7 +256,7 @@
                         </a>
                     </div>
                 </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="modal-row">
                     <div class="modal-field">
                         <label>Tanggal Posting <span style="color:red">*</span></label>
                         <input type="date" name="tanggal_posting" id="edit_tanggal" class="modal-input" required>
