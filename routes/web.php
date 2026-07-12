@@ -27,6 +27,16 @@ Route::middleware([TrackVisitorMiddleware::class])->group(function () {
 });
 
 // =========================
+// ADMIN LOGIN PAGE
+// =========================
+Route::get('/admin', function () {
+    if (session('admin_logged_in')) {
+        return redirect()->route('admin.dashboard');
+    }
+    return view('admin-login');
+})->name('admin.login.page');
+
+// =========================
 // ADMIN
 // =========================
 Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {

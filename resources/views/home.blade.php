@@ -31,9 +31,6 @@
                     <span></span>
                     <span></span>
                 </button>
-                <a href="javascript:void(0)" onclick="openLoginModal()">
-                    <i class="fa-solid fa-user login-icon"></i>
-                </a>
             </div>
         </div>
     </nav>
@@ -67,7 +64,6 @@
             </div>
             <div class="about-content">
                 <div class="about-left">
-                    {{-- Watermark pakai tentang_hero_image, fallback ke logo --}}
                     <img class="about-logo-bg"
                          src="{{ $profil && $profil->tentang_hero_image ? asset('storage/' . $profil->tentang_hero_image) : asset('images/logo_pt_bat2.jpg') }}"
                          alt="watermark">
@@ -75,7 +71,6 @@
                         <h2>{{ $profil->nama_perusahaan ?? 'PT Berkah Alam Tabantang' }}</h2>
                         <p>{{ $profil->deskripsi ?? 'adalah perusahaan konstruksi terkemuka yang berbasis di Kota Batam.' }}</p>
 
-                        {{-- Visi Misi --}}
                         @if($profil && ($profil->visi || $profil->misi))
                         <div class="visi-misi-block">
                             @if($profil->visi)
@@ -161,12 +156,10 @@
                                      class="service-card-img"
                                      alt="{{ $item->judul_layanan }}">
                             @endif
-
                             <div class="service-card-top">
                                 <div class="service-title">{{ $item->judul_layanan }}</div>
                                 <div class="service-code">({{ $item->icon }})</div>
                             </div>
-
                             <div class="service-card-body">
                                 <div class="service-title" style="margin-bottom:6px;">{{ $item->judul_layanan }}</div>
                                 <div class="service-code" style="margin-bottom:12px;">({{ $item->icon }})</div>
@@ -246,7 +239,6 @@
                     </div>
                 </div>
                 @endif
-
                 <div class="news-list">
                     @forelse($listBerita as $berita)
                     <div class="news-item" onclick="openNewsModal({{ $berita->id_berita }})">
@@ -443,23 +435,6 @@
         </div>
     </div>
 
-    <!-- MODAL LOGIN -->
-    <div id="loginModal" class="login-modal">
-        <div class="login-modal-content">
-            <span class="login-modal-close" onclick="closeLoginModal()">&times;</span>
-            <h2>LOGIN</h2>
-            <div class="login-input-group">
-                <label>email</label>
-                <input type="email" id="username" placeholder="Masukkan email">
-            </div>
-            <div class="login-input-group">
-                <label>Password</label>
-                <input type="password" id="password" placeholder="Masukkan password">
-            </div>
-            <button class="login-btn" onclick="handleLogin()">LOGIN</button>
-        </div>
-    </div>
-
     <!-- WHATSAPP CHAT BUTTON -->
     <div class="whatsapp-button">
         <a href="https://api.whatsapp.com/send?phone=6281363327109&text=Halo%20PT.%20Berkah%20Alam%20Tabantang%2C%20saya%20ingin%20bertanya%20mengenai%20layanan%20konstruksi%20Anda."
@@ -476,7 +451,7 @@
     <script>
         const NAVBAR_HEIGHT = 56;
 
-        // --- HAMBURGER TOGGLE ---
+        // HAMBURGER TOGGLE
         function toggleMenu() {
             const menu = document.querySelector('.nav-menu');
             const hamburger = document.querySelector('.hamburger');
@@ -487,13 +462,10 @@
         function scrollToSection(targetId) {
             const target = document.getElementById(targetId);
             if (!target) return;
-
-            // Close mobile menu
             const menu = document.querySelector('.nav-menu');
             const hamburger = document.querySelector('.hamburger');
             menu.classList.remove('active');
             hamburger.classList.remove('active');
-
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
@@ -508,8 +480,7 @@
         document.querySelectorAll('.footer-col a[href^="#"]').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                scrollToSection(targetId);
+                scrollToSection(this.getAttribute('href').substring(1));
             });
         });
 
@@ -621,45 +592,6 @@
             document.body.style.overflow = 'auto';
         }
 
-        // LOGIN MODAL
-        function openLoginModal() {
-            document.getElementById('loginModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLoginModal() {
-            document.getElementById('loginModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        function handleLogin() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            if (!username || !password) {
-                alert('Username dan password wajib diisi!');
-                return;
-            }
-
-            fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ username, password })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = data.redirect;
-                } else {
-                    alert(data.message);
-                }
-            })
-            .catch(() => alert('Terjadi kesalahan. Coba lagi.'));
-        }
-
         // WHATSAPP
         function handleWhatsAppClick(event) {
             console.log('WhatsApp button clicked: ' + new Date().toLocaleString());
@@ -697,10 +629,9 @@
         window.onclick = function(event) {
             if (event.target == document.getElementById('portfolioModal')) closePortfolioModal();
             if (event.target == document.getElementById('newsModal')) closeNewsModal();
-            if (event.target == document.getElementById('loginModal')) closeLoginModal();
         }
 
-        // --- SCROLL ARROW BUTTONS ---
+        // SCROLL ARROW BUTTONS
         function scrollHorizontally(btn, direction) {
             const wrap = btn.closest('.scroll-arrow-wrap');
             const container = wrap.querySelector('.scrollable-content');
