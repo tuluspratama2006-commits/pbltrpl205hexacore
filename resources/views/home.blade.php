@@ -114,7 +114,19 @@
                         <div class="sbu-label">Sertifikat Badan Usaha (SBU) Konstruksi</div>
                         <div class="sbu-number">PB-UMKU : 022100092289300040001</div>
                         @endif
-                        <a href="#" class="btn-unduh"><i class="fas fa-chevron-right"></i> Unduh PDF</a>
+                        @if($profil && $profil->dokumen_pdf)
+    <a href="{{ asset('storage/' . $profil->dokumen_pdf) }}"
+       class="btn-unduh"
+       target="_blank"
+       download>
+        <i class="fas fa-chevron-right"></i> Unduh PDF
+    </a>
+@else
+    <button class="btn-unduh" type="button" disabled
+            style="opacity:.6; cursor:not-allowed;">
+        <i class="fas fa-chevron-right"></i> PDF Belum Tersedia
+    </button>
+@endif
                     </div>
                 </div>
                 <div class="about-right">

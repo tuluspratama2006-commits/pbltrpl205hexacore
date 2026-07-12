@@ -23,6 +23,7 @@ class ProfilPerusahaan extends Model
         'dashboard_hero_image',
         'tentang_hero_image',
         'foto_grid',
+        'dokumen_pdf',
         'alamat',
         'alamat_2',
         'email',

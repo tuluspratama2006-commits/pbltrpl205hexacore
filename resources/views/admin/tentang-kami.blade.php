@@ -15,7 +15,6 @@
 </div>
 @endif
 
-{{-- Header --}}
 <div class="page-header" style="margin-bottom: 24px;">
     <h1 class="page-heading"></h1>
 </div>
@@ -26,7 +25,6 @@
 
 <div class="info-grid">
 
-    {{-- CARD INFORMASI PERUSAHAAN --}}
     <div class="setting-card">
         <h5 class="setting-card-title">INFORMASI PERUSAHAAN</h5>
 
@@ -41,25 +39,55 @@
             <textarea name="deskripsi" class="setting-input setting-textarea" rows="4"
                       placeholder="Deskripsi perusahaan...">{{ old('deskripsi', $profil->deskripsi ?? '') }}</textarea>
         </div>
+
         <div class="setting-field">
             <label class="setting-label">Visi :</label>
             <textarea name="visi" class="setting-input setting-textarea" rows="3"
                       placeholder="Visi perusahaan...">{{ old('visi', $profil->visi ?? '') }}</textarea>
         </div>
+
         <div class="setting-field">
             <label class="setting-label">Misi :</label>
             <textarea name="misi" class="setting-input setting-textarea" rows="3"
                       placeholder="Misi perusahaan...">{{ old('misi', $profil->misi ?? '') }}</textarea>
         </div>
+
         <div class="setting-field">
             <label class="setting-label">Nomor Sertifikasi (SBU) :</label>
             <input type="text" name="nomor_sertifikasi" class="setting-input"
                    value="{{ old('nomor_sertifikasi', $profil->nomor_sertifikasi ?? '') }}"
                    placeholder="PB-UMKU : ...">
         </div>
+
+        {{-- TAMBAHAN FITUR PDF (tidak mengubah bagian lain) --}}
+        <div class="setting-field">
+            <label class="setting-label">Dokumen Sertifikat (PDF) :</label>
+
+            @if($profil && $profil->dokumen_pdf)
+                <div style="margin-bottom:10px;">
+                    <a href="{{ asset('storage/' . $profil->dokumen_pdf) }}"
+                       target="_blank"
+                       style="display:inline-flex;align-items:center;gap:6px;color:#2563eb;text-decoration:none;font-size:13px;font-weight:500;">
+                        📄 Lihat Dokumen Saat Ini
+                    </a>
+                </div>
+            @else
+                <div style="margin-bottom:10px;color:#94a3b8;font-size:12px;">
+                    Belum ada dokumen PDF yang diunggah.
+                </div>
+            @endif
+
+            <input type="file"
+                   name="dokumen_pdf"
+                   class="setting-input"
+                   accept=".pdf,application/pdf">
+
+            <small style="color:#94a3b8;font-size:11px;">
+                Upload file PDF maksimal 5 MB. Kosongkan jika tidak ingin mengganti dokumen.
+            </small>
+        </div>
     </div>
 
-    {{-- CARD HERO IMAGE & FOTO GRID --}}
     <div class="setting-card">
         <h5 class="setting-card-title">HERO IMAGE</h5>
         <p style="font-size:12px; color:#94a3b8; margin-bottom:12px;">Gambar watermark di belakang teks kiri</p>
@@ -83,13 +111,11 @@
             <small style="color:#94a3b8; font-size:11px;">Kosongkan jika tidak diganti</small>
         </div>
 
-        {{-- FOTO GRID --}}
         <h5 class="setting-card-title" style="margin-top:20px;">FOTO GRID</h5>
         <p style="font-size:12px; color:#94a3b8; margin-bottom:12px;">Foto terbaru otomatis tampil paling atas. Maks 5 foto.</p>
 
         @php $fotoGrid = json_decode($profil->foto_grid ?? '[]', true); @endphp
 
-        {{-- Foto yang sudah ada --}}
         @if(!empty($fotoGrid))
         <div class="foto-grid">
             @foreach($fotoGrid as $idx => $foto)
@@ -100,15 +126,12 @@
                         name="hapus_foto"
                         value="{{ $idx }}"
                         onclick="return confirm('Yakin hapus foto ini?')"
-                        style="position:absolute; top:4px; right:4px; background:rgba(220,38,38,0.85); border:none; border-radius:50%; width:24px; height:24px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:white; font-size:14px; line-height:1;">
-                    ×
-                </button>
+                        style="position:absolute; top:4px; right:4px; background:rgba(220,38,38,0.85); border:none; border-radius:50%; width:24px; height:24px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:white; font-size:14px; line-height:1;">×</button>
             </div>
             @endforeach
         </div>
         @endif
 
-        {{-- Upload foto baru --}}
         @if(count($fotoGrid) < 5)
         <div class="setting-field">
             <label class="setting-label">Upload Foto Baru :</label>
@@ -122,12 +145,10 @@
             Foto sudah penuh (5/5). Hapus foto lama untuk upload yang baru.
         </div>
         @endif
-
     </div>
 
 </div>
 
-{{-- Tombol Simpan --}}
 <div class="pengaturan-footer">
     <button type="submit" class="btn-update">Simpan Perubahan</button>
 </div>
@@ -138,7 +159,7 @@
 
 @push('scripts')
 <script>
-const toast = document.getElementById('toastNotif');
-if (toast) setTimeout(() => toast.remove(), 3500);
+const toast=document.getElementById('toastNotif');
+if(toast)setTimeout(()=>toast.remove(),3500);
 </script>
 @endpush
