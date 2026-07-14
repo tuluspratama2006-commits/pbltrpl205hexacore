@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AdminActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
@@ -17,8 +18,7 @@ class LoginController extends Controller
         // Ambil admin dari database berdasarkan email
         $admin = DB::table('admin')->where('email', $email)->first();
 
-        if ($admin && $admin->password === $password) {
-            // Password plain text — cocok langsung
+        if ($admin && Hash::check($password, $admin->password)) {
             Session::put('admin_logged_in', true);
             Session::put('admin_username', $admin->nama_admin);
 
@@ -32,7 +32,6 @@ class LoginController extends Controller
                 'success' => true,
                 'redirect' => route('admin.dashboard'),
             ]);
-
         }
 
         return response()->json([
@@ -43,7 +42,6 @@ class LoginController extends Controller
 
     public function logout()
     {
-        // Ambil nama admin sebelum session dibersihkan (buat aktivitas logout)
         $adminName = Session::get('admin_username');
 
         Session::forget('admin_logged_in');
@@ -56,6 +54,5 @@ class LoginController extends Controller
         ]);
 
         return redirect()->route('home');
-
     }
 }
