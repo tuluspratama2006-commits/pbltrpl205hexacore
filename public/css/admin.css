@@ -600,9 +600,34 @@ body {
     margin-bottom: 14px;
 }
 
+.foto-grid .foto-item-main {
+    grid-column: 1 / -1;
+    height: 150px;
+}
+
+.foto-grid > div {
+    position: relative;
+    height: 90px;
+}
+
+.foto-index-badge {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    background: rgba(0,0,0,0.65);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 6px;
+}
+
 @media (max-width: 480px) {
     .foto-grid {
         grid-template-columns: 1fr;
+    }
+    .foto-grid .foto-item-main {
+        height: 120px;
     }
 }
 

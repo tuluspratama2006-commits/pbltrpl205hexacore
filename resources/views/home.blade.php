@@ -130,19 +130,17 @@
                     </div>
                 </div>
                 <div class="about-right">
-                    @php $fotoGrid = json_decode($profil->foto_grid ?? '[]', true); @endphp
-                    <div class="photos-grid">
-                        @for($i = 0; $i < 5; $i++)
-                        <div class="photo-item">
-                            @if(!empty($fotoGrid[$i]))
-                                <img src="{{ asset('storage/' . $fotoGrid[$i]) }}" alt="Foto {{ $i+1 }}">
-                            @else
-                                <img src="{{ asset('images/tentang_kami_' . ($i+1) . '.jpg') }}" alt="Foto {{ $i+1 }}">
-                            @endif
-                        </div>
-                        @endfor
-                    </div>
+    @php $fotoGrid = json_decode($profil->foto_grid ?? '[]', true); @endphp
+    <div class="photos-grid">
+        @foreach($fotoGrid as $i => $foto)
+            @if(!empty($foto))
+                <div class="photo-item">
+                    <img src="{{ asset('storage/' . $foto) }}" alt="Foto {{ $i+1 }}">
                 </div>
+            @endif
+        @endforeach
+    </div>
+</div>
             </div>
         </div>
     </section>

@@ -116,21 +116,22 @@
 
         @php $fotoGrid = json_decode($profil->foto_grid ?? '[]', true); @endphp
 
-        @if(!empty($fotoGrid))
-        <div class="foto-grid">
-            @foreach($fotoGrid as $idx => $foto)
-            <div style="position:relative;">
-                <img src="{{ asset('storage/' . $foto) }}"
-                     style="width:100%; height:80px; object-fit:cover; border-radius:8px;">
-                <button type="submit"
-                        name="hapus_foto"
-                        value="{{ $idx }}"
-                        onclick="return confirm('Yakin hapus foto ini?')"
-                        style="position:absolute; top:4px; right:4px; background:rgba(220,38,38,0.85); border:none; border-radius:50%; width:24px; height:24px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:white; font-size:14px; line-height:1;">×</button>
-            </div>
-            @endforeach
-        </div>
-        @endif
+      @if(!empty($fotoGrid))
+<div class="foto-grid">
+    @foreach($fotoGrid as $idx => $foto)
+    <div style="position:relative;" class="{{ $idx === 0 ? 'foto-item-main' : '' }}">
+        <img src="{{ asset('storage/' . $foto) }}"
+             style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+        <button type="submit"
+                name="hapus_foto"
+                value="{{ $idx }}"
+                onclick="return confirm('Yakin hapus foto ini?')"
+                style="position:absolute; top:4px; right:4px; background:rgba(220,38,38,0.85); border:none; border-radius:50%; width:24px; height:24px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:white; font-size:14px; line-height:1;">×</button>
+        <span class="foto-index-badge">{{ $idx + 1 }}</span>
+    </div>
+    @endforeach
+</div>
+@endif
 
         @if(count($fotoGrid) < 5)
         <div class="setting-field">
