@@ -221,35 +221,44 @@
         </div>
     </section>
 
-    <!-- BERITA -->
-    <section id="berita">
-        <div class="inner-container">
-            <div class="berita-header">
-                <h1 class="section-title">BERITA</h1>
-            </div>
-            @php
-                $featured   = $publishedBerita->first();
-                $listBerita = $publishedBerita->skip(1)->take(3);
-            @endphp
-            <div class="berita-layout">
-                @if($featured)
-                <div class="featured-card">
-                    <div class="featured-img-wrap">
-                        <img src="{{ asset('storage/' . $featured->thumbnail) }}" alt="{{ $featured->judul_berita }}">
-                        <div class="featured-date-badge">
-                            {{ \Carbon\Carbon::parse($featured->tanggal_posting)->isoFormat('D MMM YY') }}
-                        </div>
-                    </div>
-                    <div class="featured-card-body">
-                        <span class="featured-title-link">{{ $featured->judul_berita }}</span>
-                        <p class="featured-excerpt">{{ Str::limit(strip_tags($featured->isi_berita), 180) }}</p>
-                        <button class="btn-selengkapnya" onclick="openNewsModal({{ $featured->id_berita }})">
-                            Selengkapnya &rsaquo;
-                        </button>
+   <!-- BERITA -->
+<section id="berita">
+    <div class="inner-container">
+        <div class="berita-header">
+            <h1 class="section-title">BERITA</h1>
+        </div>
+        @php
+            $featured   = $publishedBerita->first();
+            $listBerita = $publishedBerita->skip(1);
+        @endphp
+        <div class="berita-layout">
+
+            @if($featured)
+            <div class="featured-card">
+                <div class="featured-img-wrap">
+                    <img src="{{ asset('storage/' . $featured->thumbnail) }}" alt="{{ $featured->judul_berita }}">
+                    <div class="featured-date-badge">
+                        {{ \Carbon\Carbon::parse($featured->tanggal_posting)->isoFormat('D MMM YY') }}
                     </div>
                 </div>
-                @endif
-                <div class="news-list">
+                <div class="featured-card-body">
+                    <span class="featured-title-link">{{ $featured->judul_berita }}</span>
+                    <p class="featured-excerpt">{{ Str::limit(strip_tags($featured->isi_berita), 180) }}</p>
+                    <button class="btn-selengkapnya" onclick="openNewsModal({{ $featured->id_berita }})">
+                        Selengkapnya &rsaquo;
+                    </button>
+                </div>
+            </div>
+            @endif
+
+            <div class="news-list-wrapper">
+                <button type="button" class="news-scroll-btn news-scroll-up" id="newsScrollUp" style="display:none;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="18 15 12 9 6 15"/>
+                    </svg>
+                </button>
+
+                <div class="news-list" id="newsList">
                     @forelse($listBerita as $berita)
                     <div class="news-item" onclick="openNewsModal({{ $berita->id_berita }})">
                         <div class="news-item-img">
@@ -272,9 +281,17 @@
                     </div>
                     @endforelse
                 </div>
+
+                <button type="button" class="news-scroll-btn news-scroll-down" id="newsScrollDown" style="display:none;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
             </div>
+
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- TESTIMONI -->
     <section id="testimoni">
@@ -670,6 +687,47 @@
 
         window.addEventListener('resize', updateScrollArrows);
         document.addEventListener('DOMContentLoaded', updateScrollArrows);
+
+        // NEWS LIST SCROLL (3 card terlihat, sisanya scroll via tombol atas/bawah)
+        document.addEventListener('DOMContentLoaded', function () {
+            const newsList = document.getElementById('newsList');
+            const btnUp = document.getElementById('newsScrollUp');
+            const btnDown = document.getElementById('newsScrollDown');
+
+            if (!newsList || !btnUp || !btnDown) return;
+
+            const items = newsList.querySelectorAll('.news-item');
+            const itemHeight = 150 + 20; // tinggi card + gap
+
+            if (items.length <= 3) {
+                newsList.style.maxHeight = 'none';
+                newsList.style.overflowY = 'visible';
+                btnUp.style.display = 'none';
+                btnDown.style.display = 'none';
+                return;
+            }
+
+            function updateButtons() {
+                const isScrollable = newsList.scrollHeight > newsList.clientHeight + 2;
+                btnUp.style.display = isScrollable && newsList.scrollTop > 0 ? 'flex' : 'none';
+                btnDown.style.display = isScrollable &&
+                    (newsList.scrollTop < newsList.scrollHeight - newsList.clientHeight - 5)
+                    ? 'flex' : 'none';
+            }
+
+            btnUp.addEventListener('click', function () {
+                newsList.scrollBy({ top: -itemHeight, behavior: 'smooth' });
+            });
+
+            btnDown.addEventListener('click', function () {
+                newsList.scrollBy({ top: itemHeight, behavior: 'smooth' });
+            });
+
+            newsList.addEventListener('scroll', updateButtons);
+            window.addEventListener('resize', updateButtons);
+
+            updateButtons();
+        });
     </script>
 </body>
 </html>

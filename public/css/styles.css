@@ -493,24 +493,40 @@ section {
 }
 .btn-selengkapnya:hover { background: #162660; color: #fff; }
 
-.news-list { display: flex; flex-direction: column; gap: 20px; }
 .news-item {
-    display: grid; grid-template-columns: 120px 1fr;
+    display: grid; grid-template-columns: 130px 1fr;
     border-radius: 12px; overflow: hidden;
     box-shadow: 0 2px 8px rgba(22,38,96,0.07);
     background: #f8fafc; transition: transform 0.3s; cursor: pointer;
+    height: 150px; /* tinggi tetap, diperbesar biar deskripsi lebih kebaca */
+    flex-shrink: 0; /* wajib, biar card gak kepencet dan .news-list beneran overflow+scroll */
 }
 .news-item:hover { transform: translateY(-3px); }
 .news-item-img { position: relative; }
-.news-item-img img { width: 120px; height: 100%; object-fit: cover; display: block; }
+.news-item-img img { width: 130px; height: 100%; object-fit: cover; display: block; }
 .news-item-date {
     position: absolute; bottom: 6px; left: 5px;
     background: #162660; color: #fff;
     font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 5px;
 }
-.news-item-body { padding: 13px 14px; display: flex; flex-direction: column; justify-content: space-between; }
+.news-item-body {
+    padding: 13px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
 .news-item-title { font-size: 0.88rem; font-weight: 700; color: #162660; line-height: 1.4; margin-bottom: 6px; text-decoration: underline; }
-.news-item-excerpt { font-size: 0.78rem; color: #555; line-height: 1.5; margin-bottom: 8px; }
+.news-item-excerpt {
+    font-size: 0.8rem;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
 .btn-baca {
     display: inline-flex; align-items: center; gap: 4px;
     padding: 4px 13px; background: #D0E6FD; color: #162660;
@@ -1147,4 +1163,55 @@ footer {
     .scroll-arrow-wrap:hover .scroll-arrow {
         opacity: 0.8;
     }
+}
+
+/* ========== NEWS LIST (3 card terlihat + tombol scroll atas/bawah) ========== */
+.news-list-wrapper {
+    position: relative;
+}
+
+.news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 490px !important; /* pas 3 card: (150px x 3) + (gap 20px x 2) */
+    overflow-y: auto !important;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+.news-list::-webkit-scrollbar {
+    display: none;
+}
+
+.news-scroll-btn {
+    position: absolute;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(22,38,96,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #1e3a8a;
+    z-index: 10;
+    transition: background 0.2s;
+}
+
+.news-scroll-btn:hover {
+    background: #f1f5f9;
+}
+
+.news-scroll-up {
+    top: -18px;
+}
+
+.news-scroll-down {
+    bottom: -18px;
 }
