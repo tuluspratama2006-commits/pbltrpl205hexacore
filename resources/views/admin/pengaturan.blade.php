@@ -127,7 +127,7 @@
                 </div>
 
                 <div class="setting-subcard" style="margin-top: 12px;">
-                    <label class="setting-sublabel">Manual Book (PDF untuk tombol Bantuan) :</label>
+                    <label class="setting-sublabel">Manual Book :</label>
 
                     @if($profil && $profil->manual_book_pdf)
                         <div style="margin-bottom:10px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
