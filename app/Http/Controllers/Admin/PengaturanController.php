@@ -39,6 +39,8 @@ class PengaturanController extends Controller
             'maps_embed_2' => 'nullable|string',
             'hero_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'delete_background' => 'nullable|boolean',
+            'manual_book_pdf' => 'nullable|mimes:pdf|max:5120',
+            'delete_manual_book' => 'nullable|boolean',
         ]);
 
         $profil = ProfilPerusahaan::first();
@@ -65,6 +67,22 @@ class PengaturanController extends Controller
         }
         // TIDAK ada upload DAN TIDAK ada delete → pertahankan nilai lama
         // (tidak perlu set hero_image)
+
+        // Handle hapus manual book PDF
+        if ($request->delete_manual_book == '1') {
+            if ($profil && $profil->manual_book_pdf) {
+                Storage::disk('public')->delete($profil->manual_book_pdf);
+            }
+            $data['manual_book_pdf'] = null;
+        }
+        // Handle upload manual book PDF baru
+        elseif ($request->hasFile('manual_book_pdf')) {
+            if ($profil && $profil->manual_book_pdf) {
+                Storage::disk('public')->delete($profil->manual_book_pdf);
+            }
+            $data['manual_book_pdf'] = $request->file('manual_book_pdf')->store('manual-book', 'public');
+        }
+        // TIDAK ada upload DAN TIDAK ada delete → pertahankan file manual book lama
 
         ProfilPerusahaan::updateOrCreate(['id_profil' => 1], $data);
 

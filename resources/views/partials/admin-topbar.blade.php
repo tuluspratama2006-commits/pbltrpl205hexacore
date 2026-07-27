@@ -51,12 +51,27 @@
         </div>
 
         <!-- Bantuan -->
-        <button class="action-btn" title="Bantuan" style="color:#ffffff;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-            </svg>
-        </button>
+        @php
+            $profilBantuan = \App\Models\ProfilPerusahaan::first();
+        @endphp
+        @if($profilBantuan && $profilBantuan->manual_book_pdf)
+            <a class="action-btn" title="Bantuan (Manual Book)" style="color:#ffffff;"
+               href="{{ asset('storage/' . $profilBantuan->manual_book_pdf) }}"
+               target="_blank"
+               download>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+            </a>
+        @else
+            <button class="action-btn" type="button" title="Manual book belum diunggah (isi di Pengaturan)" style="color:#ffffff; opacity:.6; cursor:not-allowed;" disabled>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+            </button>
+        @endif
 
         <!-- User Avatar -->
         <a class="user-avatar" href="{{ route('admin.pengaturan') }}" style="display:flex; align-items:center; text-decoration:none; color:inherit;" title="Ubah Profil">

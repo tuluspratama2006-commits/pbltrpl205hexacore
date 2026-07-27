@@ -125,6 +125,37 @@
                                value="{{ old('maps_embed_2', $profil->maps_embed_2 ?? '') }}">
                     </div>
                 </div>
+
+                <div class="setting-subcard" style="margin-top: 12px;">
+                    <label class="setting-sublabel">Manual Book (PDF untuk tombol Bantuan) :</label>
+
+                    @if($profil && $profil->manual_book_pdf)
+                        <div style="margin-bottom:10px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                            <a href="{{ asset('storage/' . $profil->manual_book_pdf) }}"
+                               target="_blank"
+                               style="display:inline-flex;align-items:center;gap:6px;color:#2563eb;text-decoration:none;font-size:13px;font-weight:500;">
+                                📄 Lihat Manual Book Saat Ini
+                            </a>
+                            <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#e11d48;cursor:pointer;">
+                                <input type="checkbox" name="delete_manual_book" value="1">
+                                Hapus file ini
+                            </label>
+                        </div>
+                    @else
+                        <div style="margin-bottom:10px;color:#94a3b8;font-size:12px;">
+                            Belum ada manual book yang diunggah. Tombol Bantuan di topbar admin belum akan berfungsi sebelum file ini diunggah.
+                        </div>
+                    @endif
+
+                    <input type="file"
+                           name="manual_book_pdf"
+                           class="setting-input"
+                           accept=".pdf,application/pdf">
+
+                    <small style="color:#94a3b8;font-size:11px;">
+                        Upload file PDF maksimal 5 MB. Kosongkan jika tidak ingin mengganti manual book.
+                    </small>
+                </div>
             </div>
 
         </div>

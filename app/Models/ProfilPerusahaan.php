@@ -24,6 +24,7 @@ class ProfilPerusahaan extends Model
         'tentang_hero_image',
         'foto_grid',
         'dokumen_pdf',
+        'manual_book_pdf',
         'alamat',
         'alamat_2',
         'email',
